@@ -214,6 +214,7 @@ CREATE TABLE inspections (
     overall_notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     completed_at TIMESTAMP,
+    inspected_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_inspections_work_order
         FOREIGN KEY (work_order_id)
@@ -269,6 +270,7 @@ CREATE TABLE parts (
     stock_quantity INTEGER NOT NULL DEFAULT 0,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 
     CONSTRAINT chk_part_price
         CHECK (unit_price >= 0),
