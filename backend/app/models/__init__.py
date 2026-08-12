@@ -13,7 +13,10 @@ from app.models.work_order_part import WorkOrderPart
 from app.models.estimate import Estimate
 from app.models.estimate_item import EstimateItem
 from app.models.approval import Approval
-
+from app.models.invoice import Invoice
+from app.models.invoice_item import InvoiceItem
+from app.models.payment import Payment
+from app.models.notification import Notification
 
 
 __all__ = [
@@ -32,4 +35,8 @@ __all__ = [
     "Estimate",
     "EstimateItem",
     "Approval",
+    "Invoice",
+    "InvoiceItem",
+    "Payment",
+    "Notification",
 ]

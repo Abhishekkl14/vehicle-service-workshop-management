@@ -12,6 +12,14 @@ from app.routers.parts import router as parts_router
 from app.routers.work_order_parts import router as work_order_parts_router
 from app.routers.estimates import router as estimates_router
 from app.routers.approvals import router as approvals_router
+from app.routers.invoices import router as invoices_router
+from app.routers.payments import router as payments_router
+from app.routers.customer_history import (
+    router as customer_history_router
+)
+from app.routers.auth import router as auth_router
+from app.routers.notifications import router as notifications_router
+
 
 app = FastAPI(
     title="Vehicle Service & Workshop Management System",
@@ -29,6 +37,13 @@ app.include_router(parts_router)
 app.include_router(work_order_parts_router)
 app.include_router(estimates_router)
 app.include_router(approvals_router)
+app.include_router(invoices_router)
+app.include_router(payments_router)
+app.include_router(
+    customer_history_router
+)
+app.include_router(auth_router)
+app.include_router(notifications_router)
 
 @app.get("/")
 def root():

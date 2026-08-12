@@ -172,7 +172,32 @@ We'll use JWT authentication.
 Example:
 
 Authorization: Bearer eyJhbGciOi...
-
+customer@example.com
+        │
+        │ password
+        ▼
+POST /api/v1/auth/login
+        │
+        ▼
+   Verify bcrypt
+        │
+        ▼
+      JWT
+        │
+        ▼
+ Swagger Authorize 🔒
+        │
+        ▼
+ Authorization: Bearer JWT
+        │
+        ▼
+GET /api/v1/auth/me
+        │
+        ▼
+   Current User
+        │
+        ▼
+     CUSTOMER
 
 5. RBAC Architecture
 

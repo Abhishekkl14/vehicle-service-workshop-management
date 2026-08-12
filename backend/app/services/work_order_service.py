@@ -7,6 +7,8 @@ from app.models.booking import Booking
 from app.models.user import User
 from app.models.work_order import WorkOrder
 from app.repositories.work_order_repository import WorkOrderRepository
+from app.models.customer import Customer
+from app.services.notification_service import NotificationService
 
 
 class WorkOrderService:
@@ -161,8 +163,48 @@ class WorkOrderService:
                 "Work order has already been completed"
             )
 
+        # Complete the work order
         work_order.status = "COMPLETED"
         work_order.completed_at = datetime.utcnow()
+
+        # Find booking
+        booking = self.db.scalar(
+            select(Booking).where(
+                Booking.id == work_order.booking_id
+            )
+        )
+
+        if not booking:
+            raise ValueError(
+                "Booking not found"
+            )
+
+        # Find customer
+        customer = self.db.scalar(
+            select(Customer).where(
+                Customer.id == booking.customer_id
+            )
+        )
+
+        if not customer:
+            raise ValueError(
+                "Customer not found"
+            )
+
+        # Create customer notification
+        notification_service = NotificationService(
+            self.db
+        )
+
+        notification_service.create_notification(
+            user_id=customer.user_id,
+            title="Vehicle Service Completed",
+            message=(
+                "Your vehicle service has been completed "
+                "and your vehicle is ready for pickup."
+            ),
+            notification_type="SERVICE_COMPLETED",
+        )
 
         self.db.commit()
         self.db.refresh(work_order)

@@ -14,21 +14,26 @@ from app.schemas.inspection import (
     InspectionResponse,
 )
 from app.services.inspection_service import InspectionService
+from app.core.auth_dependency import require_roles
 
 
 router = APIRouter(
     prefix="/api/v1/inspections",
-    tags=["Inspections"]
+    tags=["Inspections"],
 )
 
+
+# =========================================================
+# GET INSPECTION
+# =========================================================
 
 @router.get(
     "/{inspection_id}",
-    response_model=InspectionResponse
+    response_model=InspectionResponse,
 )
 def get_inspection(
     inspection_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     service = InspectionService(db)
 
@@ -39,24 +44,36 @@ def get_inspection(
     if not inspection:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Inspection not found"
+            detail="Inspection not found",
         )
 
     return inspection
 
 
+# =========================================================
+# CREATE INSPECTION
+# =========================================================
+
 @router.post(
     "/",
     response_model=InspectionResponse,
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
 def create_inspection(
     data: InspectionCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(
+        require_roles(
+            "MECHANIC",
+            "SERVICE_ADVISOR",
+            "ADMIN",
+        )
+    ),
 ):
     service = InspectionService(db)
 
     try:
+
         return service.create_inspection(
             work_order_id=data.work_order_id,
             mechanic_id=data.mechanic_id,
@@ -64,25 +81,38 @@ def create_inspection(
         )
 
     except ValueError as exc:
+
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(exc)
+            detail=str(exc),
         )
 
+
+# =========================================================
+# ADD INSPECTION ITEM
+# =========================================================
 
 @router.post(
     "/{inspection_id}/items",
     response_model=InspectionItemResponse,
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
 def add_inspection_item(
     inspection_id: int,
     data: InspectionItemCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(
+        require_roles(
+            "MECHANIC",
+            "SERVICE_ADVISOR",
+            "ADMIN",
+        )
+    ),
 ):
     service = InspectionService(db)
 
     try:
+
         return service.add_inspection_item(
             inspection_id=inspection_id,
             component=data.component,
@@ -93,29 +123,36 @@ def add_inspection_item(
         )
 
     except ValueError as exc:
+
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(exc)
+            detail=str(exc),
         )
 
 
+# =========================================================
+# GET INSPECTION ITEMS
+# =========================================================
+
 @router.get(
     "/{inspection_id}/items",
-    response_model=list[InspectionItemResponse]
+    response_model=list[InspectionItemResponse],
 )
 def get_inspection_items(
     inspection_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     service = InspectionService(db)
 
     try:
+
         return service.get_inspection_items(
             inspection_id
         )
 
     except ValueError as exc:
+
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(exc)
+            detail=str(exc),
         )

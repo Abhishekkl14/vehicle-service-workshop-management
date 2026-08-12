@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.models.booking import Booking
+from app.models.user import User
 from app.models.estimate import Estimate
 from app.models.estimate_item import EstimateItem
 from app.models.service import Service
@@ -47,6 +49,90 @@ class EstimateService:
         return self.repository.get_by_work_order(
             work_order_id
         )
+
+    # ---------------------------------------------------------
+    # Get estimate with user ownership check
+    # ---------------------------------------------------------
+
+    def get_estimate_for_user(
+        self,
+        estimate_id: int,
+        current_user: User,
+    ):
+
+        query = (
+            select(Estimate)
+            .join(
+                WorkOrder,
+                WorkOrder.id == Estimate.work_order_id
+            )
+            .join(
+                Booking,
+                Booking.id == WorkOrder.booking_id
+            )
+            .where(
+                Estimate.id == estimate_id
+            )
+        )
+
+        # Customer can access only their own estimate
+        if current_user.role.name == "CUSTOMER":
+
+            query = query.where(
+                Booking.customer_id == current_user.id
+            )
+
+        # Staff roles can access estimates
+        elif current_user.role.name not in {
+            "ADMIN",
+            "SERVICE_ADVISOR",
+            "MECHANIC",
+        }:
+            return None
+
+        return self.db.scalar(query)
+
+    # ---------------------------------------------------------
+    # Get work-order estimates with ownership check
+    # ---------------------------------------------------------
+
+    def get_work_order_estimates_for_user(
+        self,
+        work_order_id: int,
+        current_user: User,
+    ):
+
+        query = (
+            select(Estimate)
+            .join(
+                WorkOrder,
+                WorkOrder.id == Estimate.work_order_id
+            )
+            .join(
+                Booking,
+                Booking.id == WorkOrder.booking_id
+            )
+            .where(
+                WorkOrder.id == work_order_id
+            )
+        )
+
+        # Customer can access only their own work order
+        if current_user.role.name == "CUSTOMER":
+
+            query = query.where(
+                Booking.customer_id == current_user.id
+            )
+
+        # Only known application roles
+        elif current_user.role.name not in {
+            "ADMIN",
+            "SERVICE_ADVISOR",
+            "MECHANIC",
+        }:
+            return []
+
+        return self.db.scalars(query).all()
 
     # ---------------------------------------------------------
     # Create Estimate

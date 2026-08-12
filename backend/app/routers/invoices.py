@@ -12,76 +12,85 @@ from app.core.auth_dependency import (
 )
 from app.database.database import get_db
 from app.models.user import User
-from app.schemas.estimate import EstimateResponse
-from app.services.estimate_service import EstimateService
+from app.schemas.invoice import InvoiceResponse
+from app.services.invoice_service import InvoiceService
 
 
 router = APIRouter(
-    prefix="/api/v1/estimates",
-    tags=["Estimates"],
+    prefix="/api/v1/invoices",
+    tags=["Invoices"],
 )
 
 
 # =========================================================
-# GET ESTIMATE
+# GET INVOICE
 # =========================================================
 
 @router.get(
-    "/{estimate_id}",
-    response_model=EstimateResponse,
+    "/{invoice_id}",
+    response_model=InvoiceResponse,
 )
-def get_estimate(
-    estimate_id: int,
+def get_invoice(
+    invoice_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    service = EstimateService(db)
+    service = InvoiceService(db)
 
-    estimate = service.get_estimate_for_user(
-        estimate_id=estimate_id,
+    invoice = service.get_invoice_for_user(
+        invoice_id=invoice_id,
         current_user=current_user,
     )
 
-    if not estimate:
+    if not invoice:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Estimate not found",
+            detail="Invoice not found",
         )
 
-    return estimate
+    return invoice
 
 
 # =========================================================
-# GET ESTIMATES FOR WORK ORDER
+# GET WORK ORDER INVOICE
 # =========================================================
 
 @router.get(
     "/work-order/{work_order_id}",
-    response_model=list[EstimateResponse],
+    response_model=InvoiceResponse,
 )
-def get_work_order_estimates(
+def get_work_order_invoice(
     work_order_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    service = EstimateService(db)
+    service = InvoiceService(db)
 
-    return service.get_work_order_estimates_for_user(
+    invoice = service.get_work_order_invoice_for_user(
         work_order_id=work_order_id,
         current_user=current_user,
     )
 
+    if not invoice:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Invoice not found",
+        )
+
+    return invoice
+
 
 # =========================================================
-# SEND ESTIMATE
+# GENERATE INVOICE
 # =========================================================
 
 @router.post(
-    "/{estimate_id}/send",
-    response_model=EstimateResponse,
+    "/work-order/{work_order_id}",
+    response_model=InvoiceResponse,
+    status_code=status.HTTP_201_CREATED,
 )
-def send_estimate(
-    estimate_id: int,
+def generate_invoice(
+    work_order_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(
         require_roles(
@@ -90,12 +99,12 @@ def send_estimate(
         )
     ),
 ):
-    service = EstimateService(db)
+    service = InvoiceService(db)
 
     try:
 
-        return service.send_estimate(
-            estimate_id
+        return service.generate_invoice(
+            work_order_id
         )
 
     except ValueError as exc:
