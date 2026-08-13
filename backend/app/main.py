@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -19,6 +20,9 @@ from app.routers.customer_history import (
 )
 from app.routers.auth import router as auth_router
 from app.routers.notifications import router as notifications_router
+from app.routers.services import (
+    router as services_router
+)
 
 
 app = FastAPI(
@@ -27,6 +31,16 @@ app = FastAPI(
     description="MVP backend for vehicle service and workshop management"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(roles_router)
 app.include_router(vehicles_router)
@@ -44,6 +58,10 @@ app.include_router(
 )
 app.include_router(auth_router)
 app.include_router(notifications_router)
+app.include_router(
+    services_router
+)
+
 
 @app.get("/")
 def root():
