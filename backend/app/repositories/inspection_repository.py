@@ -1,8 +1,10 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.models.booking import Booking
 from app.models.inspection import Inspection
 from app.models.inspection_item import InspectionItem
+from app.models.work_order import WorkOrder
 
 
 class InspectionRepository:
@@ -17,6 +19,50 @@ class InspectionRepository:
 
         statement = select(Inspection).where(
             Inspection.id == inspection_id
+        )
+
+        return self.db.scalar(statement)
+
+    def get_by_id_and_mechanic(
+        self,
+        inspection_id: int,
+        mechanic_id: int
+    ) -> Inspection | None:
+
+        statement = (
+            select(Inspection)
+            .join(
+                WorkOrder,
+                WorkOrder.id == Inspection.work_order_id
+            )
+            .where(
+                Inspection.id == inspection_id,
+                WorkOrder.assigned_mechanic_id == mechanic_id,
+            )
+        )
+
+        return self.db.scalar(statement)
+
+    def get_by_id_and_customer(
+        self,
+        inspection_id: int,
+        customer_id: int
+    ) -> Inspection | None:
+
+        statement = (
+            select(Inspection)
+            .join(
+                WorkOrder,
+                WorkOrder.id == Inspection.work_order_id
+            )
+            .join(
+                Booking,
+                Booking.id == WorkOrder.booking_id
+            )
+            .where(
+                Inspection.id == inspection_id,
+                Booking.customer_id == customer_id,
+            )
         )
 
         return self.db.scalar(statement)

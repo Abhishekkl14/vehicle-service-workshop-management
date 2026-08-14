@@ -6,13 +6,17 @@ from fastapi import (
 )
 from sqlalchemy.orm import Session
 
+from app.core.auth_dependency import (
+    get_current_user,
+    require_roles,
+)
 from app.database.database import get_db
+from app.models.user import User
 from app.schemas.work_order import (
     WorkOrderCreate,
     WorkOrderResponse,
 )
 from app.services.work_order_service import WorkOrderService
-from app.core.auth_dependency import require_roles
 
 
 router = APIRouter(
@@ -32,12 +36,21 @@ router = APIRouter(
 def get_work_order(
     work_order_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = WorkOrderService(db)
 
-    work_order = service.get_work_order(
-        work_order_id
-    )
+    try:
+        work_order = service.get_work_order_for_user(
+            work_order_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
 
     if not work_order:
         raise HTTPException(
@@ -59,12 +72,21 @@ def get_work_order(
 def get_work_orders_by_status(
     work_order_status: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = WorkOrderService(db)
 
-    return service.get_by_status(
-        work_order_status
-    )
+    try:
+        return service.get_work_orders_by_status_for_user(
+            work_order_status,
+            current_user,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
 
 
 # =========================================================
@@ -116,20 +138,22 @@ def create_work_order(
 def start_work_order(
     work_order_id: int,
     db: Session = Depends(get_db),
-    current_user=Depends(
-        require_roles(
-            "MECHANIC",
-            "SERVICE_ADVISOR",
-            "ADMIN",
-        )
-    ),
+    current_user: User = Depends(get_current_user),
 ):
     service = WorkOrderService(db)
 
     try:
 
-        return service.start_work_order(
-            work_order_id
+        return service.start_work_order_for_user(
+            work_order_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
         )
 
     except ValueError as exc:
@@ -151,20 +175,22 @@ def start_work_order(
 def complete_work_order(
     work_order_id: int,
     db: Session = Depends(get_db),
-    current_user=Depends(
-        require_roles(
-            "MECHANIC",
-            "SERVICE_ADVISOR",
-            "ADMIN",
-        )
-    ),
+    current_user: User = Depends(get_current_user),
 ):
     service = WorkOrderService(db)
 
     try:
 
-        return service.complete_work_order(
-            work_order_id
+        return service.complete_work_order_for_user(
+            work_order_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
         )
 
     except ValueError as exc:

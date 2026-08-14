@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.booking import Booking
+from app.models.customer import Customer
 from app.models.estimate import Estimate
 from app.models.estimate_item import EstimateItem
 from app.models.invoice import Invoice
@@ -53,6 +54,10 @@ class InvoiceService:
                 Booking,
                 Booking.id == WorkOrder.booking_id
             )
+            .join(
+                Customer,
+                Customer.id == Booking.customer_id
+            )
             .where(
                 Invoice.id == invoice_id
             )
@@ -62,7 +67,7 @@ class InvoiceService:
         if current_user.role.name == "CUSTOMER":
 
             query = query.where(
-                Booking.customer_id == current_user.id
+                Customer.user_id == current_user.id
             )
 
         # Staff roles → allowed
@@ -107,6 +112,10 @@ class InvoiceService:
                 Booking,
                 Booking.id == WorkOrder.booking_id
             )
+            .join(
+                Customer,
+                Customer.id == Booking.customer_id
+            )
             .where(
                 WorkOrder.id == work_order_id
             )
@@ -116,7 +125,7 @@ class InvoiceService:
         if current_user.role.name == "CUSTOMER":
 
             query = query.where(
-                Booking.customer_id == current_user.id
+                Customer.user_id == current_user.id
             )
 
         # Staff roles → allowed

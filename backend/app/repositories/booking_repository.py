@@ -18,6 +18,19 @@ class BookingRepository:
 
         return self.db.scalar(statement)
 
+    def get_by_id_and_customer(
+        self,
+        booking_id: int,
+        customer_id: int
+    ) -> Booking | None:
+
+        statement = select(Booking).where(
+            Booking.id == booking_id,
+            Booking.customer_id == customer_id,
+        )
+
+        return self.db.scalar(statement)
+
     def get_by_customer(
         self,
         customer_id: int
@@ -42,6 +55,23 @@ class BookingRepository:
         statement = (
             select(Booking)
             .where(Booking.booking_date == booking_date)
+            .order_by(Booking.booking_time)
+        )
+
+        return list(self.db.scalars(statement).all())
+
+    def get_by_date_and_customer(
+        self,
+        booking_date: date,
+        customer_id: int
+    ) -> list[Booking]:
+
+        statement = (
+            select(Booking)
+            .where(
+                Booking.booking_date == booking_date,
+                Booking.customer_id == customer_id,
+            )
             .order_by(Booking.booking_time)
         )
 

@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class InspectionCreate(BaseModel):
     work_order_id: int
-    mechanic_id: int
+    mechanic_id: int | None = None
     overall_notes: str | None = None
 
 

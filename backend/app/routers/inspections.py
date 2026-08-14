@@ -6,7 +6,9 @@ from fastapi import (
 )
 from sqlalchemy.orm import Session
 
+from app.core.auth_dependency import get_current_user
 from app.database.database import get_db
+from app.models.user import User
 from app.schemas.inspection import (
     InspectionCreate,
     InspectionItemCreate,
@@ -14,7 +16,6 @@ from app.schemas.inspection import (
     InspectionResponse,
 )
 from app.services.inspection_service import InspectionService
-from app.core.auth_dependency import require_roles
 
 
 router = APIRouter(
@@ -34,12 +35,21 @@ router = APIRouter(
 def get_inspection(
     inspection_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = InspectionService(db)
 
-    inspection = service.get_inspection(
-        inspection_id
-    )
+    try:
+        inspection = service.get_inspection_for_user(
+            inspection_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
 
     if not inspection:
         raise HTTPException(
@@ -62,22 +72,24 @@ def get_inspection(
 def create_inspection(
     data: InspectionCreate,
     db: Session = Depends(get_db),
-    current_user=Depends(
-        require_roles(
-            "MECHANIC",
-            "SERVICE_ADVISOR",
-            "ADMIN",
-        )
-    ),
+    current_user: User = Depends(get_current_user),
 ):
     service = InspectionService(db)
 
     try:
 
-        return service.create_inspection(
+        return service.create_inspection_for_user(
             work_order_id=data.work_order_id,
             mechanic_id=data.mechanic_id,
             overall_notes=data.overall_notes,
+            current_user=current_user,
+        )
+
+    except PermissionError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
         )
 
     except ValueError as exc:
@@ -101,25 +113,27 @@ def add_inspection_item(
     inspection_id: int,
     data: InspectionItemCreate,
     db: Session = Depends(get_db),
-    current_user=Depends(
-        require_roles(
-            "MECHANIC",
-            "SERVICE_ADVISOR",
-            "ADMIN",
-        )
-    ),
+    current_user: User = Depends(get_current_user),
 ):
     service = InspectionService(db)
 
     try:
 
-        return service.add_inspection_item(
+        return service.add_inspection_item_for_user(
             inspection_id=inspection_id,
             component=data.component,
             condition=data.condition,
             severity=data.severity,
             notes=data.notes,
             recommended_action=data.recommended_action,
+            current_user=current_user,
+        )
+
+    except PermissionError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
         )
 
     except ValueError as exc:
@@ -141,13 +155,22 @@ def add_inspection_item(
 def get_inspection_items(
     inspection_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = InspectionService(db)
 
     try:
 
-        return service.get_inspection_items(
-            inspection_id
+        return service.get_inspection_items_for_user(
+            inspection_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
         )
 
     except ValueError as exc:

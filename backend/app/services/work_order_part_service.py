@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.part import Part
+from app.models.user import User
 from app.models.work_order import WorkOrder
 from app.models.work_order_part import WorkOrderPart
 from app.repositories.work_order_part_repository import (
@@ -23,6 +24,78 @@ class WorkOrderPartService:
     ):
         return self.repository.get_by_work_order(
             work_order_id
+        )
+
+    def get_work_order_parts_for_user(
+        self,
+        work_order_id: int,
+        current_user: User,
+    ):
+
+        role = current_user.role.name
+
+        # Mechanic → only assigned work orders
+        if role == "MECHANIC":
+
+            work_order = self.db.scalar(
+                select(WorkOrder).where(
+                    WorkOrder.id == work_order_id,
+                    WorkOrder.assigned_mechanic_id == current_user.id,
+                )
+            )
+
+            if not work_order:
+                raise PermissionError(
+                    "You do not have permission to access this resource"
+                )
+
+        # Staff roles → workshop access
+        elif role not in {"ADMIN", "SERVICE_ADVISOR"}:
+
+            raise PermissionError(
+                "You do not have permission to access this resource"
+            )
+
+        return self.repository.get_by_work_order(
+            work_order_id
+        )
+
+    def add_part_for_user(
+        self,
+        work_order_id: int,
+        part_id: int,
+        quantity: int,
+        current_user: User,
+    ):
+
+        role = current_user.role.name
+
+        # Mechanic → only assigned work orders
+        if role == "MECHANIC":
+
+            work_order = self.db.scalar(
+                select(WorkOrder).where(
+                    WorkOrder.id == work_order_id,
+                    WorkOrder.assigned_mechanic_id == current_user.id,
+                )
+            )
+
+            if not work_order:
+                raise PermissionError(
+                    "You do not have permission to access this resource"
+                )
+
+        # Staff roles → workshop access
+        elif role not in {"ADMIN", "SERVICE_ADVISOR"}:
+
+            raise PermissionError(
+                "You do not have permission to add work order parts"
+            )
+
+        return self.add_part(
+            work_order_id=work_order_id,
+            part_id=part_id,
+            quantity=quantity,
         )
 
     def add_part(

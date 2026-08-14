@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.core.auth_dependency import get_current_user
 from app.database.database import get_db
+from app.models.user import User
 from app.schemas.vehicle import VehicleCreate, VehicleResponse
 from app.services.vehicle_service import VehicleService
 
@@ -18,11 +20,30 @@ router = APIRouter(
 )
 def get_customer_vehicles(
     customer_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = VehicleService(db)
 
-    return service.get_customer_vehicles(customer_id)
+    try:
+        vehicles = service.get_customer_vehicles_for_user(
+            customer_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
+
+    if vehicles is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Vehicles not found",
+        )
+
+    return vehicles
 
 
 @router.get(
@@ -31,11 +52,22 @@ def get_customer_vehicles(
 )
 def get_vehicle(
     vehicle_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = VehicleService(db)
 
-    vehicle = service.get_vehicle(vehicle_id)
+    try:
+        vehicle = service.get_vehicle_for_user(
+            vehicle_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
 
     if not vehicle:
         raise HTTPException(
@@ -53,12 +85,13 @@ def get_vehicle(
 )
 def create_vehicle(
     data: VehicleCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = VehicleService(db)
 
     try:
-        return service.create_vehicle(
+        return service.create_vehicle_for_user(
             customer_id=data.customer_id,
             vehicle_type_id=data.vehicle_type_id,
             registration_number=data.registration_number,
@@ -68,6 +101,13 @@ def create_vehicle(
             manufacturing_year=data.manufacturing_year,
             color=data.color,
             mileage=data.mileage,
+            current_user=current_user,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
         )
 
     except ValueError as exc:

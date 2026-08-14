@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class VehicleCreate(BaseModel):
-    customer_id: int
+    customer_id: int | None = None
     vehicle_type_id: int | None = None
 
     registration_number: str = Field(

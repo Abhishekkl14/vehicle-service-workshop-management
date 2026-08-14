@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.auth_dependency import get_current_customer
 from app.models.booking import Booking
 from app.models.user import User
 from app.models.work_order import WorkOrder
@@ -31,6 +32,86 @@ class WorkOrderService:
     ):
         return self.repository.get_by_status(
             status
+        )
+
+    def get_work_order_for_user(
+        self,
+        work_order_id: int,
+        current_user: User,
+    ):
+
+        role = current_user.role.name
+
+        # Customer → only work orders of their own booking
+        if role == "CUSTOMER":
+
+            current_customer = get_current_customer(
+                current_user=current_user,
+                db=self.db,
+            )
+
+            return self.repository.get_by_id_and_customer(
+                work_order_id,
+                current_customer.id,
+            )
+
+        # Mechanic → only assigned work orders
+        if role == "MECHANIC":
+
+            return self.repository.get_by_id_and_mechanic(
+                work_order_id,
+                current_user.id,
+            )
+
+        # Staff roles → workshop access
+        if role in {"ADMIN", "SERVICE_ADVISOR"}:
+
+            return self.repository.get_by_id(
+                work_order_id
+            )
+
+        raise PermissionError(
+            "You do not have permission to access this resource"
+        )
+
+    def get_work_orders_by_status_for_user(
+        self,
+        status: str,
+        current_user: User,
+    ):
+
+        role = current_user.role.name
+
+        # Customer → only their own work orders
+        if role == "CUSTOMER":
+
+            current_customer = get_current_customer(
+                current_user=current_user,
+                db=self.db,
+            )
+
+            return self.repository.get_by_status_and_customer(
+                status,
+                current_customer.id,
+            )
+
+        # Mechanic → only assigned work orders
+        if role == "MECHANIC":
+
+            return self.repository.get_by_status_and_mechanic(
+                status,
+                current_user.id,
+            )
+
+        # Staff roles → full workshop view
+        if role in {"ADMIN", "SERVICE_ADVISOR"}:
+
+            return self.repository.get_by_status(
+                status
+            )
+
+        raise PermissionError(
+            "You do not have permission to access this resource"
         )
 
     def create_work_order(
@@ -103,6 +184,70 @@ class WorkOrderService:
 
         return self.repository.create(
             work_order
+        )
+
+    def start_work_order_for_user(
+        self,
+        work_order_id: int,
+        current_user: User,
+    ):
+
+        role = current_user.role.name
+
+        # Mechanic → must be assigned to the work order
+        if role == "MECHANIC":
+
+            work_order = self.repository.get_by_id_and_mechanic(
+                work_order_id,
+                current_user.id,
+            )
+
+            if not work_order:
+                raise PermissionError(
+                    "You do not have permission to access this resource"
+                )
+
+        # Staff roles → workshop access
+        elif role not in {"SERVICE_ADVISOR", "ADMIN"}:
+
+            raise PermissionError(
+                "You do not have permission to access this resource"
+            )
+
+        return self.start_work_order(
+            work_order_id
+        )
+
+    def complete_work_order_for_user(
+        self,
+        work_order_id: int,
+        current_user: User,
+    ):
+
+        role = current_user.role.name
+
+        # Mechanic → must be assigned to the work order
+        if role == "MECHANIC":
+
+            work_order = self.repository.get_by_id_and_mechanic(
+                work_order_id,
+                current_user.id,
+            )
+
+            if not work_order:
+                raise PermissionError(
+                    "You do not have permission to access this resource"
+                )
+
+        # Staff roles → workshop access
+        elif role not in {"SERVICE_ADVISOR", "ADMIN"}:
+
+            raise PermissionError(
+                "You do not have permission to access this resource"
+            )
+
+        return self.complete_work_order(
+            work_order_id
         )
 
     def start_work_order(

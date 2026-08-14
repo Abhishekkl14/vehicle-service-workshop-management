@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.core.auth_dependency import get_current_user
 from app.database.database import get_db
+from app.models.user import User
 from app.schemas.customer_history import (
     CustomerServiceHistoryResponse,
 )
@@ -24,11 +26,28 @@ router = APIRouter(
 )
 def get_customer_service_history(
     customer_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
 
     service = CustomerHistoryService(db)
 
-    return service.get_customer_history(
-        customer_id
-    )
+    try:
+        history = service.get_customer_history_for_user(
+            customer_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
+
+    if history is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Service history not found",
+        )
+
+    return history

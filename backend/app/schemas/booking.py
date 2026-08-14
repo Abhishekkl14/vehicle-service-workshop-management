@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class BookingCreate(BaseModel):
-    customer_id: int
+    customer_id: int | None = None
     vehicle_id: int
     service_id: int
 

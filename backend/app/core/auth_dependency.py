@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import decode_access_token
 from app.database.database import get_db
+from app.models.customer import Customer
 from app.models.user import User
 
 
@@ -66,6 +67,27 @@ def get_current_user(
         )
 
     return user
+
+def get_current_customer(
+    current_user: User = Depends(
+        get_current_user
+    ),
+    db: Session = Depends(get_db),
+) -> Customer:
+
+    customer = db.scalar(
+        select(Customer).where(
+            Customer.user_id == current_user.id
+        )
+    )
+
+    if not customer:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Customer profile not found for the current user",
+        )
+
+    return customer
 
 def require_roles(*allowed_roles: str):
 
