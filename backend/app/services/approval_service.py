@@ -1,9 +1,12 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.auth_dependency import get_current_customer
 from app.models.approval import Approval
+from app.models.booking import Booking
 from app.models.customer import Customer
 from app.models.estimate import Estimate
+from app.models.user import User
 from app.models.work_order import WorkOrder
 from app.repositories.approval_repository import (
     ApprovalRepository,
@@ -136,3 +139,100 @@ class ApprovalService:
             raise
 
         return approval
+
+    # ---------------------------------------------------------
+    # Create Approval Decision with ownership check
+    # ---------------------------------------------------------
+
+    def create_decision_for_user(
+        self,
+        estimate_id: int,
+        current_user: User,
+        decision: str,
+        comments: str | None,
+    ):
+
+        # -----------------------------------------------------
+        # Resolve the authenticated customer from the JWT
+        # -----------------------------------------------------
+
+        current_customer = get_current_customer(
+            current_user=current_user,
+            db=self.db,
+        )
+
+        # -----------------------------------------------------
+        # Validate decision
+        # -----------------------------------------------------
+
+        decision = decision.upper()
+
+        if decision not in {
+            "APPROVED",
+            "REJECTED",
+        }:
+            raise ValueError(
+                "Decision must be APPROVED or REJECTED"
+            )
+
+        # -----------------------------------------------------
+        # Find estimate
+        # -----------------------------------------------------
+
+        estimate = self.db.scalar(
+            select(Estimate).where(
+                Estimate.id == estimate_id
+            )
+        )
+
+        if not estimate:
+            raise ValueError(
+                "Estimate not found"
+            )
+
+        # -----------------------------------------------------
+        # Ownership chain:
+        # Estimate → WorkOrder → Booking → Customer
+        # -----------------------------------------------------
+
+        booking = self.db.scalar(
+            select(Booking)
+            .join(
+                WorkOrder,
+                WorkOrder.id == estimate.work_order_id
+            )
+            .where(
+                Booking.id == WorkOrder.booking_id
+            )
+        )
+
+        if not booking:
+            raise ValueError(
+                "Booking not found"
+            )
+
+        if booking.customer_id != current_customer.id:
+            raise PermissionError(
+                "You do not have permission to access this resource"
+            )
+
+        # -----------------------------------------------------
+        # Estimate must be SENT
+        # -----------------------------------------------------
+
+        if estimate.status != "SENT":
+            raise ValueError(
+                "Only SENT estimates can be approved or rejected"
+            )
+
+        # -----------------------------------------------------
+        # customer_id comes from the JWT-derived customer,
+        # never from the request body
+        # -----------------------------------------------------
+
+        return self.create_decision(
+            estimate_id=estimate_id,
+            customer_id=current_customer.id,
+            decision=decision,
+            comments=comments,
+        )

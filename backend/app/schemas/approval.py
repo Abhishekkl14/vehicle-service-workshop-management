@@ -4,8 +4,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class ApprovalCreate(BaseModel):
-    customer_id: int
-
     decision: str = Field(
         min_length=1,
         max_length=20
