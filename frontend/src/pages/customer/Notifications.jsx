@@ -14,6 +14,10 @@ import {
 import AppLayout from "../../components/layout/AppLayout";
 
 import {
+  useAuth,
+} from "../../context/AuthContext";
+
+import {
   getNotifications,
   markNotificationRead,
 } from "../../api/notificationApi";
