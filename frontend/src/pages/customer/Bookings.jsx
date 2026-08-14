@@ -345,6 +345,21 @@ export default function Bookings() {
 
 
   /* =====================================================
+     VIEW BOOKING
+  ===================================================== */
+
+  const handleViewBooking = (
+    bookingId
+  ) => {
+
+    navigate(
+      `/customer/bookings/${bookingId}`
+    );
+
+  };
+
+
+  /* =====================================================
      RENDER
   ===================================================== */
 
@@ -385,6 +400,7 @@ export default function Bookings() {
           <div className="bookings-actions">
 
             <button
+              type="button"
               className="secondary-action"
               onClick={loadBookings}
               disabled={loading}
@@ -405,6 +421,7 @@ export default function Bookings() {
 
 
             <button
+              type="button"
               className="primary-action"
               onClick={
                 handleCreateBooking
@@ -447,6 +464,7 @@ export default function Bookings() {
 
 
             <button
+              type="button"
               onClick={loadBookings}
             >
               Try again
@@ -535,6 +553,7 @@ export default function Bookings() {
 
 
               <button
+                type="button"
                 className="primary-action"
                 onClick={
                   handleCreateBooking
@@ -726,12 +745,16 @@ export default function Bookings() {
                         </div>
 
 
+                        {/* =================================================
+                            VIEW BOOKING
+                        ================================================= */}
+
                         <button
+                          type="button"
                           className="booking-view-button"
                           onClick={() =>
-                            console.log(
-                              "Booking:",
-                              booking
+                            handleViewBooking(
+                              booking.id
                             )
                           }
                         >
@@ -743,6 +766,7 @@ export default function Bookings() {
                           />
 
                         </button>
+
 
                       </div>
 

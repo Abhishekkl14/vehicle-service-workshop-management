@@ -15,9 +15,16 @@ import MyVehicles from "./pages/customer/MyVehicles";
 import VehicleDetails from "./pages/customer/VehicleDetails";
 import Bookings from "./pages/customer/Bookings";
 import CreateBooking from "./pages/customer/CreateBooking";
-
 import AdvisorDashboard from "./pages/advisor/AdvisorDashboard";
 import MechanicDashboard from "./pages/mechanic/MechanicDashboard";
+import BookingDetails from "./pages/customer/BookingDetails";
+import ServiceHistory from "./pages/customer/ServiceHistory";
+import EstimateDetails from "./pages/customer/EstimateDetails";
+import WorkOrderDetails from "./pages/customer/WorkOrderDetails";
+import InspectionDetails from "./pages/customer/InspectionDetails";
+import Invoices from "./pages/customer/Invoices";
+import InvoiceDetails from "./pages/customer/InvoiceDetails";
+import Notifications from "./pages/customer/Notifications";
 
 
 function RoleRedirect() {
@@ -147,25 +154,119 @@ export default function App() {
               CUSTOMER BOOKINGS
           ================================================= */}
 
+                <Route
+          path="/customer/bookings"
+          element={
+            <ProtectedRoute
+              allowedRoles={["CUSTOMER"]}
+            >
+              <Bookings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/customer/bookings/new"
+          element={
+            <ProtectedRoute
+              allowedRoles={["CUSTOMER"]}
+            >
+              <CreateBooking />
+            </ProtectedRoute>
+          }
+        />
+
           <Route
-            path="/customer/bookings"
+            path="/customer/bookings/:bookingId"
             element={
               <ProtectedRoute
                 allowedRoles={["CUSTOMER"]}
               >
-                <Bookings />
+                <BookingDetails />
               </ProtectedRoute>
             }
           />
 
 
           <Route
-            path="/customer/bookings/new"
+            path="/customer/service-history"
             element={
               <ProtectedRoute
                 allowedRoles={["CUSTOMER"]}
               >
-                <CreateBooking />
+                <ServiceHistory />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/estimates/:estimateId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <EstimateDetails />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/work-orders/:workOrderId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <WorkOrderDetails />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/inspections/:inspectionId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <InspectionDetails />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/invoices"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <Invoices />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/invoices/:invoiceId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <InvoiceDetails />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/notifications"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <Notifications />
               </ProtectedRoute>
             }
           />

@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
   Wrench,
+  History,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -36,6 +37,11 @@ const navigation = {
       icon: CalendarDays,
     },
     {
+      label: "Service History",
+      path: "/customer/service-history",
+      icon: History,
+    },
+    {
       label: "Work Orders",
       path: "/customer/work-orders",
       icon: ClipboardList,
@@ -51,18 +57,13 @@ const navigation = {
       icon: FileText,
     },
     {
-      label: "Approvals",
-      path: "/customer/approvals",
-      icon: BadgeCheck,
-    },
-    {
       label: "Invoices",
       path: "/customer/invoices",
       icon: Receipt,
     },
     {
       label: "Payments",
-      path: "/customer/payments",
+      path: "/customer/invoices",
       icon: CreditCard,
     },
     {
