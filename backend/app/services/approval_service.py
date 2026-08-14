@@ -236,3 +236,15 @@ class ApprovalService:
             decision=decision,
             comments=comments,
         )
+
+    # ---------------------------------------------------------
+    # Get Approvals by Estimate
+    # ---------------------------------------------------------
+
+    def get_estimate_approvals(
+        self,
+        estimate_id: int,
+    ):
+        return self.repository.get_by_estimate(
+            estimate_id
+        )
