@@ -144,6 +144,23 @@ class EstimateService:
         return self.db.scalars(query).all()
 
     # ---------------------------------------------------------
+    # Get customer estimates with ownership check
+    # ---------------------------------------------------------
+
+    def get_customer_estimates_for_user(
+        self,
+        current_user: User,
+    ):
+
+        # Only customers can list their own estimates
+        if current_user.role.name != "CUSTOMER":
+            return []
+
+        return self.repository.get_by_customer_user(
+            current_user.id
+        )
+
+    # ---------------------------------------------------------
     # Create Estimate
     # ---------------------------------------------------------
 

@@ -35,11 +35,40 @@ export const getEstimate = async (
   return response.data;
 };
 
+export const getCustomerEstimates = async () => {
+  const response = await estimateApi.get(
+    "/api/v1/estimates/customer/me"
+  );
+
+  return response.data;
+};
+
 export const getWorkOrderEstimates = async (
   workOrderId
 ) => {
   const response = await estimateApi.get(
     `/api/v1/estimates/work-order/${workOrderId}`
+  );
+
+  return response.data;
+};
+
+export const createEstimate = async (
+  estimateData
+) => {
+  const response = await estimateApi.post(
+    "/api/v1/estimates/",
+    estimateData
+  );
+
+  return response.data;
+};
+
+export const sendEstimate = async (
+  estimateId
+) => {
+  const response = await estimateApi.post(
+    `/api/v1/estimates/${estimateId}/send`
   );
 
   return response.data;

@@ -20,6 +20,7 @@ import MechanicDashboard from "./pages/mechanic/MechanicDashboard";
 import BookingDetails from "./pages/customer/BookingDetails";
 import ServiceHistory from "./pages/customer/ServiceHistory";
 import EstimateDetails from "./pages/customer/EstimateDetails";
+import Estimates from "./pages/customer/Estimates";
 import WorkOrderDetails from "./pages/customer/WorkOrderDetails";
 import InspectionDetails from "./pages/customer/InspectionDetails";
 import Invoices from "./pages/customer/Invoices";
@@ -195,6 +196,18 @@ export default function App() {
                 allowedRoles={["CUSTOMER"]}
               >
                 <ServiceHistory />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/estimates"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <Estimates />
               </ProtectedRoute>
             }
           />

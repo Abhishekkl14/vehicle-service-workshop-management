@@ -15,6 +15,11 @@ import {
   AlertCircle,
   MessageSquare,
   BookOpen,
+  Settings2,
+  ChevronUp,
+  Package,
+  FileText,
+  Send,
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
@@ -28,6 +33,18 @@ import {
   getWorkOrdersByStatus,
   createWorkOrder,
 } from "../../api/workOrderApi";
+
+import {
+  getActiveParts,
+  getWorkOrderParts,
+  addWorkOrderPart,
+} from "../../api/partApi";
+
+import {
+  createEstimate,
+  getWorkOrderEstimates,
+  sendEstimate,
+} from "../../api/estimateApi";
 
 
 const WORK_ORDER_STATUSES = [
@@ -187,6 +204,1304 @@ const getWorkOrderStatusClass = (
 
   return "booking-status pending";
 };
+
+
+const formatCurrency = (amount) => {
+  if (
+    amount === null ||
+    amount === undefined ||
+    amount === ""
+  ) {
+    return "—";
+  }
+
+  const value = Number(amount);
+
+  if (Number.isNaN(value)) {
+    return "—";
+  }
+
+  return (
+    "\u20B9" +
+    value.toLocaleString(
+      "en-IN",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }
+    )
+  );
+};
+
+
+const getEstimateStatusClass = (
+  status
+) => {
+  const s = String(
+    status || ""
+  ).toUpperCase();
+
+  if (s === "APPROVED") {
+    return "booking-status confirmed";
+  }
+
+  if (s === "SENT") {
+    return "booking-status completed";
+  }
+
+  if (s === "REJECTED") {
+    return "booking-status cancelled";
+  }
+
+  return "booking-status pending";
+};
+
+
+/* =====================================================
+   WORK ORDER WORKFLOW
+   Parts management + estimate creation/sending
+   ===================================================== */
+
+function WorkOrderWorkflow({ workOrder }) {
+
+  const workOrderId = workOrder.id;
+
+  const [expanded, setExpanded] = useState(false);
+
+  const [parts, setParts] = useState([]);
+  const [partsLoading, setPartsLoading] = useState(false);
+  const [partsError, setPartsError] = useState("");
+
+  const [activeParts, setActiveParts] = useState([]);
+  const [activePartsLoading, setActivePartsLoading] = useState(false);
+
+  const [selectedPartId, setSelectedPartId] = useState("");
+  const [quantity, setQuantity] = useState("1");
+  const [addingPart, setAddingPart] = useState(false);
+  const [partFormError, setPartFormError] = useState("");
+  const [partSuccess, setPartSuccess] = useState("");
+
+  const [estimates, setEstimates] = useState([]);
+  const [estimatesLoading, setEstimatesLoading] = useState(false);
+  const [estimatesError, setEstimatesError] = useState("");
+
+  const [discount, setDiscount] = useState("");
+  const [creatingEstimate, setCreatingEstimate] = useState(false);
+  const [estimateFormError, setEstimateFormError] = useState("");
+  const [estimateSuccess, setEstimateSuccess] = useState("");
+  const [createdEstimateId, setCreatedEstimateId] = useState(null);
+
+  const [sendingEstimateId, setSendingEstimateId] = useState(null);
+  const [sendError, setSendError] = useState("");
+
+  const hasParts = parts.length > 0;
+
+  const partById = new Map(
+    activeParts.map((part) => [part.id, part])
+  );
+
+
+  const loadParts = async () => {
+
+    setPartsLoading(true);
+
+    setPartsError("");
+
+    try {
+
+      const data =
+        await getWorkOrderParts(
+          workOrderId
+        );
+
+      setParts(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    } catch (err) {
+
+      console.error(
+        `Failed to load parts for work order #${workOrderId}:`,
+        err
+      );
+
+      setPartsError(
+        err?.response?.data?.detail ||
+          "Unable to load parts."
+      );
+
+    } finally {
+
+      setPartsLoading(false);
+
+    }
+  };
+
+
+  const loadEstimates = async () => {
+
+    setEstimatesLoading(true);
+
+    setEstimatesError("");
+
+    try {
+
+      const data =
+        await getWorkOrderEstimates(
+          workOrderId
+        );
+
+      setEstimates(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    } catch (err) {
+
+      console.error(
+        `Failed to load estimates for work order #${workOrderId}:`,
+        err
+      );
+
+      setEstimatesError(
+        err?.response?.data?.detail ||
+          "Unable to load estimates."
+      );
+
+    } finally {
+
+      setEstimatesLoading(false);
+
+    }
+  };
+
+
+  const loadActiveParts = async () => {
+
+    setActivePartsLoading(true);
+
+    try {
+
+      const data =
+        await getActiveParts();
+
+      setActiveParts(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    } catch (err) {
+
+      console.error(
+        "Failed to load active parts catalog:",
+        err
+      );
+
+    } finally {
+
+      setActivePartsLoading(false);
+
+    }
+  };
+
+
+  const loadAll = () => {
+
+    loadParts();
+
+    loadEstimates();
+
+    loadActiveParts();
+
+  };
+
+
+  useEffect(() => {
+
+    if (expanded) {
+
+      loadAll();
+
+    }
+
+  }, [expanded]);
+
+
+  const handleToggle = () => {
+
+    setExpanded(
+      (prev) => !prev
+    );
+
+  };
+
+
+  const handleAddPart = async () => {
+
+    if (addingPart) {
+      return;
+    }
+
+    const partId =
+      Number(selectedPartId);
+
+    if (
+      !Number.isInteger(partId) ||
+      partId <= 0
+    ) {
+
+      setPartFormError(
+        "Select a part."
+      );
+
+      return;
+    }
+
+    const quantityValue =
+      Number(quantity);
+
+    if (
+      !Number.isInteger(quantityValue) ||
+      quantityValue < 1
+    ) {
+
+      setPartFormError(
+        "Quantity must be a whole number of at least 1."
+      );
+
+      return;
+    }
+
+    setAddingPart(true);
+
+    setPartFormError("");
+
+    setPartSuccess("");
+
+    try {
+
+      await addWorkOrderPart(
+        workOrderId,
+        {
+          part_id: partId,
+          quantity: quantityValue,
+        }
+      );
+
+      setSelectedPartId("");
+
+      setQuantity("1");
+
+      setPartSuccess(
+        "Part added to the work order."
+      );
+
+      await loadParts();
+
+    } catch (err) {
+
+      console.error(
+        `Failed to add part to work order #${workOrderId}:`,
+        err
+      );
+
+      setPartFormError(
+        err?.response?.data?.detail ||
+          "Unable to add the part. Please try again."
+      );
+
+    } finally {
+
+      setAddingPart(false);
+
+    }
+  };
+
+
+  const handleCreateEstimate = async () => {
+
+    if (creatingEstimate) {
+      return;
+    }
+
+    if (!hasParts) {
+
+      setEstimateFormError(
+        "Add at least one part before creating an estimate."
+      );
+
+      return;
+    }
+
+    let discountValue = 0;
+
+    if (discount.trim() !== "") {
+
+      discountValue =
+        Number(discount);
+
+      if (
+        Number.isNaN(discountValue) ||
+        discountValue < 0
+      ) {
+
+        setEstimateFormError(
+          "Discount must be zero or more."
+        );
+
+        return;
+      }
+
+    }
+
+    setCreatingEstimate(true);
+
+    setEstimateFormError("");
+
+    setEstimateSuccess("");
+
+    try {
+
+      const created =
+        await createEstimate({
+          work_order_id: workOrderId,
+          discount_amount: discountValue,
+        });
+
+      setCreatedEstimateId(
+        created.id
+      );
+
+      setDiscount("");
+
+      setEstimateSuccess(
+        `Estimate #${created.id} created as DRAFT.`
+      );
+
+      await loadEstimates();
+
+    } catch (err) {
+
+      console.error(
+        `Failed to create estimate for work order #${workOrderId}:`,
+        err
+      );
+
+      setEstimateFormError(
+        err?.response?.data?.detail ||
+          "Unable to create the estimate. Please try again."
+      );
+
+    } finally {
+
+      setCreatingEstimate(false);
+
+    }
+  };
+
+
+  const handleSendEstimate = async (
+    estimateId
+  ) => {
+
+    if (sendingEstimateId) {
+      return;
+    }
+
+    setSendingEstimateId(
+      estimateId
+    );
+
+    setSendError("");
+
+    try {
+
+      await sendEstimate(
+        estimateId
+      );
+
+      setEstimateSuccess(
+        `Estimate #${estimateId} sent to the customer.`
+      );
+
+      await loadEstimates();
+
+    } catch (err) {
+
+      console.error(
+        `Failed to send estimate #${estimateId}:`,
+        err
+      );
+
+      setSendError(
+        err?.response?.data?.detail ||
+          "Unable to send the estimate. Please try again."
+      );
+
+    } finally {
+
+      setSendingEstimateId(null);
+
+    }
+  };
+
+
+  const selectedPart =
+    partById.get(
+      Number(selectedPartId)
+    );
+
+
+  return (
+    <>
+
+      <div className="advisor-card-footer">
+
+        <button
+          type="button"
+          className="secondary-action"
+          onClick={handleToggle}
+        >
+
+          {expanded ? (
+            <ChevronUp
+              size={16}
+            />
+          ) : (
+            <Settings2
+              size={16}
+            />
+          )}
+
+          {expanded
+            ? "Hide Workflow"
+            : "Manage Workflow"}
+
+        </button>
+
+      </div>
+
+
+      {expanded && (
+
+        <div className="advisor-workflow">
+
+          <div className="advisor-workflow-grid">
+
+            {/* =============================================
+                PARTS PANEL
+            ============================================= */}
+
+            <div className="advisor-workflow-panel">
+
+              <div className="advisor-workflow-panel-head">
+
+                <h3>
+
+                  <Package
+                    size={16}
+                  />
+
+                  Work Order Parts
+
+                </h3>
+
+
+                <button
+                  type="button"
+                  className="secondary-action advisor-workflow-reload"
+                  onClick={loadParts}
+                  disabled={partsLoading}
+                >
+
+                  <RefreshCw
+                    size={14}
+                    className={
+                      partsLoading
+                        ? "spin"
+                        : ""
+                    }
+                  />
+
+                  Refresh
+
+                </button>
+
+              </div>
+
+
+              {partSuccess && (
+
+                <div className="advisor-success">
+
+                  <CheckCircle2
+                    size={16}
+                  />
+
+                  <span>
+                    {partSuccess}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {partFormError && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {partFormError}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {partsError && !partsLoading && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {partsError}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={loadParts}
+                  >
+                    Try Again
+                  </button>
+
+                </div>
+
+              )}
+
+
+              {partsLoading ? (
+
+                <div className="advisor-workflow-loading">
+
+                  <LoaderCircle
+                    size={18}
+                    className="spin"
+                  />
+
+                  Loading parts...
+
+                </div>
+
+              ) : parts.length === 0 ? (
+
+                <div className="advisor-workflow-empty">
+
+                  <Package
+                    size={22}
+                  />
+
+                  <p>
+                    No parts have been added
+                    to this work order yet.
+                  </p>
+
+                </div>
+
+              ) : (
+
+                <div className="advisor-part-table-wrap">
+
+                  <table className="advisor-part-table">
+
+                    <thead>
+
+                      <tr>
+
+                        <th>
+                          Part Number
+                        </th>
+
+                        <th>
+                          Part Name
+                        </th>
+
+                        <th>
+                          Qty
+                        </th>
+
+                        <th>
+                          Unit Price
+                        </th>
+
+                        <th>
+                          Total Price
+                        </th>
+
+                      </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                      {parts.map((wop) => {
+
+                        const catalog =
+                          partById.get(
+                            wop.part_id
+                          );
+
+                        return (
+
+                          <tr key={wop.id}>
+
+                            <td>
+                              {catalog?.part_number ??
+                                `#${wop.part_id}`}
+                            </td>
+
+                            <td>
+                              {catalog?.name ??
+                                `Part #${wop.part_id}`}
+                            </td>
+
+                            <td>
+                              {wop.quantity}
+                            </td>
+
+                            <td>
+                              {formatCurrency(
+                                wop.unit_price
+                              )}
+                            </td>
+
+                            <td>
+                              {formatCurrency(
+                                wop.total_price
+                              )}
+                            </td>
+
+                          </tr>
+
+                        );
+
+                      })}
+
+                    </tbody>
+
+                  </table>
+
+                </div>
+
+              )}
+
+
+              {/* ADD PART */}
+
+              <div className="advisor-create-estimate">
+
+                <h4>
+                  Add Part
+                </h4>
+
+                <div className="advisor-part-form-row">
+
+                  <div className="advisor-form-field">
+
+                    <label htmlFor={`part-select-${workOrderId}`}>
+                      Part
+                    </label>
+
+                    <select
+                      id={`part-select-${workOrderId}`}
+                      value={selectedPartId}
+                      onChange={(e) => {
+
+                        setSelectedPartId(
+                          e.target.value
+                        );
+
+                        setPartFormError("");
+
+                      }}
+                      disabled={
+                        addingPart ||
+                        activePartsLoading
+                      }
+                    >
+
+                      <option value="">
+                        {activePartsLoading
+                          ? "Loading parts..."
+                          : "Select a part"}
+                      </option>
+
+                      {activeParts.map((part) => {
+
+                        const unavailable =
+                          !part.is_active ||
+                          part.stock_quantity < 1;
+
+                        return (
+
+                          <option
+                            key={part.id}
+                            value={part.id}
+                            disabled={unavailable}
+                          >
+
+                            {part.part_number} ·{" "}
+                            {part.name} ·{" "}
+                            {formatCurrency(
+                              part.unit_price
+                            )}
+
+                            {unavailable
+                              ? " (out of stock)"
+                              : ""}
+
+                          </option>
+
+                        );
+
+                      })}
+
+                    </select>
+
+                  </div>
+
+
+                  <div className="advisor-form-field advisor-quantity-field">
+
+                    <label htmlFor={`part-qty-${workOrderId}`}>
+                      Quantity
+                    </label>
+
+                    <input
+                      id={`part-qty-${workOrderId}`}
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={quantity}
+                      onChange={(e) => {
+
+                        setQuantity(
+                          e.target.value
+                        );
+
+                        setPartFormError("");
+
+                      }}
+                      disabled={addingPart}
+                    />
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    className="primary-action"
+                    onClick={handleAddPart}
+                    disabled={
+                      addingPart ||
+                      activePartsLoading
+                    }
+                  >
+
+                    {addingPart ? (
+                      <LoaderCircle
+                        size={16}
+                        className="spin"
+                      />
+                    ) : (
+                      <Plus
+                        size={16}
+                      />
+                    )}
+
+                    {addingPart
+                      ? "Adding..."
+                      : "Add Part"}
+
+                  </button>
+
+                </div>
+
+
+                {selectedPart && (
+
+                  <div className="advisor-stock-hint">
+
+                    In stock:{" "}
+                    {selectedPart.stock_quantity}{" "}
+                    · Unit price:{" "}
+                    {formatCurrency(
+                      selectedPart.unit_price
+                    )}
+
+                  </div>
+
+                )}
+
+              </div>
+
+            </div>
+
+
+            {/* =============================================
+                ESTIMATE PANEL
+            ============================================= */}
+
+            <div className="advisor-workflow-panel">
+
+              <div className="advisor-workflow-panel-head">
+
+                <h3>
+
+                  <FileText
+                    size={16}
+                  />
+
+                  Estimates
+
+                </h3>
+
+
+                <button
+                  type="button"
+                  className="secondary-action advisor-workflow-reload"
+                  onClick={loadEstimates}
+                  disabled={estimatesLoading}
+                >
+
+                  <RefreshCw
+                    size={14}
+                    className={
+                      estimatesLoading
+                        ? "spin"
+                        : ""
+                    }
+                  />
+
+                  Refresh
+
+                </button>
+
+              </div>
+
+
+              {estimateSuccess && (
+
+                <div className="advisor-success">
+
+                  <CheckCircle2
+                    size={16}
+                  />
+
+                  <span>
+                    {estimateSuccess}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {estimateFormError && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {estimateFormError}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {sendError && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {sendError}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {estimatesError && !estimatesLoading && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {estimatesError}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={loadEstimates}
+                  >
+                    Try Again
+                  </button>
+
+                </div>
+
+              )}
+
+
+              {estimatesLoading ? (
+
+                <div className="advisor-workflow-loading">
+
+                  <LoaderCircle
+                    size={18}
+                    className="spin"
+                  />
+
+                  Loading estimates...
+
+                </div>
+
+              ) : estimates.length === 0 ? (
+
+                <div className="advisor-workflow-empty">
+
+                  <FileText
+                    size={22}
+                  />
+
+                  <p>
+                    No estimates yet for
+                    this work order.
+                  </p>
+
+                </div>
+
+              ) : (
+
+                <div className="advisor-estimate-list">
+
+                  {estimates.map((estimate) => {
+
+                    const isCreated =
+                      createdEstimateId ===
+                      estimate.id;
+
+                    const canSend =
+                      estimate.status === "DRAFT";
+
+                    return (
+
+                      <div
+                        className="advisor-estimate-card"
+                        key={estimate.id}
+                      >
+
+                        <div className="advisor-estimate-row">
+
+                          <strong>
+                            Estimate #{estimate.id}
+                          </strong>
+
+
+                          <span
+                            className={getEstimateStatusClass(
+                              estimate.status
+                            )}
+                          >
+
+                            {estimate.status ||
+                              "UNKNOWN"}
+
+                          </span>
+
+                        </div>
+
+
+                        {isCreated && (
+
+                          <p className="advisor-created-chip advisor-created-estimate">
+
+                            <CheckCircle2
+                              size={13}
+                            />
+
+                            Just created
+
+                          </p>
+
+                        )}
+
+
+                        <div className="advisor-estimate-totals">
+
+                          <div>
+
+                            <span>
+                              Subtotal
+                            </span>
+
+                            <strong>
+                              {formatCurrency(
+                                estimate.subtotal
+                              )}
+                            </strong>
+
+                          </div>
+
+
+                          <div>
+
+                            <span>
+                              Tax
+                            </span>
+
+                            <strong>
+                              {formatCurrency(
+                                estimate.tax_amount
+                              )}
+                            </strong>
+
+                          </div>
+
+
+                          <div>
+
+                            <span>
+                              Discount
+                            </span>
+
+                            <strong>
+                              {formatCurrency(
+                                estimate.discount_amount
+                              )}
+                            </strong>
+
+                          </div>
+
+
+                          <div>
+
+                            <span>
+                              Total
+                            </span>
+
+                            <strong>
+                              {formatCurrency(
+                                estimate.total_amount
+                              )}
+                            </strong>
+
+                          </div>
+
+
+                          <div>
+
+                            <span>
+                              Est. Duration
+                            </span>
+
+                            <strong>
+                              {estimate.estimated_duration_minutes}{" "}
+                              min
+                            </strong>
+
+                          </div>
+
+                        </div>
+
+
+                        {canSend ? (
+
+                          <div className="advisor-estimate-actions">
+
+                            <button
+                              type="button"
+                              className="primary-action"
+                              onClick={() =>
+                                handleSendEstimate(
+                                  estimate.id
+                                )
+                              }
+                              disabled={
+                                sendingEstimateId !==
+                                null
+                              }
+                            >
+
+                              {sendingEstimateId ===
+                              estimate.id ? (
+                                <LoaderCircle
+                                  size={16}
+                                  className="spin"
+                                />
+                              ) : (
+                                <Send
+                                  size={16}
+                                />
+                              )}
+
+                              {sendingEstimateId ===
+                              estimate.id
+                                ? "Sending..."
+                                : "Send Estimate"}
+
+                            </button>
+
+                          </div>
+
+                        ) : (
+
+                          <div className="advisor-estimate-sent-note">
+
+                            <CheckCircle2
+                              size={14}
+                            />
+
+                            {estimate.status ===
+                            "SENT"
+                              ? "Estimate sent to the customer."
+                              : `Estimate status: ${estimate.status}.`}
+
+                          </div>
+
+                        )}
+
+                      </div>
+
+                    );
+
+                  })}
+
+                </div>
+
+              )}
+
+
+              {/* CREATE ESTIMATE */}
+
+              <div className="advisor-create-estimate">
+
+                <h4>
+                  Create Estimate
+                </h4>
+
+                <div className="advisor-part-form-row">
+
+                  <div className="advisor-form-field advisor-discount-field">
+
+                    <label htmlFor={`estimate-discount-${workOrderId}`}>
+                      Discount (optional)
+                    </label>
+
+                    <input
+                      id={`estimate-discount-${workOrderId}`}
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={discount}
+                      onChange={(e) => {
+
+                        setDiscount(
+                          e.target.value
+                        );
+
+                        setEstimateFormError("");
+
+                      }}
+                      placeholder="0.00"
+                      disabled={
+                        creatingEstimate ||
+                        !hasParts
+                      }
+                    />
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    className="primary-action"
+                    onClick={handleCreateEstimate}
+                    disabled={
+                      creatingEstimate ||
+                      !hasParts
+                    }
+                  >
+
+                    {creatingEstimate ? (
+                      <LoaderCircle
+                        size={16}
+                        className="spin"
+                      />
+                    ) : (
+                      <Plus
+                        size={16}
+                      />
+                    )}
+
+                    {creatingEstimate
+                      ? "Creating..."
+                      : "Create Estimate"}
+
+                  </button>
+
+                </div>
+
+
+                {!hasParts && (
+
+                  <p className="advisor-workflow-note">
+
+                    Add at least one part before
+                    creating an estimate.
+
+                  </p>
+
+                )}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </>
+  );
+}
 
 
 export default function AdvisorDashboard() {
@@ -1270,6 +2585,11 @@ export default function AdvisorDashboard() {
                     </div>
 
                   </div>
+
+
+                  <WorkOrderWorkflow
+                    workOrder={workOrder}
+                  />
 
                 </article>
 

@@ -1,8 +1,11 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.models.booking import Booking
+from app.models.customer import Customer
 from app.models.estimate import Estimate
 from app.models.estimate_item import EstimateItem
+from app.models.work_order import WorkOrder
 
 
 class EstimateRepository:
@@ -32,6 +35,37 @@ class EstimateRepository:
                 Estimate.work_order_id == work_order_id
             )
             .order_by(Estimate.id)
+        )
+
+        return list(
+            self.db.scalars(statement).all()
+        )
+
+    def get_by_customer_user(
+        self,
+        user_id: int
+    ) -> list[Estimate]:
+
+        statement = (
+            select(Estimate)
+            .join(
+                WorkOrder,
+                WorkOrder.id == Estimate.work_order_id
+            )
+            .join(
+                Booking,
+                Booking.id == WorkOrder.booking_id
+            )
+            .join(
+                Customer,
+                Customer.id == Booking.customer_id
+            )
+            .where(
+                Customer.user_id == user_id
+            )
+            .order_by(
+                Estimate.id.desc()
+            )
         )
 
         return list(

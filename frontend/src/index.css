@@ -3722,6 +3722,63 @@ input {
   font-weight: 850;
 }
 
+/* LIST TOTALS */
+
+.estimate-list-totals {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 14px;
+}
+
+.estimate-list-field span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--text-secondary);
+
+  font-size: 9px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.estimate-list-field strong {
+  display: block;
+
+  color: var(--cyber-teal);
+
+  font-size: 12px;
+}
+
+.estimate-list-total {
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  background: var(--ice-glass);
+}
+
+.estimate-list-total strong {
+  color: var(--cyber-teal);
+
+  font-size: 14px;
+  font-weight: 850;
+}
+
+@media (max-width: 700px) {
+  .estimate-list-totals {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* APPROVAL */
 
 .estimate-approval {
@@ -5158,6 +5215,418 @@ input {
   .modal-actions .primary-action,
   .modal-actions .secondary-action {
     flex: 1;
+  }
+}
+
+/* ==========================================================================
+   ADVISOR WORK ORDER WORKFLOW
+   ========================================================================== */
+
+.advisor-workflow {
+  margin-top: 18px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid var(--border);
+}
+
+.advisor-workflow-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.advisor-workflow-panel {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding: 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  background: var(--ice-glass);
+}
+
+.advisor-workflow-panel-head {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.advisor-workflow-panel-head h3 {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin: 0;
+
+  color: var(--cyber-teal);
+
+  font-size: 14px;
+}
+
+.advisor-workflow-panel-head h3 svg {
+  color: var(--quantum-blue);
+}
+
+.advisor-workflow-reload {
+  min-height: 32px;
+
+  padding: 0 12px;
+
+  font-size: 11px;
+}
+
+.advisor-workflow-loading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 18px 0;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.advisor-workflow-empty {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  padding: 22px 14px;
+
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+
+  background: white;
+
+  color: var(--text-secondary);
+
+  text-align: center;
+}
+
+.advisor-workflow-empty p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+.advisor-workflow-empty svg {
+  color: var(--quantum-blue);
+}
+
+/* PARTS TABLE */
+
+.advisor-part-table-wrap {
+  overflow-x: auto;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: white;
+}
+
+.advisor-part-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 12px;
+}
+
+.advisor-part-table th,
+.advisor-part-table td {
+  padding: 10px 12px;
+
+  text-align: left;
+
+  border-bottom: 1px solid var(--border);
+
+  white-space: nowrap;
+}
+
+.advisor-part-table th {
+  color: var(--text-secondary);
+
+  font-size: 10px;
+  font-weight: 750;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.6px;
+}
+
+.advisor-part-table th:last-child,
+.advisor-part-table td:last-child {
+  text-align: right;
+}
+
+.advisor-part-table tr:last-child td {
+  border-bottom: none;
+}
+
+.advisor-part-table tbody tr:nth-child(even) {
+  background: #f4f8fa;
+}
+
+/* FORMS */
+
+.advisor-create-estimate {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding-top: 14px;
+
+  border-top: 1px solid var(--border);
+}
+
+.advisor-create-estimate h4 {
+  margin: 0;
+
+  color: var(--cyber-teal);
+
+  font-size: 13px;
+}
+
+.advisor-part-form-row {
+  display: flex;
+
+  align-items: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.advisor-form-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  min-width: 160px;
+
+  flex: 1;
+}
+
+.advisor-quantity-field {
+  min-width: 100px;
+
+  max-width: 140px;
+}
+
+.advisor-discount-field {
+  min-width: 140px;
+
+  max-width: 200px;
+}
+
+.advisor-form-field label {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 650;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+.advisor-form-field select,
+.advisor-form-field input {
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: white;
+
+  color: var(--cyber-teal);
+
+  font: inherit;
+
+  font-size: 12px;
+
+  transition: border-color 0.2s ease;
+}
+
+.advisor-form-field select:focus,
+.advisor-form-field input:focus {
+  outline: none;
+
+  border-color: var(--quantum-blue);
+}
+
+.advisor-form-field select:disabled,
+.advisor-form-field input:disabled {
+  background: #f4f8fa;
+
+  color: var(--text-secondary);
+
+  cursor: not-allowed;
+}
+
+.advisor-stock-hint {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+}
+
+.advisor-workflow-note {
+  margin: 0;
+
+  padding: 9px 12px;
+
+  border-radius: 9px;
+
+  background: #fff7df;
+
+  color: #a66a00;
+
+  font-size: 11px;
+}
+
+/* ESTIMATES */
+
+.advisor-estimate-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.advisor-estimate-card {
+  padding: 14px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: white;
+}
+
+.advisor-estimate-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.advisor-estimate-row strong {
+  color: var(--cyber-teal);
+
+  font-size: 13px;
+}
+
+.advisor-created-estimate {
+  margin-top: 10px;
+}
+
+.advisor-estimate-totals {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 8px 18px;
+
+  margin-top: 12px;
+
+  padding-top: 12px;
+
+  border-top: 1px dashed var(--border);
+}
+
+.advisor-estimate-totals div {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+}
+
+.advisor-estimate-totals span {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+}
+
+.advisor-estimate-totals strong {
+  color: var(--cyber-teal);
+
+  font-size: 12px;
+}
+
+.advisor-estimate-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-top: 12px;
+}
+
+.advisor-estimate-sent-note {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 12px;
+
+  color: #16856b;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+@media (max-width: 960px) {
+  .advisor-workflow-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .advisor-part-form-row {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .advisor-quantity-field,
+  .advisor-discount-field {
+    max-width: none;
+  }
+
+  .advisor-part-form-row .primary-action {
+    width: 100%;
   }
 }
 
