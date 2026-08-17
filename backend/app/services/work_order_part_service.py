@@ -70,7 +70,10 @@ class WorkOrderPartService:
 
         role = current_user.role.name
 
-        # Mechanic → only assigned work orders
+        # ------------------------------------------------
+        # Mechanic → assigned work orders, IN_PROGRESS only,
+        # records ACTUAL parts used
+        # ------------------------------------------------
         if role == "MECHANIC":
 
             work_order = self.db.scalar(
@@ -85,17 +88,53 @@ class WorkOrderPartService:
                     "You do not have permission to access this resource"
                 )
 
-        # Staff roles → workshop access
-        elif role not in {"ADMIN", "SERVICE_ADVISOR"}:
+            if work_order.status != "IN_PROGRESS":
+                raise ValueError(
+                    "Actual parts can only be added to IN_PROGRESS work orders"
+                )
 
-            raise PermissionError(
-                "You do not have permission to add work order parts"
+            return self.add_part(
+                work_order_id=work_order_id,
+                part_id=part_id,
+                quantity=quantity,
+                source="ACTUAL",
             )
 
-        return self.add_part(
-            work_order_id=work_order_id,
-            part_id=part_id,
-            quantity=quantity,
+        # ------------------------------------------------
+        # Staff roles → estimate preparation only,
+        # restricted to CREATED / INSPECTION
+        # ------------------------------------------------
+        if role in {"SERVICE_ADVISOR", "ADMIN"}:
+
+            work_order = self.db.scalar(
+                select(WorkOrder).where(
+                    WorkOrder.id == work_order_id,
+                )
+            )
+
+            if not work_order:
+                raise ValueError(
+                    "Work order not found"
+                )
+
+            if work_order.status not in {
+                "CREATED",
+                "INSPECTION",
+            }:
+                raise ValueError(
+                    "Estimate parts can only be added to "
+                    "CREATED or INSPECTION work orders"
+                )
+
+            return self.add_part(
+                work_order_id=work_order_id,
+                part_id=part_id,
+                quantity=quantity,
+                source="ESTIMATE",
+            )
+
+        raise PermissionError(
+            "You do not have permission to add work order parts"
         )
 
     def add_part(
@@ -103,6 +142,7 @@ class WorkOrderPartService:
         work_order_id: int,
         part_id: int,
         quantity: int,
+        source: str = "ESTIMATE",
     ):
 
         if quantity <= 0:
@@ -122,12 +162,15 @@ class WorkOrderPartService:
                 "Work order not found"
             )
 
-        # Verify part
+        # Verify part — lock the row BEFORE checking stock to
+        # prevent concurrent overselling (SELECT … FOR UPDATE)
         part = self.db.scalar(
-            select(Part).where(
+            select(Part)
+            .where(
                 Part.id == part_id,
-                Part.is_active.is_(True)
+                Part.is_active.is_(True),
             )
+            .with_for_update()
         )
 
         if not part:
@@ -135,11 +178,38 @@ class WorkOrderPartService:
                 "Part not found or inactive"
             )
 
+        # Check for existing row (same work_order + part)
+        existing = self.repository.get_by_work_order_and_part(
+            work_order_id, part_id
+        )
+
+        if existing is not None:
+
+            additional = quantity
+
+            if part.stock_quantity < additional:
+                raise ValueError(
+                    "Insufficient part stock"
+                )
+
+            part.stock_quantity -= additional
+            existing.quantity += additional
+            existing.total_price = (
+                existing.unit_price * existing.quantity
+            )
+
+            self.db.commit()
+            self.db.refresh(existing)
+
+            return existing
+
         # Check stock
         if part.stock_quantity < quantity:
             raise ValueError(
                 "Insufficient part stock"
             )
+
+        part.stock_quantity -= quantity
 
         # Calculate price from current part price
         unit_price = Decimal(part.unit_price)
@@ -152,6 +222,7 @@ class WorkOrderPartService:
             quantity=quantity,
             unit_price=unit_price,
             total_price=total_price,
+            source=source,
         )
 
         return self.repository.create(

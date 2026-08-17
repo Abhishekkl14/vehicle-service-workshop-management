@@ -76,4 +76,57 @@ export const completeWorkOrder = async (
   return response.data;
 };
 
+export const submitWorkOrderForApproval = async (
+  workOrderId
+) => {
+  const response = await workOrderApi.post(
+    `/api/v1/work-orders/${workOrderId}/submit-for-approval`
+  );
+
+  return response.data;
+};
+
+export const getPendingApprovalWorkOrders =
+  async () => {
+    const response = await workOrderApi.get(
+      "/api/v1/work-orders/pending-approval"
+    );
+
+    return response.data;
+  };
+
+export const approveWorkOrder = async (
+  workOrderId,
+  comments = null
+) => {
+  const response = await workOrderApi.post(
+    `/api/v1/work-orders/${workOrderId}/approve`,
+    { comments }
+  );
+
+  return response.data;
+};
+
+export const rejectWorkOrder = async (
+  workOrderId,
+  rejectionReason
+) => {
+  const response = await workOrderApi.post(
+    `/api/v1/work-orders/${workOrderId}/reject`,
+    { rejection_reason: rejectionReason }
+  );
+
+  return response.data;
+};
+
+export const getWorkOrderApprovals = async (
+  workOrderId
+) => {
+  const response = await workOrderApi.get(
+    `/api/v1/work-orders/${workOrderId}/approvals`
+  );
+
+  return response.data;
+};
+
 export default workOrderApi;

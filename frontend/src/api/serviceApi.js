@@ -49,4 +49,27 @@ export const getService =
     return response.data;
   };
 
+export const getWorkOrderServices =
+  async (workOrderId) => {
+
+    const response =
+      await serviceApi.get(
+        `/api/v1/work-orders/${workOrderId}/services`
+      );
+
+    return response.data;
+  };
+
+export const addWorkOrderService =
+  async (workOrderId, serviceData) => {
+
+    const response =
+      await serviceApi.post(
+        `/api/v1/work-orders/${workOrderId}/services`,
+        serviceData
+      );
+
+    return response.data;
+  };
+
 export default serviceApi;

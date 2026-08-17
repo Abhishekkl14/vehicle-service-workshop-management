@@ -19,6 +19,10 @@ import {
   BookOpen,
   X,
   FileText,
+  Package,
+  Settings,
+  FlaskConical,
+  HardHat,
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
@@ -27,20 +31,34 @@ import AppLayout from "../../components/layout/AppLayout";
 import {
   getWorkOrdersByStatus,
   startWorkOrder,
-  completeWorkOrder,
+  submitWorkOrderForApproval,
 } from "../../api/workOrderApi";
 
 import {
   createInspection,
   getInspectionItems,
   addInspectionItem,
+  getInspectionByWorkOrderId,
 } from "../../api/inspectionApi";
+
+import {
+  getActiveParts,
+  getWorkOrderParts,
+  addWorkOrderPart,
+} from "../../api/partApi";
+
+import {
+  getActiveServices,
+  getWorkOrderServices,
+  addWorkOrderService,
+} from "../../api/serviceApi";
 
 
 const WORK_ORDER_STATUSES = [
   "CREATED",
   "INSPECTION",
   "IN_PROGRESS",
+  "SUBMITTED_FOR_APPROVAL",
   "COMPLETED",
 ];
 
@@ -133,6 +151,9 @@ function WorkOrderCard({
   const [inspection, setInspection] =
     useState(null);
 
+  const [inspectionLoaded, setInspectionLoaded] =
+    useState(false);
+
   const [items, setItems] =
     useState([]);
 
@@ -178,10 +199,95 @@ function WorkOrderCard({
   const [starting, setStarting] =
     useState(false);
 
-  const [completing, setCompleting] =
+  const [submitting, setSubmitting] =
     useState(false);
 
   const [actionError, setActionError] =
+    useState("");
+
+
+  /* =====================================================
+     ACTUAL WORK STATE
+  ===================================================== */
+
+  const [actualWorkOpen, setActualWorkOpen] =
+    useState(false);
+
+  const [actualLoading, setActualLoading] =
+    useState(false);
+
+  const [actualError, setActualError] =
+    useState("");
+
+  const [actualParts, setActualParts] =
+    useState([]);
+
+  const [actualServices, setActualServices] =
+    useState([]);
+
+  const [actualConsumables, setActualConsumables] =
+    useState([]);
+
+  const [actualLabor, setActualLabor] =
+    useState([]);
+
+
+  const [partsCatalog, setPartsCatalog] =
+    useState([]);
+
+  const [servicesCatalog, setServicesCatalog] =
+    useState([]);
+
+
+  const [showPartForm, setShowPartForm] =
+    useState(false);
+
+  const [partForm, setPartForm] =
+    useState({ partId: "", quantity: 1 });
+
+  const [addingPart, setAddingPart] =
+    useState(false);
+
+  const [partError, setPartError] =
+    useState("");
+
+
+  const [showServiceForm, setShowServiceForm] =
+    useState(false);
+
+  const [serviceForm, setServiceForm] =
+    useState({ serviceId: "", description: "" });
+
+  const [addingService, setAddingService] =
+    useState(false);
+
+  const [serviceError, setServiceError] =
+    useState("");
+
+
+  const [showConsumableForm, setShowConsumableForm] =
+    useState(false);
+
+  const [consumableForm, setConsumableForm] =
+    useState({ description: "", quantity: 1, unitPrice: "" });
+
+  const [addingConsumable, setAddingConsumable] =
+    useState(false);
+
+  const [consumableError, setConsumableError] =
+    useState("");
+
+
+  const [showLaborForm, setShowLaborForm] =
+    useState(false);
+
+  const [laborForm, setLaborForm] =
+    useState({ description: "", quantity: 1 });
+
+  const [addingLabor, setAddingLabor] =
+    useState(false);
+
+  const [laborError, setLaborError] =
     useState("");
 
 
@@ -236,24 +342,24 @@ function WorkOrderCard({
 
 
   /* =====================================================
-     COMPLETE WORK
+     SUBMIT FOR APPROVAL
   ===================================================== */
 
-  const handleComplete = async () => {
+  const handleSubmitForApproval = async () => {
 
-    if (completing) {
+    if (submitting) {
       return;
     }
 
     try {
 
-      setCompleting(true);
+      setSubmitting(true);
 
       setActionError("");
 
 
       const updated =
-        await completeWorkOrder(
+        await submitWorkOrderForApproval(
           workOrder.id
         );
 
@@ -261,25 +367,25 @@ function WorkOrderCard({
       onUpdated(updated);
 
       onSuccess(
-        `Work order #${updated.id} completed.`
+        `Work order #${updated.id} submitted for advisor approval.`
       );
 
     } catch (err) {
 
       console.error(
-        "Failed to complete work order:",
+        "Failed to submit work order for approval:",
         err
       );
 
 
       setActionError(
         err?.response?.data?.detail ||
-          "Unable to complete work order."
+          "Unable to submit work order for approval."
       );
 
     } finally {
 
-      setCompleting(false);
+      setSubmitting(false);
 
     }
   };
@@ -334,6 +440,61 @@ function WorkOrderCard({
 
 
   /* =====================================================
+     LOAD INSPECTION BY WORK ORDER
+  ===================================================== */
+
+  const loadInspection = async () => {
+
+    try {
+
+      setInspectionError("");
+
+      const data =
+        await getInspectionByWorkOrderId(
+          workOrder.id
+        );
+
+      setInspection(data);
+
+      setInspectionLoaded(true);
+
+      if (data) {
+
+        await loadItems(data.id);
+
+      }
+
+    } catch (err) {
+
+      if (
+        err?.response?.status === 404
+      ) {
+
+        setInspection(null);
+
+        setInspectionLoaded(true);
+
+        return;
+
+      }
+
+      console.error(
+        "Failed to load inspection:",
+        err
+      );
+
+      setInspectionError(
+        err?.response?.data?.detail ||
+          "Unable to load inspection."
+      );
+
+      setInspectionLoaded(true);
+
+    }
+  };
+
+
+  /* =====================================================
      CREATE INSPECTION
   ===================================================== */
 
@@ -360,6 +521,8 @@ function WorkOrderCard({
 
 
       setInspection(created);
+
+      setInspectionLoaded(true);
 
       setShowCreateForm(false);
 
@@ -485,16 +648,456 @@ function WorkOrderCard({
 
 
   /* =====================================================
+     ACTUAL WORK — LOAD
+  ===================================================== */
+
+  const loadActualWork = async () => {
+
+    try {
+
+      setActualLoading(true);
+
+      setActualError("");
+
+
+      const [partsData, servicesData] =
+        await Promise.all([
+          getWorkOrderParts(workOrder.id),
+          getWorkOrderServices(workOrder.id),
+        ]);
+
+
+      const parts = Array.isArray(partsData)
+        ? partsData
+        : [];
+
+      const allServices = Array.isArray(servicesData)
+        ? servicesData
+        : [];
+
+
+      setActualParts(
+        parts.filter(
+          (p) => p.source === "ACTUAL"
+        )
+      );
+
+      setActualServices(
+        allServices.filter(
+          (s) => s.item_type === "SERVICE"
+        )
+      );
+
+      setActualConsumables(
+        allServices.filter(
+          (s) => s.item_type === "CONSUMABLE"
+        )
+      );
+
+      setActualLabor(
+        allServices.filter(
+          (s) => s.item_type === "LABOR"
+        )
+      );
+
+
+      const [catalogParts, catalogServices] =
+        await Promise.all([
+          getActiveParts(),
+          getActiveServices(),
+        ]);
+
+      setPartsCatalog(
+        Array.isArray(catalogParts)
+          ? catalogParts
+          : []
+      );
+
+      setServicesCatalog(
+        Array.isArray(catalogServices)
+          ? catalogServices
+          : []
+      );
+
+    } catch (err) {
+
+      console.error(
+        "Failed to load actual work:",
+        err
+      );
+
+      setActualError(
+        err?.response?.data?.detail ||
+          "Unable to load actual work data."
+      );
+
+    } finally {
+
+      setActualLoading(false);
+
+    }
+  };
+
+
+  /* =====================================================
+     ACTUAL WORK — AUTO-LOAD ON MOUNT
+  ===================================================== */
+
+  useEffect(() => {
+
+    if (
+      workOrder.status === "IN_PROGRESS" ||
+      workOrder.status === "SUBMITTED_FOR_APPROVAL"
+    ) {
+
+      loadActualWork();
+
+    }
+
+  }, [workOrder.id, workOrder.status]);
+
+
+  /* =====================================================
+     ACTUAL WORK — TOGGLE
+  ===================================================== */
+
+  const handleToggleActualWork = async () => {
+
+    const opening = !actualWorkOpen;
+
+    setActualWorkOpen(opening);
+
+    if (
+      opening &&
+      actualParts.length === 0 &&
+      actualServices.length === 0 &&
+      actualConsumables.length === 0 &&
+      actualLabor.length === 0 &&
+      !actualLoading
+    ) {
+
+      await loadActualWork();
+
+    }
+  };
+
+
+  /* =====================================================
+     ACTUAL WORK — ADD PART
+  ===================================================== */
+
+  const handleAddPart = async () => {
+
+    if (addingPart) {
+      return;
+    }
+
+    if (!partForm.partId) {
+
+      setPartError("Please select a part.");
+
+      return;
+    }
+
+    try {
+
+      setAddingPart(true);
+
+      setPartError("");
+
+
+      await addWorkOrderPart(
+        workOrder.id,
+        {
+          part_id: Number(partForm.partId),
+          quantity: Number(partForm.quantity) || 1,
+        }
+      );
+
+
+      setPartForm({ partId: "", quantity: 1 });
+
+      setShowPartForm(false);
+
+      onSuccess("Part added to work order.");
+
+      await loadActualWork();
+
+    } catch (err) {
+
+      console.error(
+        "Failed to add part:",
+        err
+      );
+
+      setPartError(
+        err?.response?.data?.detail ||
+          "Unable to add part."
+      );
+
+    } finally {
+
+      setAddingPart(false);
+
+    }
+  };
+
+
+  /* =====================================================
+     ACTUAL WORK — ADD SERVICE
+  ===================================================== */
+
+  const handleAddService = async () => {
+
+    if (addingService) {
+      return;
+    }
+
+    if (!serviceForm.serviceId) {
+
+      setServiceError(
+        "Please select a service."
+      );
+
+      return;
+    }
+
+    try {
+
+      setAddingService(true);
+
+      setServiceError("");
+
+
+      await addWorkOrderService(
+        workOrder.id,
+        {
+          service_id: Number(
+            serviceForm.serviceId
+          ),
+          item_type: "SERVICE",
+          description:
+            serviceForm.description.trim() ||
+            null,
+        }
+      );
+
+
+      setServiceForm({
+        serviceId: "",
+        description: "",
+      });
+
+      setShowServiceForm(false);
+
+      onSuccess("Service added to work order.");
+
+      await loadActualWork();
+
+    } catch (err) {
+
+      console.error(
+        "Failed to add service:",
+        err
+      );
+
+      setServiceError(
+        err?.response?.data?.detail ||
+          "Unable to add service."
+      );
+
+    } finally {
+
+      setAddingService(false);
+
+    }
+  };
+
+
+  /* =====================================================
+     ACTUAL WORK — ADD CONSUMABLE
+  ===================================================== */
+
+  const handleAddConsumable = async () => {
+
+    if (addingConsumable) {
+      return;
+    }
+
+    if (
+      !consumableForm.description.trim()
+    ) {
+
+      setConsumableError(
+        "Description is required."
+      );
+
+      return;
+    }
+
+    if (
+      !consumableForm.unitPrice ||
+      Number(consumableForm.unitPrice) <= 0
+    ) {
+
+      setConsumableError(
+        "Unit price is required and must be greater than zero."
+      );
+
+      return;
+    }
+
+    try {
+
+      setAddingConsumable(true);
+
+      setConsumableError("");
+
+
+      await addWorkOrderService(
+        workOrder.id,
+        {
+          item_type: "CONSUMABLE",
+          description:
+            consumableForm.description.trim(),
+          quantity:
+            Number(consumableForm.quantity) || 1,
+          unit_price: Number(
+            consumableForm.unitPrice
+          ),
+        }
+      );
+
+
+      setConsumableForm({
+        description: "",
+        quantity: 1,
+        unitPrice: "",
+      });
+
+      setShowConsumableForm(false);
+
+      onSuccess(
+        "Consumable added to work order."
+      );
+
+      await loadActualWork();
+
+    } catch (err) {
+
+      console.error(
+        "Failed to add consumable:",
+        err
+      );
+
+      setConsumableError(
+        err?.response?.data?.detail ||
+          "Unable to add consumable."
+      );
+
+    } finally {
+
+      setAddingConsumable(false);
+
+    }
+  };
+
+
+  /* =====================================================
+     ACTUAL WORK — ADD LABOR
+  ===================================================== */
+
+  const handleAddLabor = async () => {
+
+    if (addingLabor) {
+      return;
+    }
+
+    if (
+      !laborForm.description.trim()
+    ) {
+
+      setLaborError(
+        "Description is required."
+      );
+
+      return;
+    }
+
+    try {
+
+      setAddingLabor(true);
+
+      setLaborError("");
+
+
+      await addWorkOrderService(
+        workOrder.id,
+        {
+          item_type: "LABOR",
+          description:
+            laborForm.description.trim(),
+          quantity:
+            Number(laborForm.quantity) || 1,
+        }
+      );
+
+
+      setLaborForm({ description: "", quantity: 1 });
+
+      setShowLaborForm(false);
+
+      onSuccess("Labor entry added.");
+
+      await loadActualWork();
+
+    } catch (err) {
+
+      console.error(
+        "Failed to add labor:",
+        err
+      );
+
+      setLaborError(
+        err?.response?.data?.detail ||
+          "Unable to add labor entry."
+      );
+
+    } finally {
+
+      setAddingLabor(false);
+
+    }
+  };
+
+
+  /* =====================================================
      ACTION BUTTONS
   ===================================================== */
 
   const canStart =
-    workOrder.status === "IN_PROGRESS" &&
+    (workOrder.status === "CREATED" ||
+      workOrder.status === "INSPECTION" ||
+      workOrder.status === "IN_PROGRESS") &&
     !workOrder.started_at;
 
-  const canComplete =
+  const hasActualWork =
+    actualParts.length > 0 ||
+    actualServices.length > 0 ||
+    actualConsumables.length > 0 ||
+    actualLabor.length > 0;
+
+  const canSubmit =
     workOrder.status === "IN_PROGRESS" &&
-    Boolean(workOrder.started_at);
+    Boolean(workOrder.started_at) &&
+    hasActualWork;
+
+  const isSubmitted =
+    workOrder.status === "SUBMITTED_FOR_APPROVAL";
+
+  const isRejected =
+    workOrder.status === "IN_PROGRESS" &&
+    Boolean(workOrder.rejection_reason);
 
 
   return (
@@ -671,16 +1274,16 @@ function WorkOrderCard({
           )}
 
 
-          {canComplete && (
+          {canSubmit && (
 
             <button
               type="button"
               className="primary-action"
-              onClick={handleComplete}
-              disabled={completing}
+              onClick={handleSubmitForApproval}
+              disabled={submitting}
             >
 
-              {completing ? (
+              {submitting ? (
                 <LoaderCircle
                   size={16}
                   className="spin"
@@ -691,11 +1294,46 @@ function WorkOrderCard({
                 />
               )}
 
-              {completing
-                ? "Completing..."
-                : "Complete Work"}
+              {submitting
+                ? "Submitting..."
+                : "Submit for Approval"}
 
             </button>
+
+          )}
+
+
+          {isSubmitted && (
+
+            <span className="mechanic-submitted-chip">
+
+              <CheckCircle2
+                size={14}
+              />
+
+              Submitted — awaiting advisor approval
+
+            </span>
+
+          )}
+
+
+          {isRejected && workOrder.rejection_reason && (
+
+            <div className="mechanic-rejection-note">
+
+              <AlertCircle
+                size={14}
+              />
+
+              <span>
+
+                <strong>Rejected:</strong>{" "}
+                {workOrder.rejection_reason}
+
+              </span>
+
+            </div>
 
           )}
 
@@ -703,12 +1341,14 @@ function WorkOrderCard({
           <button
             type="button"
             className="secondary-action mechanic-inspection-toggle"
-            onClick={() =>
-              setInspectionOpen(
-                (open) => !open
-              )
-            }
-            disabled={starting || completing}
+            onClick={() => {
+              const opening = !inspectionOpen;
+              setInspectionOpen(opening);
+              if (opening && !inspectionLoaded) {
+                loadInspection();
+              }
+            }}
+            disabled={starting || submitting}
           >
 
             <Stethoscope
@@ -725,16 +1365,1040 @@ function WorkOrderCard({
 
           </button>
 
+
+          {(workOrder.status === "IN_PROGRESS" ||
+            workOrder.status === "SUBMITTED_FOR_APPROVAL") && (
+
+            <button
+              type="button"
+              className="secondary-action mechanic-actual-toggle"
+              onClick={handleToggleActualWork}
+              disabled={starting || submitting}
+            >
+
+              <Wrench
+                size={16}
+              />
+
+              Actual Work
+              {hasActualWork ? (
+                <CheckCircle2
+                  size={14}
+                  className="mechanic-toggle-check"
+                />
+              ) : null}
+
+            </button>
+
+          )}
+
         </div>
 
       </div>
 
 
+      {/* =================================================
+          ACTUAL WORK PANEL
+      ================================================= */}
+
+      {actualWorkOpen && (
+
+        <div className="mechanic-actual-panel">
+
+          {actualLoading ? (
+
+            <div className="mechanic-actual-loading">
+
+              <LoaderCircle
+                size={18}
+                className="spin"
+              />
+
+              <span>
+                Loading actual work data...
+              </span>
+
+            </div>
+
+          ) : actualError ? (
+
+            <div className="mechanic-error">
+
+              <AlertCircle
+                size={15}
+              />
+
+              <span>
+                {actualError}
+              </span>
+
+              <button
+                type="button"
+                onClick={loadActualWork}
+              >
+
+                Try Again
+
+              </button>
+
+            </div>
+
+          ) : (
+
+            <>
+
+              <div className="mechanic-actual-header">
+
+                <Wrench
+                  size={16}
+                />
+
+                <div>
+
+                  <h4>
+                    Actual Work Performed
+                  </h4>
+
+                  <p>
+                    Record parts, services,
+                    consumables, and labor
+                    performed on this work order.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              {/* -------------------------------------------
+                  PARTS CHANGED
+              ------------------------------------------- */}
+
+              <div className="mechanic-actual-section">
+
+                <div className="mechanic-actual-section-head">
+
+                  <Package
+                    size={14}
+                  />
+
+                  <h5>
+                    Parts Changed
+                  </h5>
+
+                  {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
+                    <button
+                      type="button"
+                      className="secondary-action mechanic-actual-add-btn"
+                      onClick={() =>
+                        setShowPartForm(
+                          (open) => !open
+                        )
+                      }
+                      disabled={addingPart}
+                    >
+                      <Plus
+                        size={14}
+                      />
+                      {showPartForm
+                        ? "Cancel"
+                        : "Add Part"}
+                    </button>
+                  )}
+
+                </div>
+
+
+                {showPartForm &&
+                  workOrder.status === "IN_PROGRESS" &&
+                  !isSubmitted && (
+
+                  <div className="mechanic-item-form">
+
+                    <div className="mechanic-form-row mechanic-form-row-3">
+
+                      <div className="mechanic-form-field">
+
+                        <label>
+                          Part
+                        </label>
+
+                        <select
+                          value={partForm.partId}
+                          onChange={(e) =>
+                            setPartForm({
+                              ...partForm,
+                              partId:
+                                e.target.value,
+                            })
+                          }
+                          disabled={addingPart}
+                        >
+
+                          <option value="">
+                            Select part...
+                          </option>
+
+                          {partsCatalog.map(
+                            (part) => (
+                              <option
+                                key={part.id}
+                                value={part.id}
+                              >
+                                {part.name} ({part.part_number}) — ₹{part.unit_price}
+                              </option>
+                            )
+                          )}
+
+                        </select>
+
+                      </div>
+
+
+                      <div className="mechanic-form-field">
+
+                        <label>
+                          Quantity
+                        </label>
+
+                        <input
+                          type="number"
+                          min="1"
+                          value={partForm.quantity}
+                          onChange={(e) =>
+                            setPartForm({
+                              ...partForm,
+                              quantity:
+                                e.target.value,
+                            })
+                          }
+                          disabled={addingPart}
+                        />
+
+                      </div>
+
+                    </div>
+
+
+                    {partError && (
+
+                      <div className="mechanic-error">
+
+                        <AlertCircle
+                          size={15}
+                        />
+
+                        <span>
+                          {partError}
+                        </span>
+
+                      </div>
+
+                    )}
+
+
+                    <div className="mechanic-form-actions">
+
+                      <button
+                        type="button"
+                        className="primary-action"
+                        onClick={handleAddPart}
+                        disabled={addingPart}
+                      >
+
+                        {addingPart ? (
+                          <LoaderCircle
+                            size={16}
+                            className="spin"
+                          />
+                        ) : (
+                          <Plus
+                            size={16}
+                          />
+                        )}
+
+                        {addingPart
+                          ? "Adding..."
+                          : "Add Part"}
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                )}
+
+
+                {actualParts.length === 0 ? (
+                  <p className="mechanic-actual-empty">
+                    No parts recorded yet.
+                  </p>
+                ) : (
+                  <div className="mechanic-actual-items">
+
+                    {actualParts.map((part) => (
+
+                      <div
+                        className="mechanic-actual-item"
+                        key={part.id}
+                      >
+
+                        <div className="mechanic-actual-item-info">
+
+                          <strong>
+                            Part #{part.part_id}
+                          </strong>
+
+                          <span>
+                            Qty: {part.quantity}
+                          </span>
+
+                          <span>
+                            ₹{part.unit_price} × {part.quantity} = ₹{part.total_price}
+                          </span>
+
+                        </div>
+
+                        <span className="mechanic-actual-badge">
+                          ACTUAL
+                        </span>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+                )}
+
+              </div>
+
+
+              {/* -------------------------------------------
+                  SERVICES PERFORMED
+              ------------------------------------------- */}
+
+              <div className="mechanic-actual-section">
+
+                <div className="mechanic-actual-section-head">
+
+                  <Settings
+                    size={14}
+                  />
+
+                  <h5>
+                    Services Performed
+                  </h5>
+
+                  {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
+                    <button
+                      type="button"
+                      className="secondary-action mechanic-actual-add-btn"
+                      onClick={() =>
+                        setShowServiceForm(
+                          (open) => !open
+                        )
+                      }
+                      disabled={addingService}
+                    >
+                      <Plus
+                        size={14}
+                      />
+                      {showServiceForm
+                        ? "Cancel"
+                        : "Add Service"}
+                    </button>
+                  )}
+
+                </div>
+
+
+                {showServiceForm &&
+                  workOrder.status === "IN_PROGRESS" &&
+                  !isSubmitted && (
+
+                  <div className="mechanic-item-form">
+
+                    <div className="mechanic-form-row mechanic-form-row-3">
+
+                      <div className="mechanic-form-field">
+
+                        <label>
+                          Service
+                        </label>
+
+                        <select
+                          value={serviceForm.serviceId}
+                          onChange={(e) =>
+                            setServiceForm({
+                              ...serviceForm,
+                              serviceId:
+                                e.target.value,
+                            })
+                          }
+                          disabled={addingService}
+                        >
+
+                          <option value="">
+                            Select service...
+                          </option>
+
+                          {servicesCatalog.map(
+                            (svc) => (
+                              <option
+                                key={svc.id}
+                                value={svc.id}
+                              >
+                                {svc.name} — ₹{svc.base_price} ({svc.estimated_duration_minutes} min)
+                              </option>
+                            )
+                          )}
+
+                        </select>
+
+                      </div>
+
+
+                      <div className="mechanic-form-field">
+
+                        <label>
+                          Description
+                        </label>
+
+                        <input
+                          type="text"
+                          value={
+                            serviceForm.description
+                          }
+                          onChange={(e) =>
+                            setServiceForm({
+                              ...serviceForm,
+                              description:
+                                e.target.value,
+                            })
+                          }
+                          placeholder="Optional — defaults to catalog name"
+                          disabled={addingService}
+                        />
+
+                      </div>
+
+                    </div>
+
+
+                    {serviceError && (
+
+                      <div className="mechanic-error">
+
+                        <AlertCircle
+                          size={15}
+                        />
+
+                        <span>
+                          {serviceError}
+                        </span>
+
+                      </div>
+
+                    )}
+
+
+                    <div className="mechanic-form-actions">
+
+                      <button
+                        type="button"
+                        className="primary-action"
+                        onClick={handleAddService}
+                        disabled={addingService}
+                      >
+
+                        {addingService ? (
+                          <LoaderCircle
+                            size={16}
+                            className="spin"
+                          />
+                        ) : (
+                          <Plus
+                            size={16}
+                          />
+                        )}
+
+                        {addingService
+                          ? "Adding..."
+                          : "Add Service"}
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                )}
+
+
+                {actualServices.length === 0 ? (
+                  <p className="mechanic-actual-empty">
+                    No services recorded yet.
+                  </p>
+                ) : (
+                  <div className="mechanic-actual-items">
+
+                    {actualServices.map((svc) => (
+
+                      <div
+                        className="mechanic-actual-item"
+                        key={svc.id}
+                      >
+
+                        <div className="mechanic-actual-item-info">
+
+                          <strong>
+                            {svc.description}
+                          </strong>
+
+                          <span>
+                            Qty: {svc.quantity}
+                          </span>
+
+                          <span>
+                            ₹{svc.unit_price} × {svc.quantity} = ₹{svc.total_price}
+                          </span>
+
+                          {svc.estimated_minutes && (
+                            <span>
+                              Est. {svc.estimated_minutes} min
+                            </span>
+                          )}
+
+                        </div>
+
+                        <span className="mechanic-actual-badge">
+                          ACTUAL
+                        </span>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+                )}
+
+              </div>
+
+
+              {/* -------------------------------------------
+                  CONSUMABLES USED
+              ------------------------------------------- */}
+
+              <div className="mechanic-actual-section">
+
+                <div className="mechanic-actual-section-head">
+
+                  <FlaskConical
+                    size={14}
+                  />
+
+                  <h5>
+                    Consumables Used
+                  </h5>
+
+                  {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
+                    <button
+                      type="button"
+                      className="secondary-action mechanic-actual-add-btn"
+                      onClick={() =>
+                        setShowConsumableForm(
+                          (open) => !open
+                        )
+                      }
+                      disabled={addingConsumable}
+                    >
+                      <Plus
+                        size={14}
+                      />
+                      {showConsumableForm
+                        ? "Cancel"
+                        : "Add Consumable"}
+                    </button>
+                  )}
+
+                </div>
+
+
+                {showConsumableForm &&
+                  workOrder.status === "IN_PROGRESS" &&
+                  !isSubmitted && (
+
+                  <div className="mechanic-item-form">
+
+                    <div className="mechanic-form-row mechanic-form-row-3">
+
+                      <div className="mechanic-form-field">
+
+                        <label>
+                          Description
+                        </label>
+
+                        <input
+                          type="text"
+                          value={
+                            consumableForm.description
+                          }
+                          onChange={(e) =>
+                            setConsumableForm({
+                              ...consumableForm,
+                              description:
+                                e.target.value,
+                            })
+                          }
+                          placeholder="Required"
+                          disabled={addingConsumable}
+                        />
+
+                      </div>
+
+
+                      <div className="mechanic-form-field">
+
+                        <label>
+                          Quantity
+                        </label>
+
+                        <input
+                          type="number"
+                          min="1"
+                          value={
+                            consumableForm.quantity
+                          }
+                          onChange={(e) =>
+                            setConsumableForm({
+                              ...consumableForm,
+                              quantity:
+                                e.target.value,
+                            })
+                          }
+                          disabled={addingConsumable}
+                        />
+
+                      </div>
+
+
+                      <div className="mechanic-form-field">
+
+                        <label>
+                          Unit Price (₹)
+                        </label>
+
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={
+                            consumableForm.unitPrice
+                          }
+                          onChange={(e) =>
+                            setConsumableForm({
+                              ...consumableForm,
+                              unitPrice:
+                                e.target.value,
+                            })
+                          }
+                          placeholder="Required"
+                          disabled={addingConsumable}
+                        />
+
+                      </div>
+
+                    </div>
+
+
+                    {consumableError && (
+
+                      <div className="mechanic-error">
+
+                        <AlertCircle
+                          size={15}
+                        />
+
+                        <span>
+                          {consumableError}
+                        </span>
+
+                      </div>
+
+                    )}
+
+
+                    <div className="mechanic-form-actions">
+
+                      <button
+                        type="button"
+                        className="primary-action"
+                        onClick={
+                          handleAddConsumable
+                        }
+                        disabled={addingConsumable}
+                      >
+
+                        {addingConsumable ? (
+                          <LoaderCircle
+                            size={16}
+                            className="spin"
+                          />
+                        ) : (
+                          <Plus
+                            size={16}
+                          />
+                        )}
+
+                        {addingConsumable
+                          ? "Adding..."
+                          : "Add Consumable"}
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                )}
+
+
+                {actualConsumables.length === 0 ? (
+                  <p className="mechanic-actual-empty">
+                    No consumables recorded yet.
+                  </p>
+                ) : (
+                  <div className="mechanic-actual-items">
+
+                    {actualConsumables.map((c) => (
+
+                      <div
+                        className="mechanic-actual-item"
+                        key={c.id}
+                      >
+
+                        <div className="mechanic-actual-item-info">
+
+                          <strong>
+                            {c.description}
+                          </strong>
+
+                          <span>
+                            Qty: {c.quantity}
+                          </span>
+
+                          <span>
+                            ₹{c.unit_price} × {c.quantity} = ₹{c.total_price}
+                          </span>
+
+                        </div>
+
+                        <span className="mechanic-actual-badge">
+                          ACTUAL
+                        </span>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+                )}
+
+              </div>
+
+
+              {/* -------------------------------------------
+                  LABOR
+              ------------------------------------------- */}
+
+              <div className="mechanic-actual-section">
+
+                <div className="mechanic-actual-section-head">
+
+                  <HardHat
+                    size={14}
+                  />
+
+                  <h5>
+                    Labor
+                  </h5>
+
+                  {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
+                    <button
+                      type="button"
+                      className="secondary-action mechanic-actual-add-btn"
+                      onClick={() =>
+                        setShowLaborForm(
+                          (open) => !open
+                        )
+                      }
+                      disabled={addingLabor}
+                    >
+                      <Plus
+                        size={14}
+                      />
+                      {showLaborForm
+                        ? "Cancel"
+                        : "Add Labor"}
+                    </button>
+                  )}
+
+                </div>
+
+
+                {showLaborForm &&
+                  workOrder.status === "IN_PROGRESS" &&
+                  !isSubmitted && (
+
+                  <div className="mechanic-item-form">
+
+                    <div className="mechanic-form-field">
+
+                      <label>
+                        Description
+                      </label>
+
+                      <input
+                        type="text"
+                        value={
+                          laborForm.description
+                        }
+                        onChange={(e) =>
+                          setLaborForm({
+                            ...laborForm,
+                            description:
+                              e.target.value,
+                          })
+                        }
+                        placeholder="Required — e.g. Brake pad replacement"
+                        disabled={addingLabor}
+                      />
+
+                    </div>
+
+
+                    <div className="mechanic-form-field">
+
+                      <label>
+                        Hours
+                      </label>
+
+                      <input
+                        type="number"
+                        min="0.5"
+                        step="0.5"
+                        value={
+                          laborForm.quantity
+                        }
+                        onChange={(e) =>
+                          setLaborForm({
+                            ...laborForm,
+                            quantity:
+                              e.target.value,
+                          })
+                        }
+                        disabled={addingLabor}
+                      />
+
+                    </div>
+
+
+                    <p className="mechanic-actual-hint">
+                      Labor rate: ₹1,000/hr
+                      (backend-controlled).
+                    </p>
+
+
+                    {laborError && (
+
+                      <div className="mechanic-error">
+
+                        <AlertCircle
+                          size={15}
+                        />
+
+                        <span>
+                          {laborError}
+                        </span>
+
+                      </div>
+
+                    )}
+
+
+                    <div className="mechanic-form-actions">
+
+                      <button
+                        type="button"
+                        className="primary-action"
+                        onClick={handleAddLabor}
+                        disabled={addingLabor}
+                      >
+
+                        {addingLabor ? (
+                          <LoaderCircle
+                            size={16}
+                            className="spin"
+                          />
+                        ) : (
+                          <Plus
+                            size={16}
+                          />
+                        )}
+
+                        {addingLabor
+                          ? "Adding..."
+                          : "Add Labor"}
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                )}
+
+
+                {actualLabor.length === 0 ? (
+                  <p className="mechanic-actual-empty">
+                    No labor entries recorded yet.
+                  </p>
+                ) : (
+                  <div className="mechanic-actual-items">
+
+                    {actualLabor.map((l) => (
+
+                      <div
+                        className="mechanic-actual-item"
+                        key={l.id}
+                      >
+
+                        <div className="mechanic-actual-item-info">
+
+                          <strong>
+                            {l.description}
+                          </strong>
+
+                          <span>
+                            Qty: {l.quantity}
+                          </span>
+
+                          <span>
+                            ₹{l.unit_price} × {l.quantity} = ₹{l.total_price}
+                          </span>
+
+                          {l.estimated_minutes && (
+                            <span>
+                              Est. {l.estimated_minutes} min
+                            </span>
+                          )}
+
+                        </div>
+
+                        <span className="mechanic-actual-badge">
+                          ACTUAL
+                        </span>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+                )}
+
+              </div>
+
+
+              {/* -------------------------------------------
+                  ACTUAL WORK SUMMARY
+              ------------------------------------------- */}
+
+              {hasActualWork && (
+
+                <div className="mechanic-actual-summary">
+
+                  <h5>
+                    Actual Work Summary
+                  </h5>
+
+                  <div className="mechanic-actual-summary-grid">
+
+                    <div>
+                      <span>Parts</span>
+                      <strong>
+                        {actualParts.length}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>Services</span>
+                      <strong>
+                        {actualServices.length}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>Consumables</span>
+                      <strong>
+                        {actualConsumables.length}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>Labor Entries</span>
+                      <strong>
+                        {actualLabor.length}
+                      </strong>
+                    </div>
+
+                  </div>
+
+                  {!hasActualWork && workOrder.status === "IN_PROGRESS" && (
+                    <p className="mechanic-actual-hint">
+                      At least one actual work
+                      item is required before
+                      submitting for approval.
+                    </p>
+                  )}
+
+                </div>
+
+              )}
+
+            </>
+
+          )}
+
+        </div>
+
+      )}
+
+
+      {/* =================================================
+          INSPECTION PANEL
+      ================================================= */}
+
       {inspectionOpen && (
 
         <div className="mechanic-inspection-panel">
 
-          {!inspection ? (
+          {!inspectionLoaded ? (
+
+            <div className="mechanic-actual-loading">
+
+              <LoaderCircle
+                size={18}
+                className="spin"
+              />
+
+              <span>
+                Loading inspection...
+              </span>
+
+            </div>
+
+          ) : !inspection ? (
 
             /* ------------------------------------------------
                NO INSPECTION YET
@@ -1274,8 +2938,7 @@ function WorkOrderCard({
                           Severity
                         </label>
 
-                        <input
-                          type="text"
+                        <select
                           value={itemForm.severity}
                           onChange={(e) =>
                             setItemForm({
@@ -1284,9 +2947,16 @@ function WorkOrderCard({
                                 e.target.value,
                             })
                           }
-                          placeholder="Required"
                           disabled={addingItem}
-                        />
+                        >
+                          <option value="">
+                            Select severity
+                          </option>
+                          <option value="LOW">LOW</option>
+                          <option value="MEDIUM">MEDIUM</option>
+                          <option value="HIGH">HIGH</option>
+                          <option value="CRITICAL">CRITICAL</option>
+                        </select>
 
                       </div>
 
@@ -1427,6 +3097,9 @@ export default function MechanicDashboard() {
   const [error, setError] =
     useState("");
 
+  const [partialWarning, setPartialWarning] =
+    useState("");
+
   const [successMessage, setSuccessMessage] =
     useState("");
 
@@ -1449,9 +3122,11 @@ export default function MechanicDashboard() {
 
       setError("");
 
+      setPartialWarning("");
+
 
       const results =
-        await Promise.all(
+        await Promise.allSettled(
           WORK_ORDER_STATUSES.map(
             (status) =>
               getWorkOrdersByStatus(
@@ -1461,11 +3136,67 @@ export default function MechanicDashboard() {
         );
 
 
+      const failedStatuses = [];
+
+      const allItems = [];
+
+
+      results.forEach(
+        (result, index) => {
+
+          if (
+            result.status === "fulfilled"
+          ) {
+
+            const value =
+              result.value;
+
+            if (
+              Array.isArray(value)
+            ) {
+
+              allItems.push(
+                ...value
+              );
+
+            } else if (
+              value != null &&
+              typeof value ===
+                "object"
+            ) {
+
+              console.warn(
+                `Unexpected response for status ${WORK_ORDER_STATUSES[index]}:`,
+                value
+              );
+
+              failedStatuses.push(
+                WORK_ORDER_STATUSES[index]
+              );
+
+            }
+
+          } else {
+
+            console.error(
+              `Failed to load work orders for status ${WORK_ORDER_STATUSES[index]}:`,
+              result.reason
+            );
+
+            failedStatuses.push(
+              WORK_ORDER_STATUSES[index]
+            );
+
+          }
+
+        }
+      );
+
+
       const seen = new Set();
 
       const unique =
-        results
-          .flat()
+        allItems
           .filter(Boolean)
           .filter((wo) => {
             if (seen.has(wo.id)) {
@@ -1487,6 +3218,28 @@ export default function MechanicDashboard() {
 
 
       setWorkOrders(assigned);
+
+
+      if (
+        failedStatuses.length ===
+        WORK_ORDER_STATUSES.length
+      ) {
+
+        setError(
+          "Unable to load work orders. All status requests failed."
+        );
+
+      } else if (
+        failedStatuses.length > 0
+      ) {
+
+        setPartialWarning(
+          `Some work orders could not be loaded (${failedStatuses.join(
+            ", "
+          )}). Showing available results.`
+        );
+
+      }
 
     } catch (err) {
 
@@ -1563,6 +3316,10 @@ export default function MechanicDashboard() {
     inProgress: workOrders.filter(
       (wo) =>
         wo.status === "IN_PROGRESS"
+    ).length,
+    submitted: workOrders.filter(
+      (wo) =>
+        wo.status === "SUBMITTED_FOR_APPROVAL"
     ).length,
     completed: workOrders.filter(
       (wo) =>
@@ -1725,6 +3482,25 @@ export default function MechanicDashboard() {
           <div className="dashboard-card">
 
             <span>
+              Submitted
+            </span>
+
+            <strong>
+              {loading
+                ? "…"
+                : summary.submitted}
+            </strong>
+
+            <small>
+              Awaiting advisor approval
+            </small>
+
+          </div>
+
+
+          <div className="dashboard-card">
+
+            <span>
               Completed
             </span>
 
@@ -1786,6 +3562,34 @@ export default function MechanicDashboard() {
               >
 
                 Try Again
+
+              </button>
+
+            </div>
+
+          )}
+
+
+          {partialWarning && !loading && !error && (
+
+            <div className="mechanic-warning">
+
+              <AlertCircle
+                size={16}
+              />
+
+              <span>
+                {partialWarning}
+              </span>
+
+              <button
+                type="button"
+                onClick={() =>
+                  loadWorkOrders()
+                }
+              >
+
+                Retry
 
               </button>
 

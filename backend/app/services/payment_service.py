@@ -157,13 +157,17 @@ class PaymentService:
     ):
 
         # --------------------------------------------------
-        # 1. Find invoice
+        # 1. Find invoice (row lock acquired here so that
+        #    concurrent payments for the same invoice are
+        #    serialized BEFORE the balance is calculated)
         # --------------------------------------------------
 
         invoice = self.db.scalar(
-            select(Invoice).where(
+            select(Invoice)
+            .where(
                 Invoice.id == invoice_id
             )
+            .with_for_update()
         )
 
         if not invoice:
@@ -212,7 +216,44 @@ class PaymentService:
                     )
 
         # --------------------------------------------------
-        # 3. Invoice must be unpaid
+        # 3. Normalize transaction reference
+        #    (blank / whitespace-only → None)
+        # --------------------------------------------------
+
+        if transaction_reference is not None:
+
+            transaction_reference = transaction_reference.strip()
+
+            if transaction_reference == "":
+                transaction_reference = None
+
+        # --------------------------------------------------
+        # 4. Idempotency check
+        #    Runs inside the locked transaction so concurrent
+        #    replays of the same reference are serialized by
+        #    the invoice row lock. A SUCCESS payment with the
+        #    same non-null reference returns the recorded
+        #    payment instead of creating a duplicate.
+        # --------------------------------------------------
+
+        if transaction_reference is not None:
+
+            existing = self.repository.get_successful_by_reference(
+                transaction_reference
+            )
+
+            if existing:
+
+                if existing.invoice_id == invoice_id:
+                    return existing
+
+                raise ValueError(
+                    "Transaction reference has already been "
+                    "used for another invoice"
+                )
+
+        # --------------------------------------------------
+        # 5. Invoice must not already be paid
         # --------------------------------------------------
 
         if invoice.status == "PAID":
@@ -220,13 +261,17 @@ class PaymentService:
                 "Invoice is already paid"
             )
 
-        if invoice.status != "UNPAID":
+        if invoice.status not in {
+            "UNPAID",
+            "PARTIALLY_PAID",
+        }:
             raise ValueError(
-                "Payment can only be made for an unpaid invoice"
+                "Payment can only be made for an "
+                "unpaid or partially paid invoice"
             )
 
         # --------------------------------------------------
-        # 4. Validate payment method
+        # 6. Validate payment method
         # --------------------------------------------------
 
         payment_method = payment_method.upper()
@@ -244,7 +289,7 @@ class PaymentService:
             )
 
         # --------------------------------------------------
-        # 5. Validate amount
+        # 7. Validate amount
         # --------------------------------------------------
 
         amount = Decimal(amount)
@@ -255,7 +300,7 @@ class PaymentService:
             )
 
         # --------------------------------------------------
-        # 6. Check existing successful payments
+        # 8. Check existing successful payments
         # --------------------------------------------------
 
         payments = self.repository.get_by_invoice(
@@ -283,7 +328,7 @@ class PaymentService:
             )
 
         # --------------------------------------------------
-        # 7. Create payment
+        # 9. Create payment
         # --------------------------------------------------
 
         payment = Payment(
@@ -298,7 +343,7 @@ class PaymentService:
         self.repository.create(payment)
 
         # --------------------------------------------------
-        # 8. Update invoice
+        # 10. Update invoice status
         # --------------------------------------------------
 
         new_paid_amount = (
@@ -310,8 +355,11 @@ class PaymentService:
         ):
             invoice.status = "PAID"
 
+        else:
+            invoice.status = "PARTIALLY_PAID"
+
         # --------------------------------------------------
-        # 9. Find booking through work order
+        # 11. Find booking through work order
         # --------------------------------------------------
 
         booking = self.db.scalar(
@@ -326,7 +374,7 @@ class PaymentService:
         )
 
         # --------------------------------------------------
-        # 10. Find customer
+        # 12. Find customer
         # --------------------------------------------------
 
         if booking:
@@ -338,7 +386,7 @@ class PaymentService:
             )
 
             # --------------------------------------------------
-            # 11. Create payment notification
+            # 13. Create payment notification
             # --------------------------------------------------
 
             if customer:
@@ -358,7 +406,7 @@ class PaymentService:
                 )
 
         # --------------------------------------------------
-        # 12. Commit complete transaction
+        # 14. Commit complete transaction
         # --------------------------------------------------
 
         try:

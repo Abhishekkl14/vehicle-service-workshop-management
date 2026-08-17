@@ -70,6 +70,35 @@ class ApprovalService:
             )
 
         # -----------------------------------------------------
+        # Only one APPROVED estimate per work order
+        # -----------------------------------------------------
+
+        if decision == "APPROVED":
+
+            # Lock the work order row so concurrent approvals
+            # for the same work order are serialized
+            work_order = self.db.scalar(
+                select(WorkOrder)
+                .where(
+                    WorkOrder.id == estimate.work_order_id
+                )
+                .with_for_update()
+            )
+
+            existing_approved = self.db.scalar(
+                select(Estimate).where(
+                    Estimate.work_order_id == estimate.work_order_id,
+                    Estimate.status == "APPROVED",
+                    Estimate.id != estimate.id,
+                )
+            )
+
+            if existing_approved:
+                raise ValueError(
+                    "An approved estimate already exists for this work order"
+                )
+
+        # -----------------------------------------------------
         # Find customer
         # -----------------------------------------------------
 
@@ -109,11 +138,13 @@ class ApprovalService:
         # Get related work order
         # -----------------------------------------------------
 
-        work_order = self.db.scalar(
-            select(WorkOrder).where(
-                WorkOrder.id == estimate.work_order_id
+        if decision != "APPROVED":
+
+            work_order = self.db.scalar(
+                select(WorkOrder).where(
+                    WorkOrder.id == estimate.work_order_id
+                )
             )
-        )
 
         # -----------------------------------------------------
         # Update work order status

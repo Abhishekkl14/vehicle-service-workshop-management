@@ -53,6 +53,15 @@ class VehicleRepository:
 
         return list(self.db.scalars(statement).all())
 
+    def get_all(self) -> list[Vehicle]:
+
+        statement = (
+            select(Vehicle)
+            .order_by(Vehicle.id)
+        )
+
+        return list(self.db.scalars(statement).all())
+
     def create(self, vehicle: Vehicle) -> Vehicle:
         self.db.add(vehicle)
         self.db.commit()

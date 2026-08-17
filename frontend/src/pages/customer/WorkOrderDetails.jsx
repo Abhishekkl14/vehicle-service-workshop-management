@@ -12,6 +12,8 @@ import {
   BookOpen,
   Receipt,
   AlertCircle,
+  Package,
+  Settings,
 } from "lucide-react";
 
 import {
@@ -28,6 +30,42 @@ import {
 import {
   getWorkOrderInvoice,
 } from "../../api/invoiceApi";
+
+import {
+  getWorkOrderParts,
+} from "../../api/partApi";
+
+import {
+  getWorkOrderServices,
+} from "../../api/serviceApi";
+
+
+const formatCurrency = (amount) => {
+  if (
+    amount === null ||
+    amount === undefined ||
+    amount === ""
+  ) {
+    return "\u2014";
+  }
+
+  const value = Number(amount);
+
+  if (Number.isNaN(value)) {
+    return "\u2014";
+  }
+
+  return (
+    "\u20B9" +
+    value.toLocaleString(
+      "en-IN",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }
+    )
+  );
+};
 
 
 const formatDate = (value) => {
@@ -68,6 +106,23 @@ const getStatusClass = (status) => {
     return "booking-status completed";
   }
 
+  if (s === "SUBMITTED_FOR_APPROVAL") {
+    return "booking-status pending";
+  }
+
+  return "booking-status pending";
+};
+
+
+const getPartTypeClass = (type) => {
+  const s = String(
+    type || ""
+  ).toUpperCase();
+
+  if (s === "CONSUMABLE") {
+    return "booking-status completed";
+  }
+
   return "booking-status pending";
 };
 
@@ -94,6 +149,19 @@ export default function WorkOrderDetails() {
 
   const [invoiceError, setInvoiceError] =
     useState("");
+
+
+  const [parts, setParts] =
+    useState([]);
+
+  const [partsLoading, setPartsLoading] =
+    useState(false);
+
+  const [services, setServices] =
+    useState([]);
+
+  const [servicesLoading, setServicesLoading] =
+    useState(false);
 
 
   /* =====================================================
@@ -209,11 +277,104 @@ export default function WorkOrderDetails() {
   };
 
 
+  /* =====================================================
+     LOAD PARTS AND SERVICES
+  ===================================================== */
+
+  const loadPartsAndServices = async () => {
+
+    if (!workOrderId) {
+      return;
+    }
+
+    const statuses = [
+      "IN_PROGRESS",
+      "SUBMITTED_FOR_APPROVAL",
+      "COMPLETED",
+    ];
+
+    if (
+      !statuses.includes(
+        workOrder?.status
+      )
+    ) {
+      return;
+    }
+
+    try {
+
+      setPartsLoading(true);
+
+      const partsData =
+        await getWorkOrderParts(
+          workOrderId
+        );
+
+      setParts(
+        Array.isArray(partsData)
+          ? partsData
+          : []
+      );
+
+    } catch (err) {
+
+      console.error(
+        "Failed to load parts:",
+        err
+      );
+
+    } finally {
+
+      setPartsLoading(false);
+
+    }
+
+    try {
+
+      setServicesLoading(true);
+
+      const servicesData =
+        await getWorkOrderServices(
+          workOrderId
+        );
+
+      setServices(
+        Array.isArray(servicesData)
+          ? servicesData
+          : []
+      );
+
+    } catch (err) {
+
+      console.error(
+        "Failed to load services:",
+        err
+      );
+
+    } finally {
+
+      setServicesLoading(false);
+
+    }
+  };
+
+
   useEffect(() => {
 
     loadWorkOrder();
 
   }, [workOrderId]);
+
+
+  useEffect(() => {
+
+    if (workOrder) {
+
+      loadPartsAndServices();
+
+    }
+
+  }, [workOrder?.id, workOrder?.status]);
 
 
   /* =====================================================
@@ -316,6 +477,21 @@ export default function WorkOrderDetails() {
   }
 
 
+  const totalPartsCost = parts.reduce(
+    (sum, p) =>
+      sum +
+      (Number(p.unit_price || 0) *
+        Number(p.quantity || 0)),
+    0
+  );
+
+  const totalServicesCost = services.reduce(
+    (sum, s) =>
+      sum + (Number(s.unit_price || 0)),
+    0
+  );
+
+
   return (
     <AppLayout>
 
@@ -352,7 +528,6 @@ export default function WorkOrderDetails() {
               <p className="page-eyebrow">
                 WORK ORDER
               </p>
-
 
               <h1>
                 Work Order #{workOrder.id}
@@ -624,8 +799,336 @@ export default function WorkOrderDetails() {
 
         </section>
 
+
+        {/* =================================================
+            PARTS USED
+        ================================================= */}
+
+        {parts.length > 0 && (
+
+          <section className="work-order-summary-card">
+
+            <div className="details-card-header">
+
+              <div className="details-card-icon">
+
+                <Package
+                  size={18}
+                />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  Parts Used
+                </h2>
+
+                <p>
+                  Parts replaced or
+                  installed during service
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="advisor-part-table-wrap">
+
+              <table className="advisor-part-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      Part
+                    </th>
+
+                    <th>
+                      Type
+                    </th>
+
+                    <th>
+                      Qty
+                    </th>
+
+                    <th>
+                      Unit Price
+                    </th>
+
+                    <th>
+                      Total
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  {parts.map(
+                    (part) => (
+
+                      <tr
+                        key={part.id}
+                      >
+
+                        <td>
+
+                          <strong>
+                            {part.part_name ||
+                              part.description ||
+                              `Part #${part.part_id}`}
+                          </strong>
+
+                        </td>
+
+                        <td>
+
+                          <span
+                            className={`booking-status ${
+                              part.source === "ESTIMATE"
+                                ? "pending"
+                                : "completed"
+                            }`}
+                          >
+
+                            {part.source ||
+                              "ACTUAL"}
+
+                          </span>
+
+                        </td>
+
+                        <td>
+                          {part.quantity}
+                        </td>
+
+                        <td>
+                          {formatCurrency(
+                            part.unit_price
+                          )}
+                        </td>
+
+                        <td>
+
+                          <strong>
+                            {formatCurrency(
+                              Number(part.unit_price || 0) *
+                              Number(part.quantity || 0)
+                            )}
+                          </strong>
+
+                        </td>
+
+                      </tr>
+
+                    )
+                  )}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </section>
+
+        )}
+
+        {partsLoading && workOrder.status !== "CREATED" && workOrder.status !== "ASSIGNED" && (
+
+          <section className="work-order-summary-card">
+
+            <div className="details-card-header">
+
+              <div className="details-card-icon">
+
+                <Package
+                  size={18}
+                />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  Parts Used
+                </h2>
+
+                <p>
+                  Loading parts...
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
+
+
+        {/* =================================================
+            SERVICES PERFORMED
+        ================================================= */}
+
+        {services.length > 0 && (
+
+          <section className="work-order-summary-card">
+
+            <div className="details-card-header">
+
+              <div className="details-card-icon">
+
+                <Settings
+                  size={18}
+                />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  Services & Consumables
+                </h2>
+
+                <p>
+                  Services performed and
+                  consumables used
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="advisor-part-table-wrap">
+
+              <table className="advisor-part-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      Description
+                    </th>
+
+                    <th>
+                      Type
+                    </th>
+
+                    <th>
+                      Qty
+                    </th>
+
+                    <th>
+                      Unit Price
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  {services.map(
+                    (service) => (
+
+                      <tr
+                        key={service.id}
+                      >
+
+                        <td>
+
+                          <strong>
+                            {service.description ||
+                              `Service #${service.service_id || ""}`}
+                          </strong>
+
+                        </td>
+
+                        <td>
+
+                          <span
+                            className={`booking-status ${
+                              service.item_type === "LABOR"
+                                ? "completed"
+                                : service.item_type === "CONSUMABLE"
+                                  ? "cancelled"
+                                  : "pending"
+                            }`}
+                          >
+
+                            {service.item_type ||
+                              "SERVICE"}
+
+                          </span>
+
+                        </td>
+
+                        <td>
+                          {service.quantity || 1}
+                        </td>
+
+                        <td>
+                          {formatCurrency(
+                            service.unit_price
+                          )}
+                        </td>
+
+                      </tr>
+
+                    )
+                  )}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </section>
+
+        )}
+
+        {servicesLoading && workOrder.status !== "CREATED" && workOrder.status !== "ASSIGNED" && (
+
+          <section className="work-order-summary-card">
+
+            <div className="details-card-header">
+
+              <div className="details-card-icon">
+
+                <Settings
+                  size={18}
+                />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  Services & Consumables
+                </h2>
+
+                <p>
+                  Loading services...
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
+
       </div>
 
     </AppLayout>
+
   );
+
 }

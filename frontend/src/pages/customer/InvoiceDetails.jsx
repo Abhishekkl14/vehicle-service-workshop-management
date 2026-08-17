@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import {
   ArrowLeft,
@@ -11,6 +15,7 @@ import {
   AlertCircle,
   CheckCircle2,
   CreditCard,
+  Download,
   X,
 } from "lucide-react";
 
@@ -20,6 +25,8 @@ import {
 } from "react-router-dom";
 
 import AppLayout from "../../components/layout/AppLayout";
+
+import { useAuth } from "../../context/AuthContext";
 
 import {
   getInvoice,
@@ -128,6 +135,13 @@ export default function InvoiceDetails() {
 
   const { invoiceId } = useParams();
 
+  const { user } = useAuth();
+
+  const backUrl =
+    user?.role === "SERVICE_ADVISOR"
+      ? "/advisor/invoices"
+      : "/customer/dashboard";
+
 
   const [invoice, setInvoice] =
     useState(null);
@@ -166,6 +180,25 @@ export default function InvoiceDetails() {
 
   const [successMessage, setSuccessMessage] =
     useState("");
+
+  const paymentKeyRef = useRef(null);
+
+  const getPaymentKey = () => {
+
+    if (!paymentKeyRef.current) {
+
+      paymentKeyRef.current =
+        typeof crypto !== "undefined" &&
+          typeof crypto.randomUUID ===
+            "function"
+          ? crypto.randomUUID()
+          : `pay-${Date.now()}-${Math.random()
+              .toString(36)
+              .slice(2, 10)}`;
+    }
+
+    return paymentKeyRef.current;
+  };
 
 
   /* =====================================================
@@ -307,7 +340,9 @@ export default function InvoiceDetails() {
 
   const canPay =
     Boolean(invoice) &&
-    invoice?.status === "UNPAID" &&
+    (invoice?.status === "UNPAID" ||
+      invoice?.status ===
+        "PARTIALLY_PAID") &&
     remaining > 0;
 
 
@@ -380,9 +415,11 @@ export default function InvoiceDetails() {
           payment_method: paymentMethod,
           transaction_reference:
             transactionReference.trim() ||
-              null,
+              getPaymentKey(),
         });
 
+
+      paymentKeyRef.current = null;
 
       setSuccessMessage(
         `Payment of ${formatCurrency(
@@ -416,6 +453,17 @@ export default function InvoiceDetails() {
       setSubmitting(false);
 
     }
+  };
+
+
+  /* =====================================================
+     DOWNLOAD INVOICE
+  ===================================================== */
+
+  const handleDownload = () => {
+
+    window.print();
+
   };
 
 
@@ -495,7 +543,7 @@ export default function InvoiceDetails() {
               className="primary-action"
               onClick={() =>
                 navigate(
-                  "/customer/dashboard"
+                  backUrl
                 )
               }
             >
@@ -532,7 +580,7 @@ export default function InvoiceDetails() {
             className="back-button"
             onClick={() =>
               navigate(
-                "/customer/dashboard"
+                backUrl
               )
             }
           >
@@ -572,6 +620,27 @@ export default function InvoiceDetails() {
                 "UNKNOWN"}
 
             </span>
+
+            {invoice.status === "PAID" && (
+
+              <button
+                type="button"
+                className="secondary-action"
+                onClick={handleDownload}
+                style={{
+                  marginLeft: "12px",
+                }}
+              >
+
+                <Download
+                  size={16}
+                />
+
+                Download Invoice
+
+              </button>
+
+            )}
 
           </div>
 
@@ -833,6 +902,117 @@ export default function InvoiceDetails() {
           </div>
 
         </section>
+
+
+        {/* =================================================
+            LINE ITEMS
+        ================================================= */}
+
+        {invoice.items && invoice.items.length > 0 && (
+
+          <section className="invoice-line-items">
+
+            <div className="details-card-header">
+
+              <div className="details-card-icon">
+
+                <FileText
+                  size={18}
+                />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  Line Items
+                </h2>
+
+                <p>
+                  Breakdown of charges
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="invoice-line-items-table-wrap">
+
+              <table className="invoice-line-items-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>Type</th>
+
+                    <th>Description</th>
+
+                    <th>Qty</th>
+
+                    <th>Unit Price</th>
+
+                    <th>Total</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  {invoice.items.map((item) => (
+
+                    <tr key={item.id}>
+
+                      <td>
+
+                        <span className={`booking-status ${
+                          item.item_type === "LABOR"
+                            ? "completed"
+                            : item.item_type === "PART"
+                              ? "pending"
+                              : "confirmed"
+                        }`}>
+
+                          {item.item_type || "SERVICE"}
+
+                        </span>
+
+                      </td>
+
+                      <td>
+                        {item.description}
+                      </td>
+
+                      <td>
+                        {item.quantity}
+                      </td>
+
+                      <td>
+                        {formatCurrency(
+                          item.unit_price
+                        )}
+                      </td>
+
+                      <td>
+                        {formatCurrency(
+                          item.total_price
+                        )}
+                      </td>
+
+                    </tr>
+
+                  ))}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </section>
+
+        )}
 
 
         {/* =================================================

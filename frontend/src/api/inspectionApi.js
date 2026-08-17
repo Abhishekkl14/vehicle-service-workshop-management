@@ -35,6 +35,17 @@ export const getInspection = async (
   return response.data;
 };
 
+export const getInspectionByWorkOrderId =
+  async (workOrderId) => {
+
+    const response =
+      await inspectionApi.get(
+        `/api/v1/inspections/work-order/${workOrderId}`
+      );
+
+    return response.data;
+  };
+
 export const getInspectionItems = async (
   inspectionId
 ) => {

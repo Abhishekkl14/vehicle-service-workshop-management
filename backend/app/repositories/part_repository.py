@@ -15,7 +15,8 @@ class PartRepository:
     ) -> Part | None:
 
         statement = select(Part).where(
-            Part.id == part_id
+            Part.id == part_id,
+            Part.is_active.is_(True),
         )
 
         return self.db.scalar(statement)

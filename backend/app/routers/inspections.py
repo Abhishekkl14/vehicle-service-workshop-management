@@ -25,6 +25,56 @@ router = APIRouter(
 
 
 # =========================================================
+# GET INSPECTION BY WORK ORDER
+# =========================================================
+
+@router.get(
+    "/work-order/{work_order_id}",
+    response_model=InspectionResponse,
+)
+def get_inspection_by_work_order(
+    work_order_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    service = InspectionService(db)
+
+    inspection = (
+        service.repository.get_by_work_order(
+            work_order_id
+        )
+    )
+
+    if not inspection:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Inspection not found",
+        )
+
+    try:
+        authorized_inspection = (
+            service.get_inspection_for_user(
+                inspection.id,
+                current_user,
+            )
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
+
+    if not authorized_inspection:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Inspection not found",
+        )
+
+    return authorized_inspection
+
+
+# =========================================================
 # GET INSPECTION
 # =========================================================
 

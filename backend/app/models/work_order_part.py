@@ -5,6 +5,7 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     Numeric,
+    String,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -44,6 +45,12 @@ class WorkOrderPart(Base):
     total_price: Mapped[Decimal] = mapped_column(
         Numeric(12, 2),
         nullable=False
+    )
+
+    source: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="ESTIMATE"
     )
 
     work_order = relationship(

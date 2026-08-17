@@ -37,6 +37,18 @@ class PaymentRepository:
             self.db.scalars(statement).all()
         )
 
+    def get_successful_by_reference(
+        self,
+        transaction_reference: str
+    ) -> Payment | None:
+
+        statement = select(Payment).where(
+            Payment.transaction_reference == transaction_reference,
+            Payment.status == "SUCCESS"
+        )
+
+        return self.db.scalar(statement)
+
     def create(
         self,
         payment: Payment

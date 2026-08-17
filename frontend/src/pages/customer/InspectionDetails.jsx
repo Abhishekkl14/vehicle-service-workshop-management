@@ -20,6 +20,7 @@ import {
 } from "react-router-dom";
 
 import AppLayout from "../../components/layout/AppLayout";
+import { useAuth } from "../../context/AuthContext";
 
 import {
   getInspection,
@@ -82,6 +83,13 @@ export default function InspectionDetails() {
   const navigate = useNavigate();
 
   const { inspectionId } = useParams();
+
+  const { user } = useAuth();
+
+  const backUrl =
+    user?.role === "SERVICE_ADVISOR"
+      ? "/advisor/inspections"
+      : "/customer/dashboard";
 
 
   const [inspection, setInspection] =
@@ -253,7 +261,7 @@ export default function InspectionDetails() {
               className="primary-action"
               onClick={() =>
                 navigate(
-                  "/customer/dashboard"
+                  backUrl
                 )
               }
             >
@@ -291,7 +299,7 @@ export default function InspectionDetails() {
             className="back-button"
             onClick={() =>
               navigate(
-                "/customer/dashboard"
+                backUrl
               )
             }
           >

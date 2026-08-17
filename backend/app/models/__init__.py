@@ -10,9 +10,11 @@ from app.models.inspection import Inspection
 from app.models.inspection_item import InspectionItem
 from app.models.part import Part
 from app.models.work_order_part import WorkOrderPart
+from app.models.work_order_service import WorkOrderService
 from app.models.estimate import Estimate
 from app.models.estimate_item import EstimateItem
 from app.models.approval import Approval
+from app.models.work_order_approval import WorkOrderApproval
 from app.models.invoice import Invoice
 from app.models.invoice_item import InvoiceItem
 from app.models.payment import Payment
@@ -32,9 +34,11 @@ __all__ = [
     "InspectionItem",
     "Part",
     "WorkOrderPart",
+    "WorkOrderService",
     "Estimate",
     "EstimateItem",
     "Approval",
+    "WorkOrderApproval",
     "Invoice",
     "InvoiceItem",
     "Payment",

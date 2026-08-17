@@ -15,8 +15,6 @@ import MyVehicles from "./pages/customer/MyVehicles";
 import VehicleDetails from "./pages/customer/VehicleDetails";
 import Bookings from "./pages/customer/Bookings";
 import CreateBooking from "./pages/customer/CreateBooking";
-import AdvisorDashboard from "./pages/advisor/AdvisorDashboard";
-import MechanicDashboard from "./pages/mechanic/MechanicDashboard";
 import BookingDetails from "./pages/customer/BookingDetails";
 import ServiceHistory from "./pages/customer/ServiceHistory";
 import EstimateDetails from "./pages/customer/EstimateDetails";
@@ -26,6 +24,25 @@ import InspectionDetails from "./pages/customer/InspectionDetails";
 import Invoices from "./pages/customer/Invoices";
 import InvoiceDetails from "./pages/customer/InvoiceDetails";
 import Notifications from "./pages/customer/Notifications";
+import CustomerWorkOrders from "./pages/customer/CustomerWorkOrders";
+import CustomerInspections from "./pages/customer/CustomerInspections";
+
+import AdvisorDashboard from "./pages/advisor/AdvisorDashboard";
+import AdvisorBookings from "./pages/advisor/AdvisorBookings";
+import AdvisorWorkOrders from "./pages/advisor/AdvisorWorkOrders";
+import AdvisorApprovals from "./pages/advisor/AdvisorApprovals";
+import AdvisorCustomers from "./pages/advisor/AdvisorCustomers";
+import AdvisorVehicles from "./pages/advisor/AdvisorVehicles";
+import AdvisorInspections from "./pages/advisor/AdvisorInspections";
+import AdvisorEstimates from "./pages/advisor/AdvisorEstimates";
+import AdvisorInvoices from "./pages/advisor/AdvisorInvoices";
+import AdvisorPayments from "./pages/advisor/AdvisorPayments";
+import AdvisorNotifications from "./pages/advisor/AdvisorNotifications";
+
+import MechanicDashboard from "./pages/mechanic/MechanicDashboard";
+import MechanicWorkOrders from "./pages/mechanic/MechanicWorkOrders";
+import MechanicInspections from "./pages/mechanic/MechanicInspections";
+import MechanicNotifications from "./pages/mechanic/MechanicNotifications";
 
 
 function RoleRedirect() {
@@ -285,6 +302,30 @@ export default function App() {
           />
 
 
+          <Route
+            path="/customer/work-orders"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <CustomerWorkOrders />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/customer/inspections"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <CustomerInspections />
+              </ProtectedRoute>
+            }
+          />
+
+
           {/* =================================================
               SERVICE ADVISOR
           ================================================= */}
@@ -301,6 +342,150 @@ export default function App() {
           />
 
 
+          <Route
+            path="/advisor/bookings"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorBookings />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/work-orders"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorWorkOrders />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/approvals"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorApprovals />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/customers"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorCustomers />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/vehicles"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorVehicles />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/inspections"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorInspections />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/inspections/:inspectionId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <InspectionDetails />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/estimates"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorEstimates />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/invoices"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorInvoices />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/invoices/:invoiceId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <InvoiceDetails />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/payments"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorPayments />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/advisor/notifications"
+            element={
+              <ProtectedRoute
+                allowedRoles={["SERVICE_ADVISOR"]}
+              >
+                <AdvisorNotifications />
+              </ProtectedRoute>
+            }
+          />
+
+
           {/* =================================================
               MECHANIC
           ================================================= */}
@@ -312,6 +497,42 @@ export default function App() {
                 allowedRoles={["MECHANIC"]}
               >
                 <MechanicDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/mechanic/work-orders"
+            element={
+              <ProtectedRoute
+                allowedRoles={["MECHANIC"]}
+              >
+                <MechanicWorkOrders />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/mechanic/inspections"
+            element={
+              <ProtectedRoute
+                allowedRoles={["MECHANIC"]}
+              >
+                <MechanicInspections />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/mechanic/notifications"
+            element={
+              <ProtectedRoute
+                allowedRoles={["MECHANIC"]}
+              >
+                <MechanicNotifications />
               </ProtectedRoute>
             }
           />

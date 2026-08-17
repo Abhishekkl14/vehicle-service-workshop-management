@@ -11,6 +11,9 @@ from app.routers.work_orders import router as work_orders_router
 from app.routers.inspections import router as inspections_router
 from app.routers.parts import router as parts_router
 from app.routers.work_order_parts import router as work_order_parts_router
+from app.routers.work_order_services import (
+    router as work_order_services_router
+)
 from app.routers.estimates import router as estimates_router
 from app.routers.approvals import router as approvals_router
 from app.routers.invoices import router as invoices_router
@@ -49,6 +52,7 @@ app.include_router(work_orders_router)
 app.include_router(inspections_router)
 app.include_router(parts_router)
 app.include_router(work_order_parts_router)
+app.include_router(work_order_services_router)
 app.include_router(estimates_router)
 app.include_router(approvals_router)
 app.include_router(invoices_router)

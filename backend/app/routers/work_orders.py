@@ -13,7 +13,10 @@ from app.core.auth_dependency import (
 from app.database.database import get_db
 from app.models.user import User
 from app.schemas.work_order import (
+    WorkOrderApproveRequest,
+    WorkOrderApprovalResponse,
     WorkOrderCreate,
+    WorkOrderRejectRequest,
     WorkOrderResponse,
 )
 from app.services.work_order_service import WorkOrderService
@@ -23,6 +26,28 @@ router = APIRouter(
     prefix="/api/v1/work-orders",
     tags=["Work Orders"],
 )
+
+
+# =========================================================
+# GET WORK ORDERS PENDING ADVISOR APPROVAL
+# =========================================================
+
+@router.get(
+    "/pending-approval",
+    response_model=list[WorkOrderResponse],
+)
+def get_pending_approval_work_orders(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_roles(
+            "SERVICE_ADVISOR",
+            "ADMIN",
+        )
+    ),
+):
+    service = WorkOrderService(db)
+
+    return service.get_pending_approval_work_orders()
 
 
 # =========================================================
@@ -165,6 +190,43 @@ def start_work_order(
 
 
 # =========================================================
+# SUBMIT WORK ORDER FOR ADVISOR APPROVAL
+# =========================================================
+
+@router.post(
+    "/{work_order_id}/submit-for-approval",
+    response_model=WorkOrderResponse,
+)
+def submit_work_order_for_approval(
+    work_order_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    service = WorkOrderService(db)
+
+    try:
+
+        return service.submit_work_order_for_approval_for_user(
+            work_order_id,
+            current_user,
+        )
+
+    except PermissionError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
+
+    except ValueError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
+
+
+# =========================================================
 # COMPLETE WORK ORDER
 # =========================================================
 
@@ -199,3 +261,122 @@ def complete_work_order(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(exc),
         )
+
+
+# =========================================================
+# APPROVE WORK ORDER
+# =========================================================
+
+@router.post(
+    "/{work_order_id}/approve",
+    response_model=WorkOrderResponse,
+)
+def approve_work_order(
+    work_order_id: int,
+    data: WorkOrderApproveRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_roles(
+            "SERVICE_ADVISOR",
+            "ADMIN",
+        )
+    ),
+):
+    service = WorkOrderService(db)
+
+    try:
+
+        return service.approve_work_order(
+            work_order_id=work_order_id,
+            advisor_id=current_user.id,
+            comments=data.comments,
+        )
+
+    except ValueError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
+
+
+# =========================================================
+# REJECT WORK ORDER
+# =========================================================
+
+@router.post(
+    "/{work_order_id}/reject",
+    response_model=WorkOrderResponse,
+)
+def reject_work_order(
+    work_order_id: int,
+    data: WorkOrderRejectRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_roles(
+            "SERVICE_ADVISOR",
+            "ADMIN",
+        )
+    ),
+):
+    service = WorkOrderService(db)
+
+    try:
+
+        return service.reject_work_order(
+            work_order_id=work_order_id,
+            advisor_id=current_user.id,
+            rejection_reason=data.rejection_reason,
+        )
+
+    except ValueError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
+
+
+# =========================================================
+# GET WORK ORDER APPROVAL HISTORY
+# =========================================================
+
+@router.get(
+    "/{work_order_id}/approvals",
+    response_model=list[WorkOrderApprovalResponse],
+)
+def get_work_order_approvals(
+    work_order_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_roles(
+            "SERVICE_ADVISOR",
+            "ADMIN",
+        )
+    ),
+):
+    service = WorkOrderService(db)
+
+    try:
+
+        work_order = service.get_work_order(
+            work_order_id
+        )
+
+    except PermissionError as exc:
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
+
+    if not work_order:
+
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Work order not found",
+        )
+
+    return service.get_work_order_approvals(
+        work_order_id
+    )

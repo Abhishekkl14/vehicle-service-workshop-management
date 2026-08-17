@@ -6,7 +6,9 @@ from fastapi import (
 )
 from sqlalchemy.orm import Session
 
+from app.core.auth_dependency import get_current_user
 from app.database.database import get_db
+from app.models.user import User
 from app.schemas.service import ServiceResponse
 from app.services.service_catalog_service import (
     ServiceCatalogService,
@@ -25,6 +27,7 @@ router = APIRouter(
 )
 def get_active_services(
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = ServiceCatalogService(db)
 
@@ -38,6 +41,7 @@ def get_active_services(
 def get_service(
     service_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     service = ServiceCatalogService(db)
 

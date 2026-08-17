@@ -234,6 +234,17 @@ class InspectionService:
                 "Work order not found"
             )
 
+        if work_order.status not in {
+            "CREATED",
+            "ASSIGNED",
+            "INSPECTION",
+        }:
+            raise ValueError(
+                "Inspection can only be created for "
+                "CREATED, ASSIGNED, or INSPECTION "
+                "work orders"
+            )
+
         # Prevent duplicate inspection
         existing = self.repository.get_by_work_order(
             work_order_id
@@ -266,8 +277,6 @@ class InspectionService:
             mechanic_id=mechanic_id,
             overall_notes=overall_notes,
         )
-
-        work_order.status = "INSPECTION"
 
         return self.repository.create(
             inspection

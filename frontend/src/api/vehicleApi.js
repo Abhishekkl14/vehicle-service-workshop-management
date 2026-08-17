@@ -45,4 +45,12 @@ export const getVehicle = async (
   return response.data;
 };
 
+export const getAllVehicles = async () => {
+  const response = await vehicleApi.get(
+    "/api/v1/vehicles/all"
+  );
+
+  return response.data;
+};
+
 export default vehicleApi;

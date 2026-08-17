@@ -12,6 +12,7 @@ class InvoiceItemResponse(BaseModel):
 
     id: int
     invoice_id: int
+    item_type: str | None
     description: str
     quantity: Decimal
     unit_price: Decimal
@@ -34,3 +35,4 @@ class InvoiceResponse(BaseModel):
     status: str
     issued_at: datetime
     due_at: datetime | None
+    items: list[InvoiceItemResponse] = []

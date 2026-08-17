@@ -22,7 +22,8 @@ class InspectionItemCreate(BaseModel):
 
     severity: str = Field(
         min_length=1,
-        max_length=30
+        max_length=30,
+        pattern=r"^(LOW|MEDIUM|HIGH|CRITICAL)$"
     )
 
     notes: str | None = None

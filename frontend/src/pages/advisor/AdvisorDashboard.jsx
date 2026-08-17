@@ -19,6 +19,7 @@ import {
   ChevronUp,
   Package,
   FileText,
+  Receipt,
   Send,
 } from "lucide-react";
 
@@ -32,6 +33,9 @@ import {
 import {
   getWorkOrdersByStatus,
   createWorkOrder,
+  getPendingApprovalWorkOrders,
+  approveWorkOrder,
+  rejectWorkOrder,
 } from "../../api/workOrderApi";
 
 import {
@@ -41,18 +45,32 @@ import {
 } from "../../api/partApi";
 
 import {
+  getWorkOrderServices,
+} from "../../api/serviceApi";
+
+import {
   createEstimate,
   getWorkOrderEstimates,
   sendEstimate,
 } from "../../api/estimateApi";
+
+import {
+  getWorkOrderInvoice,
+  generateInvoice,
+} from "../../api/invoiceApi";
+
+import {
+  getInspectionByWorkOrderId,
+  getInspectionItems,
+} from "../../api/inspectionApi";
 
 
 const WORK_ORDER_STATUSES = [
   "CREATED",
   "INSPECTION",
   "IN_PROGRESS",
+  "SUBMITTED_FOR_APPROVAL",
   "COMPLETED",
-  "WAITING_FOR_APPROVAL",
 ];
 
 
@@ -257,6 +275,21 @@ const getEstimateStatusClass = (
 };
 
 
+const getInvoiceStatusClass = (
+  status
+) => {
+  const s = String(
+    status || ""
+  ).toUpperCase();
+
+  if (s === "PAID") {
+    return "booking-status confirmed";
+  }
+
+  return "booking-status pending";
+};
+
+
 /* =====================================================
    WORK ORDER WORKFLOW
    Parts management + estimate creation/sending
@@ -265,6 +298,9 @@ const getEstimateStatusClass = (
 function WorkOrderWorkflow({ workOrder }) {
 
   const workOrderId = workOrder.id;
+
+  const isCompleted =
+    workOrder.status === "COMPLETED";
 
   const [expanded, setExpanded] = useState(false);
 
@@ -293,6 +329,15 @@ function WorkOrderWorkflow({ workOrder }) {
 
   const [sendingEstimateId, setSendingEstimateId] = useState(null);
   const [sendError, setSendError] = useState("");
+
+  const [invoice, setInvoice] = useState(null);
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+  const [invoiceError, setInvoiceError] = useState("");
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState("");
+  const [invoiceSuccess, setInvoiceSuccess] = useState("");
 
   const hasParts = parts.length > 0;
 
@@ -409,6 +454,49 @@ function WorkOrderWorkflow({ workOrder }) {
   };
 
 
+  const loadInvoice = async () => {
+
+    setInvoiceLoading(true);
+
+    setInvoiceError("");
+
+    try {
+
+      const data =
+        await getWorkOrderInvoice(
+          workOrderId
+        );
+
+      setInvoice(data);
+
+    } catch (err) {
+
+      if (err?.response?.status === 404) {
+
+        setInvoice(null);
+
+      } else {
+
+        console.error(
+          `Failed to load invoice for work order #${workOrderId}:`,
+          err
+        );
+
+        setInvoiceError(
+          err?.response?.data?.detail ||
+            "Unable to load the invoice."
+        );
+
+      }
+
+    } finally {
+
+      setInvoiceLoading(false);
+
+    }
+  };
+
+
   const loadAll = () => {
 
     loadParts();
@@ -416,6 +504,12 @@ function WorkOrderWorkflow({ workOrder }) {
     loadEstimates();
 
     loadActiveParts();
+
+    if (isCompleted) {
+
+      loadInvoice();
+
+    }
 
   };
 
@@ -645,6 +739,87 @@ function WorkOrderWorkflow({ workOrder }) {
     } finally {
 
       setSendingEstimateId(null);
+
+    }
+  };
+
+
+  const openConfirm = () => {
+
+    setGenerationError("");
+
+    setConfirmOpen(true);
+
+  };
+
+
+  const closeConfirm = () => {
+
+    if (generating) {
+      return;
+    }
+
+    setConfirmOpen(false);
+
+    setGenerationError("");
+
+  };
+
+
+  const handleGenerateInvoice = async () => {
+
+    if (generating) {
+      return;
+    }
+
+    setGenerating(true);
+
+    setGenerationError("");
+
+    setInvoiceSuccess("");
+
+    try {
+
+      const created =
+        await generateInvoice(
+          workOrderId
+        );
+
+      setInvoice(created);
+
+      setConfirmOpen(false);
+
+      setInvoiceSuccess(
+        `Invoice ${created.invoice_number} generated for Work Order #${workOrderId}.`
+      );
+
+    } catch (err) {
+
+      const detail =
+        err?.response?.data?.detail ||
+          "Unable to generate the invoice. Please try again.";
+
+      console.error(
+        `Failed to generate invoice for work order #${workOrderId}:`,
+        err
+      );
+
+      setGenerationError(detail);
+
+      if (
+        err?.response?.status === 400 &&
+        /already exists/i.test(detail)
+      ) {
+
+        setConfirmOpen(false);
+
+        loadInvoice();
+
+      }
+
+    } finally {
+
+      setGenerating(false);
 
     }
   };
@@ -1495,6 +1670,408 @@ function WorkOrderWorkflow({ workOrder }) {
 
           </div>
 
+
+          {/* =============================================
+              INVOICE PANEL
+          ============================================= */}
+
+          {isCompleted && (
+
+            <div className="advisor-workflow-panel advisor-invoice-panel">
+
+              <div className="advisor-workflow-panel-head">
+
+                <h3>
+
+                  <Receipt
+                    size={16}
+                  />
+
+                  Invoice
+
+                </h3>
+
+
+                {invoice && !invoiceLoading && (
+
+                  <button
+                    type="button"
+                    className="secondary-action advisor-workflow-reload"
+                    onClick={loadInvoice}
+                    disabled={invoiceLoading}
+                  >
+
+                    <RefreshCw
+                      size={14}
+                    />
+
+                    Refresh
+
+                  </button>
+
+                )}
+
+              </div>
+
+
+              {invoiceSuccess && (
+
+                <div className="advisor-success">
+
+                  <CheckCircle2
+                    size={16}
+                  />
+
+                  <span>
+                    {invoiceSuccess}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {generationError && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {generationError}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              {invoiceError && !invoiceLoading && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {invoiceError}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={loadInvoice}
+                  >
+
+                    Try Again
+
+                  </button>
+
+                </div>
+
+              )}
+
+
+              {invoiceLoading ? (
+
+                <div className="advisor-workflow-loading">
+
+                  <LoaderCircle
+                    size={18}
+                    className="spin"
+                  />
+
+                  Checking for an existing invoice...
+
+                </div>
+
+              ) : invoice ? (
+
+                <div className="advisor-invoice-card">
+
+                  <div className="advisor-invoice-row">
+
+                    <strong>
+                      {invoice.invoice_number}
+                    </strong>
+
+                    <span
+                      className={getInvoiceStatusClass(
+                        invoice.status
+                      )}
+                    >
+
+                      {invoice.status ||
+                        "UNKNOWN"}
+
+                    </span>
+
+                  </div>
+
+
+                  <div className="advisor-invoice-totals">
+
+                    <div>
+
+                      <span>
+                        Subtotal
+                      </span>
+
+                      <strong>
+                        {formatCurrency(
+                          invoice.subtotal
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div>
+
+                      <span>
+                        Tax
+                      </span>
+
+                      <strong>
+                        {formatCurrency(
+                          invoice.tax_amount
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div>
+
+                      <span>
+                        Discount
+                      </span>
+
+                      <strong>
+                        {formatCurrency(
+                          invoice.discount_amount
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div>
+
+                      <span>
+                        Total
+                      </span>
+
+                      <strong>
+                        {formatCurrency(
+                          invoice.total_amount
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div>
+
+                      <span>
+                        Issued
+                      </span>
+
+                      <strong>
+                        {formatDate(
+                          invoice.issued_at
+                        )}
+                      </strong>
+
+                    </div>
+
+
+                    <div>
+
+                      <span>
+                        Due
+                      </span>
+
+                      <strong>
+                        {invoice.due_at
+                          ? formatDate(
+                              invoice.due_at
+                            )
+                          : "Not specified"}
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              ) : (
+
+                <div className="advisor-invoice-actions">
+
+                  <button
+                    type="button"
+                    className="primary-action"
+                    onClick={openConfirm}
+                    disabled={
+                      invoiceLoading ||
+                      generating
+                    }
+                  >
+
+                    <Receipt
+                      size={16}
+                    />
+
+                    Generate Invoice
+
+                  </button>
+
+
+                  <p className="advisor-workflow-note">
+
+                    Generate the invoice for this
+                    completed work order. Amounts
+                    come from actual work performed.
+
+                  </p>
+
+                </div>
+
+              )}
+
+            </div>
+
+          )}
+
+        </div>
+
+      )}
+
+
+      {/* =================================================
+          GENERATE INVOICE CONFIRMATION
+      ================================================= */}
+
+      {confirmOpen && (
+
+        <div
+          className="modal-overlay"
+          onClick={closeConfirm}
+        >
+
+          <div
+            className="modal-card"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <div className="modal-header">
+
+              <div>
+
+                <h2>
+                  Generate Invoice
+                </h2>
+
+                <p>
+                  Work Order #{workOrderId}
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className="modal-close"
+                onClick={closeConfirm}
+                disabled={generating}
+                aria-label="Close"
+              >
+
+                <X
+                  size={18}
+                />
+
+              </button>
+
+            </div>
+
+
+            <div className="modal-body">
+
+              <p className="advisor-confirm-text">
+
+                Generate invoice for Work Order #{workOrderId}?
+
+              </p>
+
+
+              {generationError && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {generationError}
+                  </span>
+
+                </div>
+
+              )}
+
+            </div>
+
+
+            <div className="modal-actions">
+
+              <button
+                type="button"
+                className="secondary-action"
+                onClick={closeConfirm}
+                disabled={generating}
+              >
+
+                Cancel
+
+              </button>
+
+
+              <button
+                type="button"
+                className="primary-action"
+                onClick={handleGenerateInvoice}
+                disabled={generating}
+              >
+
+                {generating ? (
+                  <LoaderCircle
+                    size={17}
+                    className="spin"
+                  />
+                ) : (
+                  <Receipt
+                    size={17}
+                  />
+                )}
+
+                {generating
+                  ? "Generating..."
+                  : "Generate Invoice"}
+
+              </button>
+
+            </div>
+
+          </div>
+
         </div>
 
       )}
@@ -1530,6 +2107,49 @@ export default function AdvisorDashboard() {
     useState(true);
 
   const [workOrdersError, setWorkOrdersError] =
+    useState("");
+
+
+  const [pendingApprovals, setPendingApprovals] =
+    useState([]);
+
+  const [pendingLoading, setPendingLoading] =
+    useState(true);
+
+  const [pendingError, setPendingError] =
+    useState("");
+
+  const [expandedWO, setExpandedWO] =
+    useState(null);
+
+  const [woParts, setWoParts] =
+    useState({});
+
+  const [woServices, setWoServices] =
+    useState({});
+
+  const [woInspection, setWoInspection] =
+    useState({});
+
+  const [loadingDetails, setLoadingDetails] =
+    useState({});
+
+  const [approvingId, setApprovingId] =
+    useState(null);
+
+  const [rejectModalWO, setRejectModalWO] =
+    useState(null);
+
+  const [rejectReason, setRejectReason] =
+    useState("");
+
+  const [rejecting, setRejecting] =
+    useState(false);
+
+  const [pendingActionError, setPendingActionError] =
+    useState("");
+
+  const [approveComment, setApproveComment] =
     useState("");
 
 
@@ -1663,6 +2283,272 @@ export default function AdvisorDashboard() {
 
 
   /* =====================================================
+     LOAD PENDING APPROVALS
+  ===================================================== */
+
+  const loadPendingApprovals = async () => {
+
+    try {
+
+      setPendingLoading(true);
+
+      setPendingError("");
+
+      const data =
+        await getPendingApprovalWorkOrders();
+
+      setPendingApprovals(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    } catch (err) {
+
+      console.error(
+        "Failed to load pending approvals:",
+        err
+      );
+
+      setPendingError(
+        err?.response?.data?.detail ||
+          "Unable to load pending approvals."
+      );
+
+    } finally {
+
+      setPendingLoading(false);
+
+    }
+  };
+
+
+  /* =====================================================
+     EXPAND / LOAD DETAILS
+  ===================================================== */
+
+  const toggleExpandWO = async (woId) => {
+
+    if (expandedWO === woId) {
+
+      setExpandedWO(null);
+
+      return;
+    }
+
+    setExpandedWO(woId);
+
+    if (woParts[woId] || woServices[woId] || woInspection[woId] !== undefined) {
+      return;
+    }
+
+    setLoadingDetails((prev) => ({
+      ...prev,
+      [woId]: true,
+    }));
+
+    try {
+
+      const [parts, services, inspection] =
+        await Promise.all([
+          getWorkOrderParts(woId).catch(
+            () => []
+          ),
+          getWorkOrderServices(woId).catch(
+            () => []
+          ),
+          getInspectionByWorkOrderId(woId).catch(
+            () => null
+          ),
+        ]);
+
+      setWoParts((prev) => ({
+        ...prev,
+        [woId]: Array.isArray(parts)
+          ? parts
+          : [],
+      }));
+
+      setWoServices((prev) => ({
+        ...prev,
+        [woId]: Array.isArray(services)
+          ? services
+          : [],
+      }));
+
+      let inspectionData = null;
+
+      if (inspection && inspection.id) {
+
+        const items =
+          await getInspectionItems(
+            inspection.id
+          ).catch(() => []);
+
+        inspectionData = {
+          ...inspection,
+          items: Array.isArray(items)
+            ? items
+            : [],
+        };
+
+      }
+
+      setWoInspection((prev) => ({
+        ...prev,
+        [woId]: inspectionData,
+      }));
+
+    } catch (err) {
+
+      console.error(
+        `Failed to load details for WO #${woId}:`,
+        err
+      );
+
+    } finally {
+
+      setLoadingDetails((prev) => ({
+        ...prev,
+        [woId]: false,
+      }));
+
+    }
+  };
+
+
+  /* =====================================================
+     APPROVE / REJECT
+  ===================================================== */
+
+  const handleApprove = async (woId) => {
+
+    if (approvingId) {
+      return;
+    }
+
+    try {
+
+      setApprovingId(woId);
+
+      setPendingActionError("");
+
+      await approveWorkOrder(
+        woId,
+        approveComment.trim() || null
+      );
+
+      setSuccessMessage(
+        `Work Order #${woId} approved. Invoice can now be generated.`
+      );
+
+      setApproveComment("");
+
+      await loadPendingApprovals();
+
+    } catch (err) {
+
+      console.error(
+        `Failed to approve WO #${woId}:`,
+        err
+      );
+
+      setPendingActionError(
+        err?.response?.data?.detail ||
+          "Unable to approve work order."
+      );
+
+    } finally {
+
+      setApprovingId(null);
+
+    }
+  };
+
+
+  const openRejectModal = (wo) => {
+
+    setRejectModalWO(wo);
+
+    setRejectReason("");
+
+    setPendingActionError("");
+
+  };
+
+
+  const closeRejectModal = () => {
+
+    if (rejecting) {
+      return;
+    }
+
+    setRejectModalWO(null);
+
+    setRejectReason("");
+
+  };
+
+
+  const handleReject = async () => {
+
+    if (rejecting || !rejectModalWO) {
+      return;
+    }
+
+    const reason = rejectReason.trim();
+
+    if (!reason) {
+
+      setPendingActionError(
+        "Rejection reason is required."
+      );
+
+      return;
+    }
+
+    try {
+
+      setRejecting(true);
+
+      setPendingActionError("");
+
+      await rejectWorkOrder(
+        rejectModalWO.id,
+        reason
+      );
+
+      setSuccessMessage(
+        `Work Order #${rejectModalWO.id} rejected. Mechanic has been notified.`
+      );
+
+      setRejectModalWO(null);
+
+      setRejectReason("");
+
+      await loadPendingApprovals();
+
+    } catch (err) {
+
+      console.error(
+        `Failed to reject WO #${rejectModalWO.id}:`,
+        err
+      );
+
+      setPendingActionError(
+        err?.response?.data?.detail ||
+          "Unable to reject work order."
+      );
+
+    } finally {
+
+      setRejecting(false);
+
+    }
+  };
+
+
+  /* =====================================================
      INITIAL LOAD
   ===================================================== */
 
@@ -1671,6 +2557,8 @@ export default function AdvisorDashboard() {
     loadBookings();
 
     loadWorkOrders();
+
+    loadPendingApprovals();
 
   }, []);
 
@@ -1696,6 +2584,8 @@ export default function AdvisorDashboard() {
 
     loadWorkOrders();
 
+    loadPendingApprovals();
+
   };
 
 
@@ -1718,6 +2608,7 @@ export default function AdvisorDashboard() {
       (wo) =>
         wo.status === "IN_PROGRESS"
     ).length,
+    pendingApproval: pendingApprovals.length,
     completed: workOrders.filter(
       (wo) =>
         wo.status === "COMPLETED"
@@ -2051,6 +2942,25 @@ export default function AdvisorDashboard() {
 
             <small>
               Currently being worked on
+            </small>
+
+          </div>
+
+
+          <div className="dashboard-card">
+
+            <span>
+              Pending Approval
+            </span>
+
+            <strong>
+              {pendingLoading
+                ? "…"
+                : summary.pendingApproval}
+            </strong>
+
+            <small>
+              Awaiting your decision
             </small>
 
           </div>
@@ -2601,7 +3511,994 @@ export default function AdvisorDashboard() {
 
         </div>
 
+
+        {/* =================================================
+            PENDING APPROVALS SECTION
+        ================================================= */}
+
+        <div className="advisor-section">
+
+          <div className="section-header">
+
+            <div>
+
+              <h2>
+                Pending Approvals
+              </h2>
+
+              <p>
+                Work orders submitted by mechanics
+                for your review
+              </p>
+
+            </div>
+
+          </div>
+
+
+          {pendingError && !pendingLoading && (
+
+            <div className="advisor-error">
+
+              <AlertCircle
+                size={16}
+              />
+
+              <span>
+                {pendingError}
+              </span>
+
+              <button
+                type="button"
+                onClick={loadPendingApprovals}
+              >
+                Try Again
+              </button>
+
+            </div>
+
+          )}
+
+
+          {pendingActionError && (
+
+            <div className="advisor-error">
+
+              <AlertCircle
+                size={16}
+              />
+
+              <span>
+                {pendingActionError}
+              </span>
+
+            </div>
+
+          )}
+
+
+          {pendingLoading ? (
+
+            <div className="booking-list">
+
+              {[1, 2].map(
+                (item) => (
+
+                  <div
+                    className="booking-skeleton"
+                    key={item}
+                  >
+
+                    <div
+                      className="skeleton skeleton-icon"
+                    />
+
+                    <div className="booking-skeleton-content">
+
+                      <div
+                        className="skeleton skeleton-title"
+                      />
+
+                      <div
+                        className="skeleton skeleton-line"
+                      />
+
+                      <div
+                        className="skeleton skeleton-line short"
+                      />
+
+                    </div>
+
+                  </div>
+
+                )
+              )}
+
+            </div>
+
+          ) : pendingApprovals.length === 0 ? (
+
+            <div className="advisor-empty">
+
+              <div className="advisor-empty-icon">
+
+                <CheckCircle2
+                  size={26}
+                />
+
+              </div>
+
+
+              <h3>
+                No pending approvals
+              </h3>
+
+
+              <p>
+                Work orders submitted by mechanics
+                will appear here for your review.
+              </p>
+
+            </div>
+
+          ) : (
+
+            <div className="booking-list">
+
+              {pendingApprovals.map((wo) => {
+
+                const isExpanded =
+                  expandedWO === wo.id;
+
+                const detailsLoading =
+                  loadingDetails[wo.id];
+
+                const parts =
+                  woParts[wo.id] || [];
+
+                const services =
+                  woServices[wo.id] || [];
+
+                const inspection =
+                  woInspection[wo.id] || null;
+
+                const isApproving =
+                  approvingId === wo.id;
+
+                return (
+
+                  <article
+                    className="booking-card"
+                    key={wo.id}
+                  >
+
+                    <div className="booking-card-main">
+
+                      <div className="booking-icon">
+
+                        <ClipboardList
+                          size={23}
+                        />
+
+                      </div>
+
+
+                      <div className="booking-content">
+
+                        <div className="booking-title-row">
+
+                          <h2>
+                            Work Order #{wo.id}
+                          </h2>
+
+
+                          <span className="booking-status confirmed">
+
+                            SUBMITTED FOR APPROVAL
+
+                          </span>
+
+                        </div>
+
+
+                        <div className="booking-meta">
+
+                          <div>
+
+                            <CalendarDays
+                              size={14}
+                            />
+
+                            Booking #{wo.booking_id}
+
+                          </div>
+
+
+                          <div>
+
+                            <Car
+                              size={14}
+                            />
+
+                            Vehicle #{wo.vehicle_id}
+
+                          </div>
+
+
+                          <div>
+
+                            <Wrench
+                              size={14}
+                            />
+
+                            Mechanic #{wo.assigned_mechanic_id || "—"}
+
+
+                          </div>
+
+                        </div>
+
+
+                        {wo.complaint && (
+
+                          <p className="booking-notes">
+
+                            <BookOpen
+                              size={13}
+                            />
+
+                            {wo.complaint}
+
+                          </p>
+
+                        )}
+
+                      </div>
+
+                    </div>
+
+
+                    <div className="advisor-card-footer">
+
+                      <button
+                        type="button"
+                        className="secondary-action"
+                        onClick={() =>
+                          toggleExpandWO(wo.id)
+                        }
+                      >
+
+                        {isExpanded ? (
+                          <ChevronUp
+                            size={16}
+                          />
+                        ) : (
+                          <Settings2
+                            size={16}
+                          />
+                        )}
+
+                        {isExpanded
+                          ? "Hide Details"
+                          : "View Actual Work"}
+
+                      </button>
+
+
+                      <div className="advisor-pending-actions">
+
+                        <div className="advisor-approve-comment">
+
+                          <input
+                            type="text"
+                            placeholder="Optional approval comment..."
+                            value={
+                              isExpanded
+                                ? approveComment
+                                : ""
+                            }
+                            onChange={(e) =>
+                              setApproveComment(
+                                e.target.value
+                              )
+                            }
+                            disabled={
+                              isApproving ||
+                              rejecting
+                            }
+                          />
+
+                        </div>
+
+                        <button
+                          type="button"
+                          className="primary-action"
+                          onClick={() =>
+                            handleApprove(wo.id)
+                          }
+                          disabled={
+                            isApproving ||
+                            rejecting
+                          }
+                        >
+
+                          {isApproving ? (
+                            <LoaderCircle
+                              size={16}
+                              className="spin"
+                            />
+                          ) : (
+                            <CheckCircle2
+                              size={16}
+                            />
+                          )}
+
+                          {isApproving
+                            ? "Approving..."
+                            : "Approve"}
+
+                        </button>
+
+
+                        <button
+                          type="button"
+                          className="secondary-action advisor-reject-btn"
+                          onClick={() =>
+                            openRejectModal(wo)
+                          }
+                          disabled={
+                            isApproving ||
+                            rejecting
+                          }
+                        >
+
+                          <X
+                            size={16}
+                          />
+
+                          Reject
+
+                        </button>
+
+                      </div>
+
+                    </div>
+
+
+                    {isExpanded && (
+
+                      <div className="advisor-workflow">
+
+                        {detailsLoading ? (
+
+                          <div className="advisor-workflow-loading">
+
+                            <LoaderCircle
+                              size={18}
+                              className="spin"
+                            />
+
+                            Loading actual work details...
+
+                          </div>
+
+                        ) : (
+
+                          <div className="advisor-workflow-grid">
+
+                            {/* INSPECTION FINDINGS */}
+
+                            {inspection && (
+
+                              <div className="advisor-workflow-panel">
+
+                                <div className="advisor-workflow-panel-head">
+
+                                  <h3>
+
+                                    <ClipboardList
+                                      size={16}
+                                    />
+
+                                    Inspection Findings ({inspection.items?.length || 0})
+
+                                  </h3>
+
+                                </div>
+
+                                {inspection.overall_notes && (
+
+                                  <div className="advisor-inspection-notes">
+
+                                    <strong>Overall Notes:</strong>{" "}
+                                    {inspection.overall_notes}
+
+                                  </div>
+
+                                )}
+
+                                {(!inspection.items || inspection.items.length === 0) ? (
+
+                                  <div className="advisor-workflow-empty">
+
+                                    <ClipboardList
+                                      size={22}
+                                    />
+
+                                    <p>
+                                      No inspection findings recorded.
+                                    </p>
+
+                                  </div>
+
+                                ) : (
+
+                                  <div className="advisor-part-table-wrap">
+
+                                    <table className="advisor-part-table">
+
+                                      <thead>
+
+                                        <tr>
+
+                                          <th>Component</th>
+
+                                          <th>Condition</th>
+
+                                          <th>Severity</th>
+
+                                          <th>Notes</th>
+
+                                          <th>Recommended Action</th>
+
+                                        </tr>
+
+                                      </thead>
+
+                                      <tbody>
+
+                                        {inspection.items.map((item) => (
+
+                                          <tr key={item.id}>
+
+                                            <td>
+                                              {item.component}
+                                            </td>
+
+                                            <td>
+                                              {item.condition}
+                                            </td>
+
+                                            <td>
+
+                                              <span className={`booking-status ${
+                                                item.severity === "CRITICAL"
+                                                  ? "cancelled"
+                                                  : item.severity === "HIGH"
+                                                    ? "cancelled"
+                                                    : item.severity === "MEDIUM"
+                                                      ? "pending"
+                                                      : "completed"
+                                              }`}>
+
+                                                {item.severity}
+
+                                              </span>
+
+                                            </td>
+
+                                            <td>
+                                              {item.notes || "—"}
+                                            </td>
+
+                                            <td>
+                                              {item.recommended_action || "—"}
+                                            </td>
+
+                                          </tr>
+
+                                        ))}
+
+                                      </tbody>
+
+                                    </table>
+
+                                  </div>
+
+                                )}
+
+                              </div>
+
+                            )}
+
+                            {/* PARTS */}
+
+                            <div className="advisor-workflow-panel">
+
+                              <div className="advisor-workflow-panel-head">
+
+                                <h3>
+
+                                  <Package
+                                    size={16}
+                                  />
+
+                                  Parts Used ({parts.length})
+
+                                </h3>
+
+                              </div>
+
+
+                              {parts.length === 0 ? (
+
+                                <div className="advisor-workflow-empty">
+
+                                  <Package
+                                    size={22}
+                                  />
+
+                                  <p>
+                                    No parts used.
+                                  </p>
+
+                                </div>
+
+                              ) : (
+
+                                <div className="advisor-part-table-wrap">
+
+                                  <table className="advisor-part-table">
+
+                                    <thead>
+
+                                      <tr>
+
+                                        <th>Part</th>
+
+                                        <th>Source</th>
+
+                                        <th>Qty</th>
+
+                                        <th>Unit Price</th>
+
+                                        <th>Total</th>
+
+                                      </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+                                      {parts.map((p) => (
+
+                                        <tr key={p.id}>
+
+                                          <td>
+                                            {partById.get(p.part_id)?.name || `Part #${p.part_id}`}
+                                          </td>
+
+                                          <td>
+
+                                            <span className={`booking-status ${
+                                              p.source === "ACTUAL"
+                                                ? "completed"
+                                                : "pending"
+                                            }`}>
+
+                                              {p.source || "ESTIMATE"}
+
+                                            </span>
+
+                                          </td>
+
+                                          <td>
+                                            {p.quantity}
+                                          </td>
+
+                                          <td>
+                                            {formatCurrency(
+                                              p.unit_price
+                                            )}
+                                          </td>
+
+                                          <td>
+                                            {formatCurrency(
+                                              p.total_price
+                                            )}
+                                          </td>
+
+                                        </tr>
+
+                                      ))}
+
+                                    </tbody>
+
+                                  </table>
+
+                                </div>
+
+                              )}
+
+                            </div>
+
+
+                            {/* SERVICES / CONSUMABLES / LABOR */}
+
+                            <div className="advisor-workflow-panel">
+
+                              <div className="advisor-workflow-panel-head">
+
+                                <h3>
+
+                                  <Wrench
+                                    size={16}
+                                  />
+
+                                  Services & Labor ({services.length})
+
+                                </h3>
+
+                              </div>
+
+
+                              {services.length === 0 ? (
+
+                                <div className="advisor-workflow-empty">
+
+                                  <Wrench
+                                    size={22}
+                                  />
+
+                                  <p>
+                                    No services or labor recorded.
+                                  </p>
+
+                                </div>
+
+                              ) : (
+
+                                <div className="advisor-part-table-wrap">
+
+                                  <table className="advisor-part-table">
+
+                                    <thead>
+
+                                      <tr>
+
+                                        <th>Type</th>
+
+                                        <th>Description</th>
+
+                                        <th>Qty</th>
+
+                                        <th>Unit Price</th>
+
+                                        <th>Total</th>
+
+                                      </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+                                      {services.map((s) => (
+
+                                        <tr key={s.id}>
+
+                                          <td>
+
+                                            <span className={`booking-status ${
+                                              s.item_type === "LABOR"
+                                                ? "completed"
+                                                : s.item_type === "CONSUMABLE"
+                                                  ? "cancelled"
+                                                  : "pending"
+                                            }`}>
+
+                                              {s.item_type || "SERVICE"}
+
+                                            </span>
+
+                                          </td>
+
+                                          <td>
+                                            {s.description || "—"}
+                                          </td>
+
+                                          <td>
+                                            {s.quantity}
+                                          </td>
+
+                                          <td>
+                                            {formatCurrency(
+                                              s.unit_price
+                                            )}
+                                          </td>
+
+                                          <td>
+                                            {formatCurrency(
+                                              s.total_price
+                                            )}
+                                          </td>
+
+                                        </tr>
+
+                                      ))}
+
+                                    </tbody>
+
+                                  </table>
+
+                                </div>
+
+                              )}
+
+                            </div>
+
+
+                            {/* GRAND TOTAL */}
+
+                            {(parts.length > 0 || services.length > 0) && (
+
+                              <div className="advisor-workflow-panel">
+
+                                <div className="advisor-workflow-panel-head">
+
+                                  <h3>
+
+                                    <Receipt
+                                      size={16}
+                                    />
+
+                                    Total Summary
+
+                                  </h3>
+
+                                </div>
+
+                                <div className="advisor-grand-total">
+
+                                  <div className="advisor-grand-total-row">
+
+                                    <span>Parts Total</span>
+
+                                    <span>
+                                      {formatCurrency(
+                                        parts.reduce(
+                                          (sum, p) =>
+                                            sum + Number(p.total_price || 0),
+                                          0
+                                        )
+                                      )}
+                                    </span>
+
+                                  </div>
+
+                                  <div className="advisor-grand-total-row">
+
+                                    <span>Services & Labor Total</span>
+
+                                    <span>
+                                      {formatCurrency(
+                                        services.reduce(
+                                          (sum, s) =>
+                                            sum + Number(s.total_price || 0),
+                                          0
+                                        )
+                                      )}
+                                    </span>
+
+                                  </div>
+
+                                  <div className="advisor-grand-total-row advisor-grand-total-final">
+
+                                    <span>Grand Total</span>
+
+                                    <span>
+                                      {formatCurrency(
+                                        parts.reduce(
+                                          (sum, p) =>
+                                            sum + Number(p.total_price || 0),
+                                          0
+                                        ) +
+                                        services.reduce(
+                                          (sum, s) =>
+                                            sum + Number(s.total_price || 0),
+                                          0
+                                        )
+                                      )}
+                                    </span>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            )}
+
+                          </div>
+
+                        )}
+
+                      </div>
+
+                    )}
+
+                  </article>
+
+                );
+
+              })}
+
+            </div>
+
+          )}
+
+        </div>
+
       </div>
+
+
+      {/* =================================================
+          REJECTION REASON MODAL
+      ================================================= */}
+
+      {rejectModalWO && (
+
+        <div
+          className="modal-overlay"
+          onClick={closeRejectModal}
+        >
+
+          <div
+            className="modal-card"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <div className="modal-header">
+
+              <div>
+
+                <h2>
+                  Reject Work Order
+                </h2>
+
+                <p>
+                  Work Order #{rejectModalWO.id}
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className="modal-close"
+                onClick={closeRejectModal}
+                disabled={rejecting}
+                aria-label="Close"
+              >
+
+                <X
+                  size={18}
+                />
+
+              </button>
+
+            </div>
+
+
+            <div className="modal-body">
+
+              <p className="advisor-confirm-text">
+
+                Provide a reason for rejecting
+                Work Order #{rejectModalWO.id}.
+                The mechanic will be notified and
+                can make corrections.
+
+              </p>
+
+
+              {pendingActionError && (
+
+                <div className="advisor-error">
+
+                  <AlertCircle
+                    size={16}
+                  />
+
+                  <span>
+                    {pendingActionError}
+                  </span>
+
+                </div>
+
+              )}
+
+
+              <div className="modal-field">
+
+                <label>
+                  Rejection Reason (required)
+                </label>
+
+                <textarea
+                  rows={3}
+                  value={rejectReason}
+                  onChange={(e) => {
+
+                    setRejectReason(
+                      e.target.value
+                    );
+
+                    setPendingActionError("");
+
+                  }}
+                  placeholder="Describe what needs to be corrected"
+                  disabled={rejecting}
+                  maxLength={500}
+                />
+
+                <small>
+                  {rejectReason.length}/500
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div className="modal-actions">
+
+              <button
+                type="button"
+                className="secondary-action"
+                onClick={closeRejectModal}
+                disabled={rejecting}
+              >
+
+                Cancel
+
+              </button>
+
+
+              <button
+                type="button"
+                className="primary-action advisor-reject-btn"
+                onClick={handleReject}
+                disabled={rejecting}
+              >
+
+                {rejecting ? (
+                  <LoaderCircle
+                    size={17}
+                    className="spin"
+                  />
+                ) : (
+                  <X
+                    size={17}
+                  />
+                )}
+
+                {rejecting
+                  ? "Rejecting..."
+                  : "Reject Work Order"}
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
 
       {/* =================================================

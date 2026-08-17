@@ -49,6 +49,11 @@ class InvoiceItem(Base):
         nullable=False
     )
 
+    item_type: Mapped[str | None] = mapped_column(
+        String(20),
+        nullable=True
+    )
+
     invoice = relationship(
         "Invoice",
         backref="items"

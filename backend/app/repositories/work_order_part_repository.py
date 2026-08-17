@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.work_order_part import WorkOrderPart
@@ -36,6 +36,34 @@ class WorkOrderPartRepository:
         return list(
             self.db.scalars(statement).all()
         )
+
+    def get_by_work_order_and_part(
+        self,
+        work_order_id: int,
+        part_id: int,
+    ) -> WorkOrderPart | None:
+
+        statement = select(WorkOrderPart).where(
+            WorkOrderPart.work_order_id == work_order_id,
+            WorkOrderPart.part_id == part_id,
+        )
+
+        return self.db.scalar(statement)
+
+    def count_actual_by_work_order(
+        self,
+        work_order_id: int
+    ) -> int:
+
+        statement = (
+            select(func.count(WorkOrderPart.id))
+            .where(
+                WorkOrderPart.work_order_id == work_order_id,
+                WorkOrderPart.source == "ACTUAL",
+            )
+        )
+
+        return self.db.scalar(statement) or 0
 
     def create(
         self,

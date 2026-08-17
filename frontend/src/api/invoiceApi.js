@@ -45,4 +45,14 @@ export const getWorkOrderInvoice = async (
   return response.data;
 };
 
+export const generateInvoice = async (
+  workOrderId
+) => {
+  const response = await invoiceApi.post(
+    `/api/v1/invoices/work-order/${workOrderId}`
+  );
+
+  return response.data;
+};
+
 export default invoiceApi;

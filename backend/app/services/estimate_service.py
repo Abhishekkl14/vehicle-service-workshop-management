@@ -87,11 +87,17 @@ class EstimateService:
                 Customer.user_id == current_user.id
             )
 
+        # Mechanic can access only estimates of assigned work orders
+        elif current_user.role.name == "MECHANIC":
+
+            query = query.where(
+                WorkOrder.assigned_mechanic_id == current_user.id
+            )
+
         # Staff roles can access estimates
         elif current_user.role.name not in {
             "ADMIN",
             "SERVICE_ADVISOR",
-            "MECHANIC",
         }:
             return None
 
@@ -133,11 +139,17 @@ class EstimateService:
                 Customer.user_id == current_user.id
             )
 
+        # Mechanic can access only work orders assigned to them
+        elif current_user.role.name == "MECHANIC":
+
+            query = query.where(
+                WorkOrder.assigned_mechanic_id == current_user.id
+            )
+
         # Only known application roles
         elif current_user.role.name not in {
             "ADMIN",
             "SERVICE_ADVISOR",
-            "MECHANIC",
         }:
             return []
 

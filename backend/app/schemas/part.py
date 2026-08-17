@@ -33,3 +33,4 @@ class WorkOrderPartResponse(BaseModel):
     quantity: int
     unit_price: Decimal
     total_price: Decimal
+    source: str

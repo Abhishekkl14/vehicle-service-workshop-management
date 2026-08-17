@@ -5280,6 +5280,98 @@ input {
   color: var(--quantum-blue);
 }
 
+.advisor-inspection-notes {
+  padding: 10px 14px;
+
+  background: rgba(var(--quantum-blue-rgb, 59, 130, 246), 0.06);
+
+  border-left: 3px solid var(--quantum-blue);
+
+  border-radius: 4px;
+
+  margin: 0 14px 10px;
+
+  font-size: 12.5px;
+
+  line-height: 1.5;
+
+  color: var(--text-primary);
+}
+
+.advisor-inspection-notes strong {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+.advisor-grand-total {
+  padding: 12px 14px;
+}
+
+.advisor-grand-total-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 6px 0;
+
+  font-size: 12.5px;
+
+  color: var(--text-secondary);
+
+  border-bottom: 1px solid var(--border-color, rgba(0,0,0,0.06));
+}
+
+.advisor-grand-total-row:last-child {
+  border-bottom: none;
+}
+
+.advisor-grand-total-final {
+  font-weight: 600;
+
+  font-size: 14px;
+
+  color: var(--text-primary);
+
+  padding-top: 10px;
+
+  margin-top: 4px;
+
+  border-top: 2px solid var(--border-color, rgba(0,0,0,0.1));
+
+  border-bottom: none;
+}
+
+.advisor-approve-comment {
+  flex: 1;
+}
+
+.advisor-approve-comment input {
+  width: 100%;
+
+  padding: 7px 10px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 6px;
+
+  font-size: 12px;
+
+  background: white;
+}
+
+.advisor-approve-comment input:focus {
+  outline: none;
+
+  border-color: var(--quantum-blue);
+}
+
 .advisor-workflow-reload {
   min-height: 32px;
 
@@ -5607,6 +5699,110 @@ input {
   font-weight: 600;
 }
 
+/* INVOICE */
+
+.advisor-invoice-panel {
+  margin-top: 16px;
+}
+
+.advisor-invoice-actions {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 10px;
+}
+
+.advisor-invoice-card {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.advisor-invoice-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.advisor-invoice-row strong {
+  color: var(--cyber-teal);
+
+  font-size: 13px;
+}
+
+.advisor-invoice-totals {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 8px 18px;
+
+  margin-top: 8px;
+
+  padding-top: 12px;
+
+  border-top: 1px dashed var(--border);
+}
+
+.advisor-invoice-totals div {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 8px;
+}
+
+.advisor-invoice-totals span {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+}
+
+.advisor-invoice-totals strong {
+  color: var(--cyber-teal);
+
+  font-size: 12px;
+}
+
+.advisor-confirm-text {
+  margin: 0;
+
+  color: var(--cyber-teal);
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.advisor-pending-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.advisor-reject-btn {
+  border-color: rgba(239, 68, 68, 0.45);
+
+  color: #dc2626;
+}
+
+.advisor-reject-btn:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
+
 @media (max-width: 960px) {
   .advisor-workflow-grid {
     grid-template-columns: 1fr;
@@ -5790,6 +5986,64 @@ input {
   margin: 0 20px;
 }
 
+.mechanic-warning {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  padding: 12px 15px;
+
+  border: 1px solid
+    rgba(217, 119, 6, 0.35);
+  border-radius: 14px;
+
+  background: #fffbeb;
+
+  color: #92400e;
+
+  font-size: 13px;
+
+  font-weight: 500;
+}
+
+.mechanic-warning svg {
+  flex-shrink: 0;
+
+  color: #d97706;
+}
+
+.mechanic-warning button {
+  margin-left: auto;
+
+  padding: 5px 12px;
+
+  border: 1px solid
+    rgba(217, 119, 6, 0.4);
+  border-radius: 8px;
+
+  background: white;
+
+  color: #92400e;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.mechanic-warning button:hover {
+  background: #d97706;
+
+  color: white;
+}
+
 /* SUMMARY CARDS */
 
 .mechanic-summary-grid {
@@ -5826,6 +6080,54 @@ input {
   flex-wrap: wrap;
 
   gap: 10px;
+}
+
+.mechanic-submitted-chip {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 12px;
+
+  border-radius: 6px;
+
+  background: rgba(251, 191, 36, 0.12);
+
+  color: #d97706;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.mechanic-rejection-note {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 6px;
+
+  padding: 8px 12px;
+
+  border-radius: 6px;
+
+  background: rgba(239, 68, 68, 0.1);
+
+  color: #dc2626;
+
+  font-size: 0.82rem;
+
+  width: 100%;
+
+  margin-top: 4px;
+}
+
+.mechanic-rejection-note span {
+  line-height: 1.4;
 }
 
 .mechanic-inspection-toggle {
@@ -6165,6 +6467,225 @@ input {
   font-size: 12px;
 }
 
+/* ACTUAL WORK PANEL */
+
+.mechanic-actual-toggle {
+  border-color: rgba(36, 127, 255, 0.35);
+}
+
+.mechanic-actual-panel {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+
+  margin-top: 18px;
+  padding: 18px 20px;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: #fbfdfe;
+}
+
+.mechanic-actual-loading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.mechanic-actual-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+}
+
+.mechanic-actual-header h4 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mechanic-actual-header p {
+  margin: 2px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+}
+
+.mechanic-actual-section {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  padding: 14px 16px;
+
+  background: #fff;
+}
+
+.mechanic-actual-section-head {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.mechanic-actual-section-head h5 {
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  flex: 1;
+}
+
+.mechanic-actual-add-btn {
+  margin-left: auto;
+
+  padding: 4px 10px !important;
+
+  font-size: 11px !important;
+}
+
+.mechanic-actual-empty {
+  margin: 10px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+
+  font-style: italic;
+}
+
+.mechanic-actual-items {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.mechanic-actual-item {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 8px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--bg-secondary, #f9fafb);
+}
+
+.mechanic-actual-item-info {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  font-size: 12px;
+}
+
+.mechanic-actual-item-info strong {
+  font-size: 12px;
+}
+
+.mechanic-actual-item-info span {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+}
+
+.mechanic-actual-badge {
+  padding: 2px 8px;
+
+  border-radius: 10px;
+
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.mechanic-actual-hint {
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+
+  font-style: italic;
+}
+
+.mechanic-actual-summary {
+  padding: 14px 16px;
+
+  border: 1px solid rgba(36, 127, 255, 0.2);
+  border-radius: 12px;
+
+  background: rgba(36, 127, 255, 0.04);
+}
+
+.mechanic-actual-summary h5 {
+  margin: 0 0 10px;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mechanic-actual-summary-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 10px;
+}
+
+.mechanic-actual-summary-grid div {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 2px;
+
+  padding: 8px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: #fff;
+}
+
+.mechanic-actual-summary-grid span {
+  color: var(--text-secondary);
+
+  font-size: 10px;
+}
+
+.mechanic-actual-summary-grid strong {
+  font-size: 16px;
+}
+
 /* MOBILE */
 
 @media (max-width: 720px) {
@@ -6219,6 +6740,26 @@ input {
   .mechanic-form-actions .primary-action,
   .mechanic-form-actions .secondary-action {
     flex: 1;
+  }
+
+  .mechanic-actual-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mechanic-actual-item {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 6px;
+  }
+
+  .mechanic-actual-item-info {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 2px;
   }
 }
 /* =====================================================
@@ -6443,6 +6984,56 @@ input {
 
   font-size: 20px !important;
   font-weight: 800;
+}
+
+.invoice-line-items {
+  margin-top: 22px;
+}
+
+.invoice-line-items-table-wrap {
+  overflow-x: auto;
+
+  margin-top: 12px;
+}
+
+.invoice-line-items-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 13px;
+}
+
+.invoice-line-items-table th {
+  text-align: left;
+
+  padding: 10px 14px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+
+  color: var(--text-secondary);
+
+  background: var(--bg-secondary, #f8f9fa);
+
+  border-bottom: 1px solid var(--border);
+}
+
+.invoice-line-items-table td {
+  padding: 10px 14px;
+
+  border-bottom: 1px solid var(--border);
+
+  color: var(--text-primary);
+}
+
+.invoice-line-items-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .invoice-payments {
@@ -7508,4 +8099,46 @@ input {
 
 .dashboard-info-card .primary-action {
   align-self: flex-start;
+}
+
+
+/* =========================================================
+   PRINT STYLES — Invoice Download
+========================================================= */
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .invoice-page,
+  .invoice-page * {
+    visibility: visible;
+  }
+
+  .invoice-page {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 24px;
+    background: #fff;
+  }
+
+  .invoice-header .back-button,
+  .invoice-header .download-invoice-btn,
+  .invoice-header .notice-error,
+  .notice-success,
+  .invoice-payments,
+  .payment-section {
+    display: none !important;
+  }
+
+  .invoice-summary-card,
+  .invoice-line-items,
+  .invoice-summary-card * {
+    color: #000 !important;
+    background: #fff !important;
+    border-color: #ddd !important;
+  }
 }
