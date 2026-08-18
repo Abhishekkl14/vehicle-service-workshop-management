@@ -21,6 +21,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import AnimatedButton from "../../components/ui/animated-button";
 
+import porscheImage from "../../assets/vehicles/PORCHE.png";
+
 
 export default function MyVehicles() {
   const { user } = useAuth();
@@ -389,9 +391,10 @@ export default function MyVehicles() {
                     }
                   >
                     <div className="vehicle-card-image">
-                      <div className="vehicle-card-icon">
-                        <Car size={32} />
-                      </div>
+                      <img
+                        src={porscheImage}
+                        alt={getVehicleName(vehicle)}
+                      />
                     </div>
 
                     <h2>
