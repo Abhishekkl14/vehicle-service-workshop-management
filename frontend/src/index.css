@@ -198,6 +198,20 @@ input {
   font-size: 13px;
 }
 
+.brand-car-image {
+  margin-top: 48px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.brand-car-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  opacity: 0.9;
+  filter: brightness(1.05) contrast(1.05);
+}
+
 /* RIGHT */
 
 .login-form-panel {
@@ -487,6 +501,101 @@ input {
 }
 
 /* ========================================
+   LOADING SCREEN OVERLAY
+======================================== */
+
+.loading-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--cyber-teal);
+  color: var(--aqua-foam);
+}
+
+.loading-screen-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+
+  width: 320px;
+}
+
+.loading-screen-phrase {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-align: center;
+  min-height: 22px;
+}
+
+/* Progress bar */
+
+.loading-screen-bar-track {
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(143, 255, 224, 0.12);
+  overflow: hidden;
+}
+
+.loading-screen-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--aqua-foam);
+  transition: width 80ms linear;
+}
+
+/* Counter */
+
+.loading-screen-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.loading-screen-digits {
+  display: flex;
+  gap: 4px;
+}
+
+.loading-screen-digit {
+  width: 36px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(143, 255, 224, 0.08);
+}
+
+.loading-screen-digit-inner {
+  display: flex;
+  flex-direction: column;
+  transition: transform 120ms ease-out;
+}
+
+.loading-screen-digit-inner span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  font-size: 30px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.loading-screen-percent {
+  font-size: 16px;
+  font-weight: 700;
+  opacity: 0.6;
+}
+
+/* ========================================
    RESPONSIVE
 ======================================== */
 
@@ -728,9 +837,7 @@ input {
 
   border-bottom: 1px solid var(--border);
 
-  background: rgba(255, 255, 255, 0.92);
-
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.98);
 
   position: sticky;
   top: 0;
@@ -928,6 +1035,22 @@ input {
   box-shadow:
     0 6px 20px
       rgba(3, 49, 58, 0.04);
+}
+
+.dashboard-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 10px;
+
+  background: rgba(0, 191, 166, 0.08);
+  color: var(--cyber-teal);
+
+  margin-bottom: 12px;
 }
 
 .dashboard-card span {
@@ -1240,6 +1363,37 @@ input {
   transition:
     transform 0.2s,
     box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.vehicle-card-image {
+  margin: -22px -22px 16px;
+  border-radius: 18px 18px 0 0;
+  overflow: hidden;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--pale-sky) 0%, var(--ice-glass) 100%);
+}
+
+.vehicle-card-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: white;
+  color: var(--quantum-blue);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.vehicle-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
 }
 
 .vehicle-card:hover {
@@ -1349,6 +1503,25 @@ input {
   font-weight: 750;
 
   cursor: pointer;
+}
+
+.vehicle-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--quantum-blue);
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.vehicle-card-action:hover {
+  color: var(--cyber-teal);
 }
 
 /* ERROR */
@@ -1527,6 +1700,12 @@ input {
     transform: rotate(360deg);
   }
 }
+
+/* =====================================================
+   VEHICLE CAROUSEL
+===================================================== */
+
+/* Carousel styles removed - using grid layout instead */
 
 /* RESPONSIVE */
 
@@ -8141,4 +8320,98 @@ input {
     background: #fff !important;
     border-color: #ddd !important;
   }
+}
+
+
+/* ================================================
+   PROXIMITY SCALE GRID
+=============================================== */
+
+.proximity-grid-wrapper {
+  margin: 32px 0;
+}
+
+.proximity-grid-header {
+  margin-bottom: 28px;
+}
+
+.proximity-grid-header h2 {
+  margin: 8px 0 0;
+  color: var(--quantum-blue);
+  font-size: 22px;
+}
+
+.proximity-grid-header p {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.proximity-stage {
+  position: relative;
+
+  border: none;
+  border-radius: 18px;
+  background: transparent;
+
+  overflow: visible;
+  min-height: 400px;
+}
+
+.proximity-grid {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+.proximity-card {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: rotate(var(--r));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  padding: 18px 22px;
+
+  border: none;
+  box-shadow: none;
+
+  cursor: default;
+  user-select: none;
+}
+
+.proximity-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 12px;
+  background: rgba(36, 127, 255, 0.08);
+  color: var(--quantum-blue);
+}
+
+.proximity-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.proximity-stage-label {
+  position: absolute;
+  bottom: 14px;
+  right: 20px;
+  left: auto;
+  transform: none;
+
+  font-size: 11px;
+  color: #b0bec5;
+  letter-spacing: 0.5px;
 }

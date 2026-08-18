@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   RefreshCw,
@@ -63,6 +63,7 @@ import {
   getInspectionByWorkOrderId,
   getInspectionItems,
 } from "../../api/inspectionApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const WORK_ORDER_STATUSES = [
@@ -836,7 +837,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
       <div className="advisor-card-footer">
 
-        <button
+        <AnimatedButton
           type="button"
           className="secondary-action"
           onClick={handleToggle}
@@ -856,7 +857,7 @@ function WorkOrderWorkflow({ workOrder }) {
             ? "Hide Workflow"
             : "Manage Workflow"}
 
-        </button>
+        </AnimatedButton>
 
       </div>
 
@@ -886,7 +887,7 @@ function WorkOrderWorkflow({ workOrder }) {
                 </h3>
 
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="secondary-action advisor-workflow-reload"
                   onClick={loadParts}
@@ -904,7 +905,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
                   Refresh
 
-                </button>
+                </AnimatedButton>
 
               </div>
 
@@ -955,12 +956,12 @@ function WorkOrderWorkflow({ workOrder }) {
                     {partsError}
                   </span>
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     onClick={loadParts}
                   >
                     Try Again
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 
@@ -1186,7 +1187,7 @@ function WorkOrderWorkflow({ workOrder }) {
                   </div>
 
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="primary-action"
                     onClick={handleAddPart}
@@ -1211,7 +1212,7 @@ function WorkOrderWorkflow({ workOrder }) {
                       ? "Adding..."
                       : "Add Part"}
 
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 
@@ -1255,7 +1256,7 @@ function WorkOrderWorkflow({ workOrder }) {
                 </h3>
 
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="secondary-action advisor-workflow-reload"
                   onClick={loadEstimates}
@@ -1273,7 +1274,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
                   Refresh
 
-                </button>
+                </AnimatedButton>
 
               </div>
 
@@ -1341,12 +1342,12 @@ function WorkOrderWorkflow({ workOrder }) {
                     {estimatesError}
                   </span>
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     onClick={loadEstimates}
                   >
                     Try Again
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 
@@ -1519,7 +1520,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
                           <div className="advisor-estimate-actions">
 
-                            <button
+                            <AnimatedButton
                               type="button"
                               className="primary-action"
                               onClick={() =>
@@ -1550,7 +1551,7 @@ function WorkOrderWorkflow({ workOrder }) {
                                 ? "Sending..."
                                 : "Send Estimate"}
 
-                            </button>
+                            </AnimatedButton>
 
                           </div>
 
@@ -1623,7 +1624,7 @@ function WorkOrderWorkflow({ workOrder }) {
                   </div>
 
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="primary-action"
                     onClick={handleCreateEstimate}
@@ -1648,7 +1649,7 @@ function WorkOrderWorkflow({ workOrder }) {
                       ? "Creating..."
                       : "Create Estimate"}
 
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 
@@ -1694,7 +1695,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
                 {invoice && !invoiceLoading && (
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="secondary-action advisor-workflow-reload"
                     onClick={loadInvoice}
@@ -1707,7 +1708,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
                     Refresh
 
-                  </button>
+                  </AnimatedButton>
 
                 )}
 
@@ -1760,14 +1761,14 @@ function WorkOrderWorkflow({ workOrder }) {
                     {invoiceError}
                   </span>
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     onClick={loadInvoice}
                   >
 
                     Try Again
 
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 
@@ -1912,7 +1913,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
                 <div className="advisor-invoice-actions">
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="primary-action"
                     onClick={openConfirm}
@@ -1928,7 +1929,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
                     Generate Invoice
 
-                  </button>
+                  </AnimatedButton>
 
 
                   <p className="advisor-workflow-note">
@@ -1985,7 +1986,7 @@ function WorkOrderWorkflow({ workOrder }) {
               </div>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="modal-close"
                 onClick={closeConfirm}
@@ -1997,7 +1998,7 @@ function WorkOrderWorkflow({ workOrder }) {
                   size={18}
                 />
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -2032,7 +2033,7 @@ function WorkOrderWorkflow({ workOrder }) {
 
             <div className="modal-actions">
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="secondary-action"
                 onClick={closeConfirm}
@@ -2041,10 +2042,10 @@ function WorkOrderWorkflow({ workOrder }) {
 
                 Cancel
 
-              </button>
+              </AnimatedButton>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="primary-action"
                 onClick={handleGenerateInvoice}
@@ -2066,7 +2067,7 @@ function WorkOrderWorkflow({ workOrder }) {
                   ? "Generating..."
                   : "Generate Invoice"}
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -2766,7 +2767,7 @@ export default function AdvisorDashboard() {
           </div>
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={handleRefresh}
@@ -2788,7 +2789,7 @@ export default function AdvisorDashboard() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -2809,7 +2810,7 @@ export default function AdvisorDashboard() {
               {successMessage}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               className="advisor-success-close"
               onClick={() =>
@@ -2822,7 +2823,7 @@ export default function AdvisorDashboard() {
                 size={16}
               />
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -2861,7 +2862,7 @@ export default function AdvisorDashboard() {
             </div>
 
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={() =>
@@ -2877,7 +2878,7 @@ export default function AdvisorDashboard() {
 
               Today
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -3022,12 +3023,12 @@ export default function AdvisorDashboard() {
                 {bookingsError}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={loadBookings}
               >
                 Try Again
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -3248,7 +3249,7 @@ export default function AdvisorDashboard() {
 
                       ) : (
 
-                        <button
+                        <AnimatedButton
                           type="button"
                           className="primary-action"
                           onClick={() =>
@@ -3264,7 +3265,7 @@ export default function AdvisorDashboard() {
 
                           Create Work Order
 
-                        </button>
+                        </AnimatedButton>
 
                       )}
 
@@ -3318,12 +3319,12 @@ export default function AdvisorDashboard() {
                 {workOrdersError}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={loadWorkOrders}
               >
                 Try Again
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -3548,12 +3549,12 @@ export default function AdvisorDashboard() {
                 {pendingError}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={loadPendingApprovals}
               >
                 Try Again
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -3760,7 +3761,7 @@ export default function AdvisorDashboard() {
 
                     <div className="advisor-card-footer">
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="secondary-action"
                         onClick={() =>
@@ -3782,7 +3783,7 @@ export default function AdvisorDashboard() {
                           ? "Hide Details"
                           : "View Actual Work"}
 
-                      </button>
+                      </AnimatedButton>
 
 
                       <div className="advisor-pending-actions">
@@ -3810,7 +3811,7 @@ export default function AdvisorDashboard() {
 
                         </div>
 
-                        <button
+                        <AnimatedButton
                           type="button"
                           className="primary-action"
                           onClick={() =>
@@ -3837,10 +3838,10 @@ export default function AdvisorDashboard() {
                             ? "Approving..."
                             : "Approve"}
 
-                        </button>
+                        </AnimatedButton>
 
 
-                        <button
+                        <AnimatedButton
                           type="button"
                           className="secondary-action advisor-reject-btn"
                           onClick={() =>
@@ -3858,7 +3859,7 @@ export default function AdvisorDashboard() {
 
                           Reject
 
-                        </button>
+                        </AnimatedButton>
 
                       </div>
 
@@ -4376,7 +4377,7 @@ export default function AdvisorDashboard() {
               </div>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="modal-close"
                 onClick={closeRejectModal}
@@ -4388,7 +4389,7 @@ export default function AdvisorDashboard() {
                   size={18}
                 />
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -4456,7 +4457,7 @@ export default function AdvisorDashboard() {
 
             <div className="modal-actions">
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="secondary-action"
                 onClick={closeRejectModal}
@@ -4465,10 +4466,10 @@ export default function AdvisorDashboard() {
 
                 Cancel
 
-              </button>
+              </AnimatedButton>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="primary-action advisor-reject-btn"
                 onClick={handleReject}
@@ -4490,7 +4491,7 @@ export default function AdvisorDashboard() {
                   ? "Rejecting..."
                   : "Reject Work Order"}
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -4534,7 +4535,7 @@ export default function AdvisorDashboard() {
               </div>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="modal-close"
                 onClick={closeCreateModal}
@@ -4546,7 +4547,7 @@ export default function AdvisorDashboard() {
                   size={18}
                 />
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -4650,7 +4651,7 @@ export default function AdvisorDashboard() {
 
             <div className="modal-actions">
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="secondary-action"
                 onClick={closeCreateModal}
@@ -4659,10 +4660,10 @@ export default function AdvisorDashboard() {
 
                 Cancel
 
-              </button>
+              </AnimatedButton>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="primary-action"
                 onClick={handleCreateWorkOrder}
@@ -4684,7 +4685,7 @@ export default function AdvisorDashboard() {
                   ? "Creating..."
                   : "Create Work Order"}
 
-              </button>
+              </AnimatedButton>
 
             </div>
 

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.auth_dependency import get_current_user, require_roles
 from app.database.database import get_db
 from app.models.user import User
-from app.schemas.vehicle import VehicleCreate, VehicleResponse
+from app.schemas.vehicle import VehicleCreate, VehicleUpdate, VehicleResponse
 from app.services.vehicle_service import VehicleService
 
 
@@ -94,6 +94,40 @@ def get_vehicle(
         )
 
     return vehicle
+
+
+@router.put(
+    "/{vehicle_id}",
+    response_model=VehicleResponse,
+)
+def update_vehicle(
+    vehicle_id: int,
+    data: VehicleUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    service = VehicleService(db)
+
+    try:
+        update_data = data.model_dump(exclude_unset=True)
+
+        return service.update_vehicle_for_user(
+            vehicle_id=vehicle_id,
+            current_user=current_user,
+            **update_data,
+        )
+
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(exc),
+        )
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        )
 
 
 @router.post(

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   RefreshCw,
@@ -25,6 +25,7 @@ import {
 import {
   getInspectionByWorkOrderId,
 } from "../../api/inspectionApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatDate = (value) => {
@@ -251,7 +252,7 @@ export default function MechanicInspections() {
 
           <div className="history-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadInspections}
@@ -269,7 +270,7 @@ export default function MechanicInspections() {
 
               Refresh
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -298,12 +299,12 @@ export default function MechanicInspections() {
             </div>
 
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadInspections}
             >
               Try again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -472,7 +473,7 @@ export default function MechanicInspections() {
                       </div>
 
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="booking-view-button"
                         onClick={handleView}
@@ -484,7 +485,7 @@ export default function MechanicInspections() {
                           size={16}
                         />
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 

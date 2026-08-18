@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   ArrowLeft,
@@ -38,6 +38,7 @@ import {
 import {
   getWorkOrderServices,
 } from "../../api/serviceApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatCurrency = (amount) => {
@@ -438,7 +439,7 @@ export default function WorkOrderDetails() {
 
           <div className="booking-details-error-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadWorkOrder}
@@ -446,10 +447,10 @@ export default function WorkOrderDetails() {
 
               Try Again
 
-            </button>
+            </AnimatedButton>
 
 
-            <button
+            <AnimatedButton
               type="button"
               className="primary-action"
               onClick={() =>
@@ -465,7 +466,7 @@ export default function WorkOrderDetails() {
 
               Back to dashboard
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -503,7 +504,7 @@ export default function WorkOrderDetails() {
 
         <div className="work-order-header">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -518,7 +519,7 @@ export default function WorkOrderDetails() {
 
             Back to dashboard
 
-          </button>
+          </AnimatedButton>
 
 
           <div className="work-order-title-row">
@@ -550,7 +551,7 @@ export default function WorkOrderDetails() {
               </span>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="secondary-action"
                 onClick={handleViewInvoice}
@@ -570,7 +571,7 @@ export default function WorkOrderDetails() {
 
                 View Invoice
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -589,7 +590,7 @@ export default function WorkOrderDetails() {
                 {invoiceError}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={() =>
                   setInvoiceError("")
@@ -598,7 +599,7 @@ export default function WorkOrderDetails() {
 
                 Dismiss
 
-              </button>
+              </AnimatedButton>
 
             </div>
 

@@ -1,4 +1,4 @@
-import {
+﻿import {
   useEffect,
   useState,
 } from "react";
@@ -16,6 +16,7 @@ import AppLayout from "../../components/layout/AppLayout";
 import {
   getAllCustomers,
 } from "../../api/customerApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 export default function AdvisorCustomers() {
@@ -102,7 +103,7 @@ export default function AdvisorCustomers() {
 
           </div>
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={loadCustomers}
@@ -120,7 +121,7 @@ export default function AdvisorCustomers() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -141,12 +142,12 @@ export default function AdvisorCustomers() {
               {error}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadCustomers}
             >
               Try Again
-            </button>
+            </AnimatedButton>
 
           </div>
 

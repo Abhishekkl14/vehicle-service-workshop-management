@@ -1,10 +1,11 @@
-import {
+﻿import {
   Bell,
   ChevronDown,
   Menu,
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
+import AnimatedButton from "../../components/ui/animated-button";
 
 export default function Topbar({
   onMenuClick,
@@ -26,13 +27,13 @@ export default function Topbar({
 
       <div className="topbar-left">
 
-        <button
+        <AnimatedButton
           className="mobile-menu-button"
           onClick={onMenuClick}
           aria-label="Open navigation"
         >
           <Menu size={21} />
-        </button>
+        </AnimatedButton>
 
         <div className="topbar-heading">
           <span>WORKSHOP MANAGEMENT</span>
@@ -43,18 +44,18 @@ export default function Topbar({
 
       <div className="topbar-right">
 
-        <button
+        <AnimatedButton
           className="notification-button"
           aria-label="Notifications"
         >
           <Bell size={20} />
 
           <span className="notification-dot" />
-        </button>
+        </AnimatedButton>
 
         <div className="topbar-divider" />
 
-        <button className="profile-button">
+        <AnimatedButton className="profile-button">
 
           <div className="profile-avatar">
             {initials}
@@ -67,7 +68,7 @@ export default function Topbar({
 
           <ChevronDown size={16} />
 
-        </button>
+        </AnimatedButton>
 
       </div>
 

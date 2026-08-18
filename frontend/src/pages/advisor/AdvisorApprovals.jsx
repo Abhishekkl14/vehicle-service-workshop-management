@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   CheckCircle2,
@@ -21,6 +21,7 @@ import AppLayout from "../../components/layout/AppLayout";
 import {
   getPendingApprovalWorkOrders,
 } from "../../api/workOrderApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatDateTime = (value) => {
@@ -170,7 +171,7 @@ export default function AdvisorApprovals() {
           </div>
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={loadApprovals}
@@ -188,7 +189,7 @@ export default function AdvisorApprovals() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -209,12 +210,12 @@ export default function AdvisorApprovals() {
               {error}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadApprovals}
             >
               Try Again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -399,7 +400,7 @@ export default function AdvisorApprovals() {
 
                 <div className="advisor-card-footer">
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="primary-action"
                     onClick={handleViewDetails}
@@ -411,7 +412,7 @@ export default function AdvisorApprovals() {
                       size={16}
                     />
 
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 

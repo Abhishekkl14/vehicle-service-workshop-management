@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   ArrowLeft,
@@ -26,6 +26,7 @@ import {
 import {
   getService,
 } from "../../api/serviceApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 export default function BookingDetails() {
@@ -358,7 +359,7 @@ export default function BookingDetails() {
           </p>
 
 
-          <button
+          <AnimatedButton
             className="primary-action"
             onClick={() =>
               navigate(
@@ -373,7 +374,7 @@ export default function BookingDetails() {
 
             Back to bookings
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -397,7 +398,7 @@ export default function BookingDetails() {
 
         <div className="booking-details-header">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -412,7 +413,7 @@ export default function BookingDetails() {
 
             Back to bookings
 
-          </button>
+          </AnimatedButton>
 
 
           <div className="booking-details-title-row">
@@ -923,7 +924,7 @@ export default function BookingDetails() {
 
         <div className="booking-details-footer">
 
-          <button
+          <AnimatedButton
             className="secondary-action"
             onClick={() =>
               navigate(
@@ -938,7 +939,7 @@ export default function BookingDetails() {
 
             Back to My Bookings
 
-          </button>
+          </AnimatedButton>
 
         </div>
 

@@ -35,6 +35,40 @@ class VehicleCreate(BaseModel):
     )
 
 
+class VehicleUpdate(BaseModel):
+    registration_number: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=30,
+    )
+
+    vin: str | None = Field(
+        default=None,
+        max_length=50,
+    )
+
+    make: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    model: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    manufacturing_year: int | None = None
+
+    color: str | None = None
+
+    mileage: int | None = Field(
+        default=None,
+        ge=0,
+    )
+
+
 class VehicleResponse(BaseModel):
     model_config = ConfigDict(
         from_attributes=True

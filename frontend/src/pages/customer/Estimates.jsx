@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   CalendarDays,
@@ -18,6 +18,7 @@ import AppLayout from "../../components/layout/AppLayout";
 import {
   getCustomerEstimates,
 } from "../../api/estimateApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatCurrency = (amount) => {
@@ -252,7 +253,7 @@ export default function Estimates() {
 
           <div className="bookings-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadEstimates}
@@ -270,7 +271,7 @@ export default function Estimates() {
 
               Refresh
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -299,12 +300,12 @@ export default function Estimates() {
             </div>
 
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadEstimates}
             >
               Try again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -598,7 +599,7 @@ export default function Estimates() {
                           VIEW ESTIMATE
                       ================================================= */}
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="booking-view-button"
                         onClick={() =>
@@ -614,7 +615,7 @@ export default function Estimates() {
                           size={16}
                         />
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 

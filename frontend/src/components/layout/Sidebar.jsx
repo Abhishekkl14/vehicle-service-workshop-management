@@ -1,4 +1,4 @@
-import {
+﻿import {
   LayoutDashboard,
   Users,
   Car,
@@ -18,6 +18,7 @@ import {
 
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import AnimatedButton from "../../components/ui/animated-button";
 
 const navigation = {
   CUSTOMER: [
@@ -223,13 +224,13 @@ export default function Sidebar({
           <span>Settings</span>
         </NavLink>
 
-        <button
+        <AnimatedButton
           className="sidebar-logout"
           onClick={onLogout}
         >
           <LogOut size={18} />
           <span>Logout</span>
-        </button>
+        </AnimatedButton>
 
       </div>
 

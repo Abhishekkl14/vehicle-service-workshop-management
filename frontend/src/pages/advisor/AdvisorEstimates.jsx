@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   FileText,
@@ -18,6 +18,7 @@ import {
 import {
   getWorkOrderEstimates,
 } from "../../api/estimateApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatCurrency = (amount) => {
@@ -228,7 +229,7 @@ export default function AdvisorEstimates() {
 
           <div className="bookings-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadEstimates}
@@ -246,7 +247,7 @@ export default function AdvisorEstimates() {
 
               Refresh
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -269,12 +270,12 @@ export default function AdvisorEstimates() {
               {error}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadEstimates}
             >
               Try Again
-            </button>
+            </AnimatedButton>
 
           </div>
 

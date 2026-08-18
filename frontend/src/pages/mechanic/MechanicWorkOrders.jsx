@@ -1,4 +1,4 @@
-import {
+﻿import {
   useEffect,
   useState,
 } from "react";
@@ -29,6 +29,7 @@ import {
   startWorkOrder,
   submitWorkOrderForApproval,
 } from "../../api/workOrderApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const TABS = [
@@ -366,7 +367,7 @@ export default function MechanicWorkOrders() {
 
           <div className="history-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadWorkOrders}
@@ -384,7 +385,7 @@ export default function MechanicWorkOrders() {
 
               Refresh
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -407,7 +408,7 @@ export default function MechanicWorkOrders() {
 
           {TABS.map(
             (tab) => (
-              <button
+              <AnimatedButton
                 key={tab.status}
                 type="button"
                 className={
@@ -432,7 +433,7 @@ export default function MechanicWorkOrders() {
 
                 {tab.label}
 
-              </button>
+              </AnimatedButton>
             )
           )}
 
@@ -459,14 +460,14 @@ export default function MechanicWorkOrders() {
 
             </div>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={() =>
                 setActionError("")
               }
             >
               Dismiss
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -493,12 +494,12 @@ export default function MechanicWorkOrders() {
 
             </div>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadWorkOrders}
             >
               Try again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -709,7 +710,7 @@ export default function MechanicWorkOrders() {
 
                           {canStart && (
 
-                            <button
+                            <AnimatedButton
                               type="button"
                               className="secondary-action"
                               onClick={(e) => {
@@ -734,13 +735,13 @@ export default function MechanicWorkOrders() {
                                 ? "Starting..."
                                 : "Start Work"}
 
-                            </button>
+                            </AnimatedButton>
 
                           )}
 
                           {canSubmit && (
 
-                            <button
+                            <AnimatedButton
                               type="button"
                               className="primary-action"
                               onClick={(e) => {
@@ -765,7 +766,7 @@ export default function MechanicWorkOrders() {
                                 ? "Submitting..."
                                 : "Submit for Approval"}
 
-                            </button>
+                            </AnimatedButton>
 
                           )}
 
@@ -785,7 +786,7 @@ export default function MechanicWorkOrders() {
 
                           )}
 
-                          <button
+                          <AnimatedButton
                             type="button"
                             className="secondary-action"
                             onClick={(e) => {
@@ -801,7 +802,7 @@ export default function MechanicWorkOrders() {
                               size={16}
                             />
 
-                          </button>
+                          </AnimatedButton>
 
                         </div>
 

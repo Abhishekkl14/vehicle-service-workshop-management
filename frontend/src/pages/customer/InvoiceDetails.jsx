@@ -1,4 +1,4 @@
-import {
+﻿import {
   useEffect,
   useRef,
   useState,
@@ -36,6 +36,7 @@ import {
   getInvoicePayments,
   createPayment,
 } from "../../api/paymentApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const PAYMENT_METHODS = [
@@ -527,7 +528,7 @@ export default function InvoiceDetails() {
 
           <div className="booking-details-error-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadInvoice}
@@ -535,10 +536,10 @@ export default function InvoiceDetails() {
 
               Try Again
 
-            </button>
+            </AnimatedButton>
 
 
-            <button
+            <AnimatedButton
               type="button"
               className="primary-action"
               onClick={() =>
@@ -554,7 +555,7 @@ export default function InvoiceDetails() {
 
               Back to dashboard
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -576,7 +577,7 @@ export default function InvoiceDetails() {
 
         <div className="invoice-header">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -591,7 +592,7 @@ export default function InvoiceDetails() {
 
             Back to dashboard
 
-          </button>
+          </AnimatedButton>
 
 
           <div className="invoice-title-row">
@@ -623,7 +624,7 @@ export default function InvoiceDetails() {
 
             {invoice.status === "PAID" && (
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="secondary-action"
                 onClick={handleDownload}
@@ -638,7 +639,7 @@ export default function InvoiceDetails() {
 
                 Download Invoice
 
-              </button>
+              </AnimatedButton>
 
             )}
 
@@ -663,7 +664,7 @@ export default function InvoiceDetails() {
               {successMessage}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               className="notice-close"
               onClick={() =>
@@ -676,7 +677,7 @@ export default function InvoiceDetails() {
                 size={16}
               />
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -1059,14 +1060,14 @@ export default function InvoiceDetails() {
                 {paymentsError}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={loadPayments}
               >
 
                 Try Again
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -1408,7 +1409,7 @@ export default function InvoiceDetails() {
 
               <div className="payment-actions">
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="primary-action"
                   onClick={handlePaymentSubmit}
@@ -1430,7 +1431,7 @@ export default function InvoiceDetails() {
                     ? "Processing..."
                     : "Record Payment"}
 
-                </button>
+                </AnimatedButton>
 
               </div>
 

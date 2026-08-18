@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Receipt } from "lucide-react";
 import AppLayout from "../../components/layout/AppLayout";
 import { getWorkOrdersByStatus } from "../../api/workOrderApi";
 import { getWorkOrderInvoice } from "../../api/invoiceApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 export default function AdvisorInvoices() {
   const navigate = useNavigate();
@@ -89,14 +90,14 @@ export default function AdvisorInvoices() {
                       : "—"}
                   </td>
                   <td>
-                    <button
+                    <AnimatedButton
                       className="btn btn-sm btn-primary"
                       onClick={() =>
                         navigate(`/advisor/invoices/${inv.id}`)
                       }
                     >
                       View
-                    </button>
+                    </AnimatedButton>
                   </td>
                 </tr>
               ))}

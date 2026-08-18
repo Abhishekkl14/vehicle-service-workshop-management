@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState, useCallback } from "react";
 import {
   Eye,
   EyeOff,
@@ -7,11 +7,16 @@ import {
   Mail,
 } from "lucide-react";
 import {
+  Link,
   Navigate,
   useNavigate,
 } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import AnimatedButton from "../components/ui/animated-button";
+import LoadingScreen from "../components/common/LoadingScreen";
+
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,6 +31,10 @@ export default function Login() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] =
     useState(false);
+  const [showLoading, setShowLoading] =
+    useState(false);
+  const [pendingUser, setPendingUser] =
+    useState(null);
 
   // =====================================================
   // ROLE → DASHBOARD
@@ -51,7 +60,7 @@ export default function Login() {
   // ALREADY AUTHENTICATED
   // =====================================================
 
-  if (user) {
+  if (user && !showLoading) {
     return (
       <Navigate
         to={getDashboardPath(user.role)}
@@ -76,14 +85,8 @@ export default function Login() {
         password
       );
 
-      navigate(
-        getDashboardPath(
-          loggedInUser.role
-        ),
-        {
-          replace: true,
-        }
-      );
+      setPendingUser(loggedInUser);
+      setShowLoading(true);
     } catch (error) {
       const message =
         error?.response?.data?.detail ||
@@ -98,6 +101,19 @@ export default function Login() {
       setSubmitting(false);
     }
   };
+
+  // =====================================================
+  // LOADING COMPLETE
+  // =====================================================
+
+  const handleLoadingComplete = useCallback(() => {
+    if (pendingUser) {
+      navigate(
+        getDashboardPath(pendingUser.role),
+        { replace: true }
+      );
+    }
+  }, [pendingUser, navigate]);
 
   // =====================================================
   // UI
@@ -165,6 +181,8 @@ export default function Login() {
               </small>
             </div>
           </div>
+
+
 
         </div>
       </section>
@@ -254,7 +272,7 @@ export default function Login() {
                   Password
                 </label>
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="forgot-button"
                   onClick={() =>
@@ -264,7 +282,7 @@ export default function Login() {
                   }
                 >
                   Forgot password?
-                </button>
+                </AnimatedButton>
 
               </div>
 
@@ -290,7 +308,7 @@ export default function Login() {
                   required
                 />
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="icon-button"
                   aria-label={
@@ -309,7 +327,7 @@ export default function Login() {
                   ) : (
                     <Eye size={18} />
                   )}
-                </button>
+                </AnimatedButton>
 
               </div>
 
@@ -325,7 +343,7 @@ export default function Login() {
 
             {/* Submit */}
 
-            <button
+            <AnimatedButton
               className="login-submit"
               type="submit"
               disabled={submitting}
@@ -333,17 +351,33 @@ export default function Login() {
               {submitting
                 ? "Signing in..."
                 : "Sign in"}
-            </button>
+            </AnimatedButton>
 
           </form>
 
           <p className="login-footer">
-            Secure workshop management platform
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              style={{
+                color: "var(--quantum-blue)",
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              Sign up
+            </Link>
           </p>
 
         </div>
 
       </section>
+
+      {showLoading && (
+        <LoadingScreen
+          onComplete={handleLoadingComplete}
+        />
+      )}
 
     </main>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   CalendarDays,
@@ -26,6 +26,7 @@ import {
 import {
   createWorkOrder,
 } from "../../api/workOrderApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const todayStr = () => {
@@ -355,7 +356,7 @@ export default function AdvisorBookings() {
           </div>
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={loadBookings}
@@ -373,7 +374,7 @@ export default function AdvisorBookings() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -448,7 +449,7 @@ export default function AdvisorBookings() {
             </div>
 
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={() =>
@@ -464,7 +465,7 @@ export default function AdvisorBookings() {
 
               Today
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -487,12 +488,12 @@ export default function AdvisorBookings() {
               {bookingsError}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadBookings}
             >
               Try Again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -705,7 +706,7 @@ export default function AdvisorBookings() {
 
                 <div className="advisor-card-footer">
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="primary-action"
                     onClick={() =>
@@ -739,7 +740,7 @@ export default function AdvisorBookings() {
                       ? "Creating..."
                       : "Create Work Order"}
 
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 

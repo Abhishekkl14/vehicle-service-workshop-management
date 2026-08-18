@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   RefreshCw,
@@ -29,6 +29,7 @@ import {
 import {
   getWorkOrderInvoice,
 } from "../../api/invoiceApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatDate = (dateStr) => {
@@ -336,7 +337,7 @@ export default function ServiceHistory() {
 
           <div className="history-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadServiceHistory}
@@ -354,7 +355,7 @@ export default function ServiceHistory() {
 
               Refresh
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -383,12 +384,12 @@ export default function ServiceHistory() {
             </div>
 
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadServiceHistory}
             >
               Try again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -407,7 +408,7 @@ export default function ServiceHistory() {
               {invoiceError}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={() =>
                 setInvoiceError("")
@@ -416,7 +417,7 @@ export default function ServiceHistory() {
 
               Dismiss
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -499,7 +500,7 @@ export default function ServiceHistory() {
               </p>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="primary-action"
                 onClick={handleBookService}
@@ -511,7 +512,7 @@ export default function ServiceHistory() {
 
                 Book a Service
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -668,7 +669,7 @@ export default function ServiceHistory() {
                             />
 
                             {record.work_order_id ? (
-                              <button
+                              <AnimatedButton
                                 type="button"
                                 className="history-field-link"
                                 onClick={() =>
@@ -684,7 +685,7 @@ export default function ServiceHistory() {
                                   size={14}
                                 />
 
-                              </button>
+                              </AnimatedButton>
                             ) : (
                               <strong>
                                 —
@@ -762,7 +763,7 @@ export default function ServiceHistory() {
 
                         {record.work_order_id && (
 
-                          <button
+                          <AnimatedButton
                             type="button"
                             className="history-view-button"
                             onClick={() =>
@@ -794,14 +795,14 @@ export default function ServiceHistory() {
                               size={14}
                             />
 
-                          </button>
+                          </AnimatedButton>
 
                         )}
 
 
                         {hasBooking && (
 
-                          <button
+                          <AnimatedButton
                             type="button"
                             className="history-view-button"
                             onClick={() =>
@@ -817,7 +818,7 @@ export default function ServiceHistory() {
                               size={14}
                             />
 
-                          </button>
+                          </AnimatedButton>
 
                         )}
 

@@ -62,6 +62,16 @@ class VehicleRepository:
 
         return list(self.db.scalars(statement).all())
 
+    def update(self, vehicle: Vehicle, **kwargs) -> Vehicle:
+        for key, value in kwargs.items():
+            if value is not None and hasattr(vehicle, key):
+                setattr(vehicle, key, value)
+
+        self.db.commit()
+        self.db.refresh(vehicle)
+
+        return vehicle
+
     def create(self, vehicle: Vehicle) -> Vehicle:
         self.db.add(vehicle)
         self.db.commit()

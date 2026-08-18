@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   RefreshCw,
@@ -19,6 +19,7 @@ import AppLayout from "../../components/layout/AppLayout";
 import {
   getWorkOrdersByStatus,
 } from "../../api/workOrderApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const TABS = [
@@ -234,7 +235,7 @@ export default function CustomerWorkOrders() {
 
           <div className="history-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadWorkOrders}
@@ -252,7 +253,7 @@ export default function CustomerWorkOrders() {
 
               Refresh
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -274,7 +275,7 @@ export default function CustomerWorkOrders() {
 
           {TABS.map(
             (tab) => (
-              <button
+              <AnimatedButton
                 key={tab.status}
                 type="button"
                 className={
@@ -299,7 +300,7 @@ export default function CustomerWorkOrders() {
 
                 {tab.label}
 
-              </button>
+              </AnimatedButton>
             )
           )}
 
@@ -328,12 +329,12 @@ export default function CustomerWorkOrders() {
             </div>
 
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadWorkOrders}
             >
               Try again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -504,7 +505,7 @@ export default function CustomerWorkOrders() {
                       </div>
 
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="booking-view-button"
                         onClick={() =>
@@ -520,7 +521,7 @@ export default function CustomerWorkOrders() {
                           size={16}
                         />
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 

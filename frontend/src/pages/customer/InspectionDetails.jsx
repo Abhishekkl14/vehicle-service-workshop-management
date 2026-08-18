@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   ArrowLeft,
@@ -26,6 +26,7 @@ import {
   getInspection,
   getInspectionItems,
 } from "../../api/inspectionApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatDate = (value) => {
@@ -245,7 +246,7 @@ export default function InspectionDetails() {
 
           <div className="booking-details-error-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadInspection}
@@ -253,10 +254,10 @@ export default function InspectionDetails() {
 
               Try Again
 
-            </button>
+            </AnimatedButton>
 
 
-            <button
+            <AnimatedButton
               type="button"
               className="primary-action"
               onClick={() =>
@@ -272,7 +273,7 @@ export default function InspectionDetails() {
 
               Back to dashboard
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -295,7 +296,7 @@ export default function InspectionDetails() {
 
         <div className="inspection-header">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -310,7 +311,7 @@ export default function InspectionDetails() {
 
             Back to dashboard
 
-          </button>
+          </AnimatedButton>
 
 
           <div className="inspection-title-row">

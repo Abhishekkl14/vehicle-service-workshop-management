@@ -1,4 +1,4 @@
-import {
+﻿import {
   CreditCard,
   ChevronRight,
 } from "lucide-react";
@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import AppLayout from "../../components/layout/AppLayout";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 export default function AdvisorPayments() {
@@ -80,7 +81,7 @@ export default function AdvisorPayments() {
 
         <div className="hub-nav-grid">
 
-          <button
+          <AnimatedButton
             type="button"
             className="hub-nav-card"
             onClick={() =>
@@ -115,7 +116,7 @@ export default function AdvisorPayments() {
               size={18}
             />
 
-          </button>
+          </AnimatedButton>
 
         </div>
 

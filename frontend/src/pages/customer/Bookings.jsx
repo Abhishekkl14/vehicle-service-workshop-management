@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   CalendarDays,
@@ -24,6 +24,7 @@ import {
 import {
   getCustomerVehicles,
 } from "../../api/vehicleApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 export default function Bookings() {
@@ -399,7 +400,7 @@ export default function Bookings() {
 
           <div className="bookings-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={loadBookings}
@@ -417,10 +418,10 @@ export default function Bookings() {
 
               Refresh
 
-            </button>
+            </AnimatedButton>
 
 
-            <button
+            <AnimatedButton
               type="button"
               className="primary-action"
               onClick={
@@ -434,7 +435,7 @@ export default function Bookings() {
 
               New Booking
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -463,12 +464,12 @@ export default function Bookings() {
             </div>
 
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadBookings}
             >
               Try again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -552,7 +553,7 @@ export default function Bookings() {
               </p>
 
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="primary-action"
                 onClick={
@@ -566,7 +567,7 @@ export default function Bookings() {
 
                 Create your first booking
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -749,7 +750,7 @@ export default function Bookings() {
                             VIEW BOOKING
                         ================================================= */}
 
-                        <button
+                        <AnimatedButton
                           type="button"
                           className="booking-view-button"
                           onClick={() =>
@@ -765,7 +766,7 @@ export default function Bookings() {
                             size={16}
                           />
 
-                        </button>
+                        </AnimatedButton>
 
 
                       </div>

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, UTC
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -20,6 +20,7 @@ from app.repositories.work_order_repository import WorkOrderRepository
 from app.repositories.work_order_service_repository import (
     WorkOrderServiceRepository,
 )
+from app.services.notification_service import NotificationService
 
 
 class WorkOrderService:
@@ -198,7 +199,7 @@ class WorkOrderService:
             assigned_mechanic_id=mechanic_id,
             status="CREATED",
             complaint=complaint,
-            received_at=datetime.utcnow(),
+            received_at=datetime.now(UTC),
         )
 
         # Update booking status
@@ -309,7 +310,7 @@ class WorkOrderService:
                 "performed services to approve"
             )
 
-        now = datetime.utcnow()
+        now = datetime.now(UTC)
 
         # Update work order status
         work_order.status = "COMPLETED"
@@ -371,7 +372,7 @@ class WorkOrderService:
                 "can be rejected"
             )
 
-        now = datetime.utcnow()
+        now = datetime.now(UTC)
 
         # Update work order status
         work_order.status = "IN_PROGRESS"
@@ -400,6 +401,36 @@ class WorkOrderService:
         except Exception:
             self.db.rollback()
             raise
+
+        # -------------------------------------------------
+        # Notify the assigned mechanic
+        # -------------------------------------------------
+
+        if work_order.assigned_mechanic_id:
+
+            try:
+
+                notification_service = NotificationService(
+                    self.db
+                )
+
+                notification_service.create_notification(
+                    user_id=work_order.assigned_mechanic_id,
+                    title="Work Order Rejected",
+                    message=(
+                        f"Work Order #{work_order_id} has been "
+                        f"rejected by the advisor. Reason: "
+                        f"{rejection_reason}. Please make "
+                        f"corrections and resubmit."
+                    ),
+                    notification_type="WORK_ORDER_REJECTED",
+                )
+
+                self.db.commit()
+
+            except Exception:
+
+                self.db.rollback()
 
         return work_order
 
@@ -449,7 +480,7 @@ class WorkOrderService:
             )
 
         work_order.status = "IN_PROGRESS"
-        work_order.started_at = datetime.utcnow()
+        work_order.started_at = datetime.now(UTC)
 
         self.db.commit()
         self.db.refresh(work_order)
@@ -521,7 +552,7 @@ class WorkOrderService:
             )
 
         work_order.status = "SUBMITTED_FOR_APPROVAL"
-        work_order.submitted_at = datetime.utcnow()
+        work_order.submitted_at = datetime.now(UTC)
 
         self.db.commit()
         self.db.refresh(work_order)

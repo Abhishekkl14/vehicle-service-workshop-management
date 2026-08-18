@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchCheck } from "lucide-react";
 import AppLayout from "../../components/layout/AppLayout";
 import { getWorkOrdersByStatus } from "../../api/workOrderApi";
 import { getInspectionByWorkOrderId } from "../../api/inspectionApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 export default function AdvisorInspections() {
   const navigate = useNavigate();
@@ -75,9 +76,9 @@ export default function AdvisorInspections() {
                   <td>Mechanic #{insp.mechanic_id}</td>
                   <td>{insp.inspected_at ? new Date(insp.inspected_at).toLocaleDateString() : "—"}</td>
                   <td>
-                    <button className="btn btn-sm btn-primary" onClick={() => navigate(`/advisor/inspections/${insp.id}`)}>
+                    <AnimatedButton className="btn btn-sm btn-primary" onClick={() => navigate(`/advisor/inspections/${insp.id}`)}>
                       View
-                    </button>
+                    </AnimatedButton>
                   </td>
                 </tr>
               ))}

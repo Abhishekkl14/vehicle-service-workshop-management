@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   ArrowLeft,
@@ -31,6 +31,7 @@ import {
 import {
   getWorkOrderInvoice,
 } from "../../api/invoiceApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatCurrency = (amount) => {
@@ -519,7 +520,7 @@ export default function EstimateDetails() {
           </p>
 
 
-          <button
+          <AnimatedButton
             className="primary-action"
             onClick={() =>
               navigate(
@@ -534,7 +535,7 @@ export default function EstimateDetails() {
 
             Back to dashboard
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -559,7 +560,7 @@ export default function EstimateDetails() {
 
         <div className="estimate-header">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -574,7 +575,7 @@ export default function EstimateDetails() {
 
             Back to dashboard
 
-          </button>
+          </AnimatedButton>
 
 
           <div className="estimate-title-row">
@@ -682,7 +683,7 @@ export default function EstimateDetails() {
                 Work Order ID
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="estimate-link"
                 onClick={handleViewWorkOrder}
@@ -694,7 +695,7 @@ export default function EstimateDetails() {
                   size={14}
                 />
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -894,7 +895,7 @@ export default function EstimateDetails() {
 
               <div className="estimate-decision-actions">
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="primary-action"
                   onClick={handleApproveClick}
@@ -907,10 +908,10 @@ export default function EstimateDetails() {
 
                   Approve Estimate
 
-                </button>
+                </AnimatedButton>
 
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="estimate-reject-action"
                   onClick={handleRejectClick}
@@ -923,7 +924,7 @@ export default function EstimateDetails() {
 
                   Reject Estimate
 
-                </button>
+                </AnimatedButton>
 
               </div>
 
@@ -990,7 +991,7 @@ export default function EstimateDetails() {
 
                 <div className="estimate-confirm-actions">
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="secondary-action"
                     onClick={handleCancelConfirm}
@@ -999,10 +1000,10 @@ export default function EstimateDetails() {
 
                     Cancel
 
-                  </button>
+                  </AnimatedButton>
 
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className={
                       confirmMode === "approve"
@@ -1034,7 +1035,7 @@ export default function EstimateDetails() {
                         ? "Confirm Approval"
                         : "Confirm Rejection"}
 
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 
@@ -1062,7 +1063,7 @@ export default function EstimateDetails() {
             <span>
               This estimate is linked to
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="estimate-footnote-link"
                 onClick={handleViewWorkOrder}
@@ -1074,7 +1075,7 @@ export default function EstimateDetails() {
                   size={14}
                 />
 
-              </button>
+              </AnimatedButton>
 
             </span>
 
@@ -1093,7 +1094,7 @@ export default function EstimateDetails() {
 
             <span className="estimate-footnote-invoice">
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="estimate-footnote-link"
                 onClick={handleViewInvoice}
@@ -1115,7 +1116,7 @@ export default function EstimateDetails() {
                   ? "Checking invoice..."
                   : "View Invoice"}
 
-              </button>
+              </AnimatedButton>
 
               {invoiceError && (
 

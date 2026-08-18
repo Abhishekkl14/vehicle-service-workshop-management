@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 import CustomerDashboard from "./pages/customer/CustomerDashboard";
 import MyVehicles from "./pages/customer/MyVehicles";
@@ -115,6 +116,11 @@ export default function App() {
           <Route
             path="/login"
             element={<Login />}
+          />
+
+          <Route
+            path="/register"
+            element={<Register />}
           />
 
 

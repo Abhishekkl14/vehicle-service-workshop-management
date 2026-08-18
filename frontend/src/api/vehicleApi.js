@@ -53,4 +53,15 @@ export const getAllVehicles = async () => {
   return response.data;
 };
 
+export const createVehicle = async (
+  vehicleData
+) => {
+  const response = await vehicleApi.post(
+    "/api/v1/vehicles/",
+    vehicleData
+  );
+
+  return response.data;
+};
+
 export default vehicleApi;

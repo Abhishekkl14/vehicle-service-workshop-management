@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.auth_dependency import get_current_customer
@@ -131,6 +132,48 @@ class VehicleService:
             color=color,
             mileage=mileage,
         )
+
+    def update_vehicle_for_user(
+        self,
+        vehicle_id: int,
+        current_user: User,
+        **update_fields,
+    ):
+        role = current_user.role.name
+
+        if role == "CUSTOMER":
+            current_customer = get_current_customer(
+                current_user=current_user,
+                db=self.db,
+            )
+            vehicle = self.repository.get_by_id_and_customer(
+                vehicle_id,
+                current_customer.id,
+            )
+
+        elif role in {"ADMIN", "SERVICE_ADVISOR"}:
+            vehicle = self.repository.get_by_id(vehicle_id)
+
+        else:
+            raise PermissionError(
+                "You do not have permission to update vehicles"
+            )
+
+        if vehicle is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Vehicle not found",
+            )
+
+        reg = update_fields.get("registration_number")
+        if reg is not None:
+            existing = self.repository.get_by_registration(reg)
+            if existing and existing.id != vehicle_id:
+                raise ValueError(
+                    "Vehicle with this registration number already exists"
+                )
+
+        return self.repository.update(vehicle, **update_fields)
 
     def create_vehicle(
         self,

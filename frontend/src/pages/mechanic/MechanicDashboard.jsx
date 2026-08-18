@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   RefreshCw,
@@ -52,6 +52,7 @@ import {
   getWorkOrderServices,
   addWorkOrderService,
 } from "../../api/serviceApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const WORK_ORDER_STATUSES = [
@@ -1247,7 +1248,7 @@ function WorkOrderCard({
 
           {canStart && (
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={handleStart}
@@ -1269,14 +1270,14 @@ function WorkOrderCard({
                 ? "Starting..."
                 : "Start Work"}
 
-            </button>
+            </AnimatedButton>
 
           )}
 
 
           {canSubmit && (
 
-            <button
+            <AnimatedButton
               type="button"
               className="primary-action"
               onClick={handleSubmitForApproval}
@@ -1298,7 +1299,7 @@ function WorkOrderCard({
                 ? "Submitting..."
                 : "Submit for Approval"}
 
-            </button>
+            </AnimatedButton>
 
           )}
 
@@ -1338,7 +1339,7 @@ function WorkOrderCard({
           )}
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action mechanic-inspection-toggle"
             onClick={() => {
@@ -1363,13 +1364,13 @@ function WorkOrderCard({
               />
             ) : null}
 
-          </button>
+          </AnimatedButton>
 
 
           {(workOrder.status === "IN_PROGRESS" ||
             workOrder.status === "SUBMITTED_FOR_APPROVAL") && (
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action mechanic-actual-toggle"
               onClick={handleToggleActualWork}
@@ -1388,7 +1389,7 @@ function WorkOrderCard({
                 />
               ) : null}
 
-            </button>
+            </AnimatedButton>
 
           )}
 
@@ -1432,14 +1433,14 @@ function WorkOrderCard({
                 {actualError}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={loadActualWork}
               >
 
                 Try Again
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -1487,7 +1488,7 @@ function WorkOrderCard({
                   </h5>
 
                   {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
-                    <button
+                    <AnimatedButton
                       type="button"
                       className="secondary-action mechanic-actual-add-btn"
                       onClick={() =>
@@ -1503,7 +1504,7 @@ function WorkOrderCard({
                       {showPartForm
                         ? "Cancel"
                         : "Add Part"}
-                    </button>
+                    </AnimatedButton>
                   )}
 
                 </div>
@@ -1599,7 +1600,7 @@ function WorkOrderCard({
 
                     <div className="mechanic-form-actions">
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="primary-action"
                         onClick={handleAddPart}
@@ -1621,7 +1622,7 @@ function WorkOrderCard({
                           ? "Adding..."
                           : "Add Part"}
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 
@@ -1691,7 +1692,7 @@ function WorkOrderCard({
                   </h5>
 
                   {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
-                    <button
+                    <AnimatedButton
                       type="button"
                       className="secondary-action mechanic-actual-add-btn"
                       onClick={() =>
@@ -1707,7 +1708,7 @@ function WorkOrderCard({
                       {showServiceForm
                         ? "Cancel"
                         : "Add Service"}
-                    </button>
+                    </AnimatedButton>
                   )}
 
                 </div>
@@ -1805,7 +1806,7 @@ function WorkOrderCard({
 
                     <div className="mechanic-form-actions">
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="primary-action"
                         onClick={handleAddService}
@@ -1827,7 +1828,7 @@ function WorkOrderCard({
                           ? "Adding..."
                           : "Add Service"}
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 
@@ -1903,7 +1904,7 @@ function WorkOrderCard({
                   </h5>
 
                   {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
-                    <button
+                    <AnimatedButton
                       type="button"
                       className="secondary-action mechanic-actual-add-btn"
                       onClick={() =>
@@ -1919,7 +1920,7 @@ function WorkOrderCard({
                       {showConsumableForm
                         ? "Cancel"
                         : "Add Consumable"}
-                    </button>
+                    </AnimatedButton>
                   )}
 
                 </div>
@@ -2031,7 +2032,7 @@ function WorkOrderCard({
 
                     <div className="mechanic-form-actions">
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="primary-action"
                         onClick={
@@ -2055,7 +2056,7 @@ function WorkOrderCard({
                           ? "Adding..."
                           : "Add Consumable"}
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 
@@ -2125,7 +2126,7 @@ function WorkOrderCard({
                   </h5>
 
                   {workOrder.status === "IN_PROGRESS" && !isSubmitted && (
-                    <button
+                    <AnimatedButton
                       type="button"
                       className="secondary-action mechanic-actual-add-btn"
                       onClick={() =>
@@ -2141,7 +2142,7 @@ function WorkOrderCard({
                       {showLaborForm
                         ? "Cancel"
                         : "Add Labor"}
-                    </button>
+                    </AnimatedButton>
                   )}
 
                 </div>
@@ -2229,7 +2230,7 @@ function WorkOrderCard({
 
                     <div className="mechanic-form-actions">
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="primary-action"
                         onClick={handleAddLabor}
@@ -2251,7 +2252,7 @@ function WorkOrderCard({
                           ? "Adding..."
                           : "Add Labor"}
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 
@@ -2488,7 +2489,7 @@ function WorkOrderCard({
 
                 <div className="mechanic-form-actions">
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="secondary-action"
                     onClick={() =>
@@ -2503,10 +2504,10 @@ function WorkOrderCard({
 
                     Cancel
 
-                  </button>
+                  </AnimatedButton>
 
 
-                  <button
+                  <AnimatedButton
                     type="button"
                     className="primary-action"
                     onClick={
@@ -2532,7 +2533,7 @@ function WorkOrderCard({
                       ? "Creating..."
                       : "Create Inspection"}
 
-                  </button>
+                  </AnimatedButton>
 
                 </div>
 
@@ -2566,7 +2567,7 @@ function WorkOrderCard({
                 </div>
 
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="primary-action"
                   onClick={() =>
@@ -2580,7 +2581,7 @@ function WorkOrderCard({
 
                   Create Inspection
 
-                </button>
+                </AnimatedButton>
 
               </div>
 
@@ -2745,7 +2746,7 @@ function WorkOrderCard({
                       {inspectionError}
                     </span>
 
-                    <button
+                    <AnimatedButton
                       type="button"
                       onClick={() =>
                         loadItems(
@@ -2756,7 +2757,7 @@ function WorkOrderCard({
 
                       Try Again
 
-                    </button>
+                    </AnimatedButton>
 
                   </div>
 
@@ -2858,7 +2859,7 @@ function WorkOrderCard({
                 )}
 
 
-                <button
+                <AnimatedButton
                   type="button"
                   className="secondary-action mechanic-add-finding"
                   onClick={() =>
@@ -2877,7 +2878,7 @@ function WorkOrderCard({
                     ? "Cancel"
                     : "Add Finding"}
 
-                </button>
+                </AnimatedButton>
 
 
                 {showAddForm && (
@@ -3028,7 +3029,7 @@ function WorkOrderCard({
 
                     <div className="mechanic-form-actions">
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="primary-action"
                         onClick={handleAddItem}
@@ -3050,7 +3051,7 @@ function WorkOrderCard({
                           ? "Adding..."
                           : "Add Finding"}
 
-                      </button>
+                      </AnimatedButton>
 
                     </div>
 
@@ -3359,7 +3360,7 @@ export default function MechanicDashboard() {
           </div>
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={() =>
@@ -3377,7 +3378,7 @@ export default function MechanicDashboard() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -3398,7 +3399,7 @@ export default function MechanicDashboard() {
               {successMessage}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               className="mechanic-success-close"
               onClick={() =>
@@ -3411,7 +3412,7 @@ export default function MechanicDashboard() {
                 size={16}
               />
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -3554,7 +3555,7 @@ export default function MechanicDashboard() {
                 {error}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={() =>
                   loadWorkOrders()
@@ -3563,7 +3564,7 @@ export default function MechanicDashboard() {
 
                 Try Again
 
-              </button>
+              </AnimatedButton>
 
             </div>
 
@@ -3582,7 +3583,7 @@ export default function MechanicDashboard() {
                 {partialWarning}
               </span>
 
-              <button
+              <AnimatedButton
                 type="button"
                 onClick={() =>
                   loadWorkOrders()
@@ -3591,7 +3592,7 @@ export default function MechanicDashboard() {
 
                 Retry
 
-              </button>
+              </AnimatedButton>
 
             </div>
 

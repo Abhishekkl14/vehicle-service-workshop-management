@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import {
   ArrowLeft,
   CalendarDays,
@@ -25,6 +25,7 @@ import {
 import {
   createBooking,
 } from "../../api/bookingApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 export default function CreateBooking() {
@@ -404,7 +405,7 @@ export default function CreateBooking() {
 
         <div className="create-booking-header">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -417,7 +418,7 @@ export default function CreateBooking() {
 
             Back to bookings
 
-          </button>
+          </AnimatedButton>
 
 
           <p className="page-eyebrow">
@@ -856,7 +857,7 @@ export default function CreateBooking() {
 
           <div className="booking-form-actions">
 
-            <button
+            <AnimatedButton
               type="button"
               className="secondary-action"
               onClick={() =>
@@ -867,10 +868,10 @@ export default function CreateBooking() {
               disabled={submitting}
             >
               Cancel
-            </button>
+            </AnimatedButton>
 
 
-            <button
+            <AnimatedButton
               type="submit"
               className="primary-action"
               disabled={
@@ -905,7 +906,7 @@ export default function CreateBooking() {
 
               )}
 
-            </button>
+            </AnimatedButton>
 
           </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   Bell,
@@ -21,6 +21,7 @@ import {
   getNotifications,
   markNotificationRead,
 } from "../../api/notificationApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const formatDate = (value) => {
@@ -217,7 +218,7 @@ export default function MechanicNotifications() {
           </div>
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={loadNotifications}
@@ -233,7 +234,7 @@ export default function MechanicNotifications() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -314,14 +315,14 @@ export default function MechanicNotifications() {
               {error}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadNotifications}
             >
 
               Try Again
 
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -491,7 +492,7 @@ export default function MechanicNotifications() {
 
                       {unread && (
 
-                        <button
+                        <AnimatedButton
                           type="button"
                           className="secondary-action notification-read-button"
                           onClick={() =>
@@ -522,7 +523,7 @@ export default function MechanicNotifications() {
                             ? "Marking..."
                             : "Mark as read"}
 
-                        </button>
+                        </AnimatedButton>
 
                       )}
 

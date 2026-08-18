@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
   ClipboardList,
@@ -19,6 +19,7 @@ import AppLayout from "../../components/layout/AppLayout";
 import {
   getWorkOrdersByStatus,
 } from "../../api/workOrderApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const WORK_ORDER_TABS = [
@@ -276,7 +277,7 @@ export default function AdvisorWorkOrders() {
           </div>
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={loadWorkOrders}
@@ -294,7 +295,7 @@ export default function AdvisorWorkOrders() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -321,7 +322,7 @@ export default function AdvisorWorkOrders() {
             {WORK_ORDER_TABS.map(
               (tab) => (
 
-                <button
+                <AnimatedButton
                   key={tab.key}
                   type="button"
                   className={
@@ -338,7 +339,7 @@ export default function AdvisorWorkOrders() {
 
                   {tab.label}
 
-                </button>
+                </AnimatedButton>
 
               )
             )}
@@ -364,12 +365,12 @@ export default function AdvisorWorkOrders() {
               {error}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadWorkOrders}
             >
               Try Again
-            </button>
+            </AnimatedButton>
 
           </div>
 
@@ -635,7 +636,7 @@ export default function AdvisorWorkOrders() {
 
                         <td>
 
-                          <button
+                          <AnimatedButton
                             type="button"
                             className="secondary-action"
                             onClick={(e) => {
@@ -651,7 +652,7 @@ export default function AdvisorWorkOrders() {
 
                             View Details
 
-                          </button>
+                          </AnimatedButton>
 
                         </td>
 

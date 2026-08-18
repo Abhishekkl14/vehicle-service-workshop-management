@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+﻿import { useCallback, useEffect, useState } from "react";
 
 import {
   AlertCircle,
@@ -23,6 +23,7 @@ import {
 } from "../../context/AuthContext";
 
 import AppLayout from "../../components/layout/AppLayout";
+import ProximityScaleGrid from "../../components/common/ProximityScaleGrid";
 
 import {
   getCustomerBookings,
@@ -47,6 +48,7 @@ import {
 import {
   getCustomerServiceHistory,
 } from "../../api/customerHistoryApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 const ACTIVE_WORK_ORDER_STATUSES = [
@@ -682,12 +684,12 @@ export default function CustomerDashboard() {
         </p>
       </div>
 
-      <button
+      <AnimatedButton
         type="button"
         onClick={onRetry}
       >
         Try again
-      </button>
+      </AnimatedButton>
     </div>
   );
 
@@ -727,7 +729,7 @@ export default function CustomerDashboard() {
       </div>
 
       {actionLabel && onAction && (
-        <button
+        <AnimatedButton
           type="button"
           className="section-view-link"
           onClick={onAction}
@@ -735,7 +737,7 @@ export default function CustomerDashboard() {
           {actionLabel}
 
           <ArrowRight size={13} />
-        </button>
+        </AnimatedButton>
       )}
     </div>
   );
@@ -773,7 +775,7 @@ export default function CustomerDashboard() {
             </div>
           </div>
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={handleRefresh}
@@ -789,7 +791,7 @@ export default function CustomerDashboard() {
             />
 
             Refresh
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -804,12 +806,16 @@ export default function CustomerDashboard() {
             const Icon = card.icon;
 
             return (
-              <button
+              <AnimatedButton
                 type="button"
                 className="dashboard-card clickable"
                 key={card.key}
                 onClick={card.onClick}
               >
+                <div className="dashboard-card-icon">
+                  <Icon size={22} />
+                </div>
+
                 <span>
                   {card.label}
                 </span>
@@ -823,11 +829,18 @@ export default function CustomerDashboard() {
                 <small>
                   {card.hint}
                 </small>
-              </button>
+              </AnimatedButton>
             );
           })}
 
         </div>
+
+
+        {/* =============================================
+            PROXIMITY SCALE GRID
+        ============================================= */}
+
+        <ProximityScaleGrid />
 
 
         {/* =============================================
@@ -937,7 +950,7 @@ export default function CustomerDashboard() {
 
                       </div>
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="booking-view-button"
                         onClick={() =>
@@ -948,7 +961,7 @@ export default function CustomerDashboard() {
                       >
                         View Booking
                         <ArrowRight size={14} />
-                      </button>
+                      </AnimatedButton>
                     </article>
                   ))}
 
@@ -1063,7 +1076,7 @@ export default function CustomerDashboard() {
 
                       </div>
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="booking-view-button"
                         onClick={() =>
@@ -1074,7 +1087,7 @@ export default function CustomerDashboard() {
                       >
                         View Work Order
                         <ArrowRight size={14} />
-                      </button>
+                      </AnimatedButton>
                     </article>
                   ))}
 
@@ -1179,7 +1192,7 @@ export default function CustomerDashboard() {
 
                       </div>
 
-                      <button
+                      <AnimatedButton
                         type="button"
                         className="booking-view-button"
                         onClick={() =>
@@ -1190,7 +1203,7 @@ export default function CustomerDashboard() {
                       >
                         View Estimate
                         <ArrowRight size={14} />
-                      </button>
+                      </AnimatedButton>
                     </article>
                   ))}
 
@@ -1229,7 +1242,7 @@ export default function CustomerDashboard() {
                 </p>
               </div>
 
-              <button
+              <AnimatedButton
                 type="button"
                 className="primary-action"
                 onClick={() =>
@@ -1238,7 +1251,7 @@ export default function CustomerDashboard() {
               >
                 View Invoices
                 <ArrowRight size={15} />
-              </button>
+              </AnimatedButton>
 
             </div>
 

@@ -1,4 +1,4 @@
-import {
+﻿import {
   Receipt,
   History,
   LayoutDashboard,
@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 
 import AppLayout from "../../components/layout/AppLayout";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 export default function Invoices() {
@@ -93,7 +94,7 @@ export default function Invoices() {
 
         <div className="hub-nav-grid">
 
-          <button
+          <AnimatedButton
             type="button"
             className="hub-nav-card"
             onClick={() =>
@@ -128,10 +129,10 @@ export default function Invoices() {
               size={18}
             />
 
-          </button>
+          </AnimatedButton>
 
 
-          <button
+          <AnimatedButton
             type="button"
             className="hub-nav-card"
             onClick={() =>
@@ -165,7 +166,7 @@ export default function Invoices() {
               size={18}
             />
 
-          </button>
+          </AnimatedButton>
 
         </div>
 

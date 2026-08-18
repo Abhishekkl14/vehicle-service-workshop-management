@@ -6,11 +6,13 @@ from app.models.approval import Approval
 from app.models.booking import Booking
 from app.models.customer import Customer
 from app.models.estimate import Estimate
+from app.models.role import Role
 from app.models.user import User
 from app.models.work_order import WorkOrder
 from app.repositories.approval_repository import (
     ApprovalRepository,
 )
+from app.services.notification_service import NotificationService
 
 
 class ApprovalService:
@@ -169,6 +171,54 @@ class ApprovalService:
             self.db.rollback()
             raise
 
+        # -----------------------------------------------------
+        # Notify all service advisors
+        # -----------------------------------------------------
+
+        try:
+
+            advisor_role = self.db.scalar(
+                select(Role).where(
+                    Role.name == "SERVICE_ADVISOR"
+                )
+            )
+
+            if advisor_role:
+
+                advisors = self.db.scalars(
+                    select(User).where(
+                        User.role_id == advisor_role.id
+                    )
+                ).all()
+
+                notification_service = NotificationService(
+                    self.db
+                )
+
+                decision_label = (
+                    "approved" if decision == "APPROVED"
+                    else "rejected"
+                )
+
+                for advisor in advisors:
+
+                    notification_service.create_notification(
+                        user_id=advisor.id,
+                        title=f"Estimate {decision_label.title()}",
+                        message=(
+                            f"Estimate #{estimate_id} has been "
+                            f"{decision_label} by the customer "
+                            f"for Work Order #{estimate.work_order_id}."
+                        ),
+                        notification_type="ESTIMATE_DECISION",
+                    )
+
+                self.db.commit()
+
+        except Exception:
+
+            self.db.rollback()
+
         return approval
 
     # ---------------------------------------------------------
@@ -193,21 +243,7 @@ class ApprovalService:
         )
 
         # -----------------------------------------------------
-        # Validate decision
-        # -----------------------------------------------------
-
-        decision = decision.upper()
-
-        if decision not in {
-            "APPROVED",
-            "REJECTED",
-        }:
-            raise ValueError(
-                "Decision must be APPROVED or REJECTED"
-            )
-
-        # -----------------------------------------------------
-        # Find estimate
+        # Find estimate for ownership check
         # -----------------------------------------------------
 
         estimate = self.db.scalar(
@@ -223,7 +259,7 @@ class ApprovalService:
 
         # -----------------------------------------------------
         # Ownership chain:
-        # Estimate → WorkOrder → Booking → Customer
+        # Estimate -> WorkOrder -> Booking -> Customer
         # -----------------------------------------------------
 
         booking = self.db.scalar(
@@ -248,17 +284,8 @@ class ApprovalService:
             )
 
         # -----------------------------------------------------
-        # Estimate must be SENT
-        # -----------------------------------------------------
-
-        if estimate.status != "SENT":
-            raise ValueError(
-                "Only SENT estimates can be approved or rejected"
-            )
-
-        # -----------------------------------------------------
-        # customer_id comes from the JWT-derived customer,
-        # never from the request body
+        # Delegate to create_decision which handles
+        # validation, approval record, and status updates
         # -----------------------------------------------------
 
         return self.create_decision(

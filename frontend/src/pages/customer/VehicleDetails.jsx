@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import {
   ArrowLeft,
   Car,
@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import AppLayout from "../../components/layout/AppLayout";
 import { getVehicle } from "../../api/vehicleApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 export default function VehicleDetails() {
   const navigate = useNavigate();
@@ -81,7 +82,7 @@ export default function VehicleDetails() {
       <AppLayout>
         <div className="vehicle-details-page">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -91,7 +92,7 @@ export default function VehicleDetails() {
           >
             <ArrowLeft size={17} />
             Back to vehicles
-          </button>
+          </AnimatedButton>
 
           <div className="vehicle-detail-error">
             <h2>
@@ -100,13 +101,13 @@ export default function VehicleDetails() {
 
             <p>{error}</p>
 
-            <button
+            <AnimatedButton
               className="primary-action"
               onClick={loadVehicle}
             >
               <RefreshCw size={16} />
               Try again
-            </button>
+            </AnimatedButton>
           </div>
 
         </div>
@@ -119,7 +120,7 @@ export default function VehicleDetails() {
       <AppLayout>
         <div className="vehicle-details-page">
 
-          <button
+          <AnimatedButton
             className="back-button"
             onClick={() =>
               navigate(
@@ -129,7 +130,7 @@ export default function VehicleDetails() {
           >
             <ArrowLeft size={17} />
             Back to vehicles
-          </button>
+          </AnimatedButton>
 
           <div className="vehicle-detail-error">
             <h2>
@@ -162,7 +163,7 @@ export default function VehicleDetails() {
 
           <div>
 
-            <button
+            <AnimatedButton
               className="back-button"
               onClick={() =>
                 navigate(
@@ -172,7 +173,7 @@ export default function VehicleDetails() {
             >
               <ArrowLeft size={17} />
               Back to vehicles
-            </button>
+            </AnimatedButton>
 
             <p className="page-eyebrow">
               VEHICLE DETAILS

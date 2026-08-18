@@ -1,4 +1,4 @@
-import {
+﻿import {
   useEffect,
   useState,
 } from "react";
@@ -14,6 +14,7 @@ import AppLayout from "../../components/layout/AppLayout";
 import {
   getAllVehicles,
 } from "../../api/vehicleApi";
+import AnimatedButton from "../../components/ui/animated-button";
 
 
 export default function AdvisorVehicles() {
@@ -100,7 +101,7 @@ export default function AdvisorVehicles() {
 
           </div>
 
-          <button
+          <AnimatedButton
             type="button"
             className="secondary-action"
             onClick={loadVehicles}
@@ -118,7 +119,7 @@ export default function AdvisorVehicles() {
 
             Refresh
 
-          </button>
+          </AnimatedButton>
 
         </div>
 
@@ -139,12 +140,12 @@ export default function AdvisorVehicles() {
               {error}
             </span>
 
-            <button
+            <AnimatedButton
               type="button"
               onClick={loadVehicles}
             >
               Try Again
-            </button>
+            </AnimatedButton>
 
           </div>
 
