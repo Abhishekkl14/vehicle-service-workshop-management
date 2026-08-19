@@ -15,9 +15,9 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../context/AuthContext";
 import AppLayout from "../../components/layout/AppLayout";
+import AnimatedButton from "../../components/ui/animated-button";
 
 import {
-import AnimatedButton from "../../components/ui/animated-button";
   getCurrentUser,
   updateProfile,
   changePassword,

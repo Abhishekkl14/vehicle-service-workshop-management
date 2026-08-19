@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+﻿import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Car,
   Plus,
@@ -20,6 +20,10 @@ import {
 } from "../../api/vehicleApi";
 import { useNavigate } from "react-router-dom";
 import AnimatedButton from "../../components/ui/animated-button";
+import gsap from "gsap";
+import { Draggable } from "gsap/Draggable";
+
+gsap.registerPlugin(Draggable);
 
 import porscheImage from "../../assets/vehicles/PORCHE.png";
 
@@ -31,6 +35,13 @@ export default function MyVehicles() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const carouselRef = useRef(null);
+  const dragProxyRef = useRef(null);
+  const cardsRef = useRef([]);
+  const activeIndexRef = useRef(0);
+  const carouselApiRef = useRef(null);
+  const suppressClickRef = useRef(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const customerId =
     user?.customer_id ??
     user?.customer?.id;
@@ -241,6 +252,217 @@ export default function MyVehicles() {
     );
   };
 
+  useLayoutEffect(() => {
+    const viewport = carouselRef.current;
+    const dragProxy = dragProxyRef.current;
+    const cards = cardsRef.current
+      .slice(0, vehicles.length)
+      .filter(Boolean);
+    const count = vehicles.length;
+
+    if (
+      !viewport ||
+      !dragProxy ||
+      count === 0 ||
+      cards.length !== count
+    ) {
+      carouselApiRef.current = null;
+      return undefined;
+    }
+
+    activeIndexRef.current =
+      ((activeIndexRef.current % count) + count) % count;
+    setActiveIndex(activeIndexRef.current);
+    const playhead = {
+      value: activeIndexRef.current,
+    };
+
+    const getLayout = () => {
+      const cardWidth = cards[0]?.offsetWidth || 300;
+      const compactSpacing = viewport.clientWidth < 700;
+      const spacing = compactSpacing
+        ? Math.min(cardWidth * 0.78, viewport.clientWidth * 0.42)
+        : Math.min(cardWidth + 24, viewport.clientWidth * 0.34);
+
+      return { spacing };
+    };
+
+    const getRelativePosition = (index, fractionalIndex) => {
+      let relative = ((index - fractionalIndex) % count + count) % count;
+      if (relative > count / 2) relative -= count;
+      return relative;
+    };
+
+    const setCardPositions = (fractionalIndex, immediate = false) => {
+      const { spacing } = getLayout();
+      cards.forEach((card, index) => {
+        const relative = getRelativePosition(index, fractionalIndex);
+        const distance = Math.abs(relative);
+        const isActive = distance < 0.01;
+        const vars = {
+          x: relative * spacing,
+          xPercent: -50,
+          scale: isActive ? 1 : distance === 1 ? 0.82 : 0.62,
+          opacity: isActive ? 1 : distance === 1 ? 0.64 : 0.2,
+          rotation: relative * -1.5,
+          zIndex: 100 - Math.round(distance),
+        };
+
+        if (immediate) {
+          gsap.set(card, vars);
+        } else {
+          gsap.to(card, {
+            ...vars,
+            duration: 0.62,
+            ease: "power3.out",
+            overwrite: "auto",
+          });
+        }
+      });
+    };
+
+    const animateTo = (requestedIndex) => {
+      const wrappedIndex =
+        ((requestedIndex % count) + count) % count;
+      activeIndexRef.current = wrappedIndex;
+      gsap.to(playhead, {
+        value: requestedIndex,
+        duration: 0.62,
+        ease: "power3.out",
+        overwrite: true,
+        onUpdate: () =>
+          setCardPositions(playhead.value, true),
+        onComplete: () => setActiveIndex(wrappedIndex),
+      });
+    };
+
+    let wheelUnlockTimer;
+    const handleWheel = (event) => {
+      if (Math.abs(event.deltaX) < Math.abs(event.deltaY)) {
+        if (Math.abs(event.deltaY) < 8) return;
+      } else if (Math.abs(event.deltaX) < 8) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const delta =
+        Math.abs(event.deltaX) >= Math.abs(event.deltaY)
+          ? event.deltaX
+          : event.deltaY;
+      const wheelStep = gsap.utils.clamp(
+        -0.32,
+        0.32,
+        delta * 0.002
+      );
+      const wheelTarget = playhead.value + wheelStep;
+
+      window.clearTimeout(wheelUnlockTimer);
+      gsap.to(playhead, {
+        value: wheelTarget,
+        duration: 0.24,
+        ease: "power2.out",
+        overwrite: true,
+        onUpdate: () =>
+          setCardPositions(playhead.value, true),
+      });
+      wheelUnlockTimer = window.setTimeout(() => {
+        animateTo(Math.round(playhead.value));
+      }, 260);
+    };
+
+    activeIndexRef.current =
+      ((activeIndexRef.current % count) + count) % count;
+    setCardPositions(activeIndexRef.current, true);
+
+    cards.forEach((card) => {
+      const targetX = gsap.getProperty(card, "x");
+      gsap.fromTo(
+        card,
+        {
+          x: Number(targetX) + 110,
+          scale: 0.72,
+          opacity: 0,
+        },
+        {
+          x: targetX,
+          scale: gsap.getProperty(card, "scale"),
+          opacity: gsap.getProperty(card, "opacity"),
+          duration: 0.68,
+          delay: 0.04,
+          ease: "power3.out",
+          overwrite: "auto",
+        }
+      );
+    });
+
+    viewport.addEventListener("wheel", handleWheel, { passive: false });
+
+    const [draggable] = Draggable.create(dragProxy, {
+      type: "x",
+      trigger: viewport,
+      onPress() {
+        gsap.killTweensOf(playhead);
+        this.startPlayhead = playhead.value;
+        this.startProxyX = this.x;
+        this.moved = false;
+      },
+      onDrag() {
+        const distance = this.x - this.startProxyX;
+        if (Math.abs(distance) > 6) this.moved = true;
+        if (!this.moved) return;
+
+        const spacing = getLayout().spacing || 1;
+        playhead.value =
+          this.startPlayhead - distance / spacing;
+        setCardPositions(playhead.value, true);
+      },
+      onRelease() {
+        suppressClickRef.current = this.moved;
+      },
+      onDragEnd() {
+        if (this.moved) {
+          animateTo(Math.round(playhead.value));
+        }
+        gsap.set(dragProxy, { x: 0 });
+      },
+    });
+
+    carouselApiRef.current = {
+      next: () => animateTo(activeIndexRef.current + 1),
+      previous: () => animateTo(activeIndexRef.current - 1),
+    };
+
+    const handleResize = () => setCardPositions(activeIndexRef.current, true);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.clearTimeout(wheelUnlockTimer);
+      viewport.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("resize", handleResize);
+      gsap.killTweensOf(cards);
+      gsap.killTweensOf(playhead);
+      draggable.kill();
+      carouselApiRef.current = null;
+    };
+  }, [vehicles]);
+
+  const handleVehicleClick = (vehicle) => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+
+    navigate(`/customer/vehicles/${vehicle.id}`);
+  };
+
+  const handleVehicleKeyDown = (event, vehicle) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleVehicleClick(vehicle);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="vehicles-page">
@@ -378,18 +600,37 @@ export default function MyVehicles() {
         {!loading &&
           !error &&
           vehicles.length > 0 && (
-            <div className="vehicles-grid">
-              {vehicles.map(
-                (vehicle) => (
-                  <div
-                    key={vehicle.id}
-                    className="vehicle-card"
-                    onClick={() =>
-                      navigate(
-                        `/customer/vehicles/${vehicle.id}`
-                      )
-                    }
-                  >
+            <div className="vehicle-carousel">
+              <div
+                className="vehicle-carousel-viewport"
+                ref={carouselRef}
+                aria-label="My vehicles carousel"
+              >
+                {vehicles.map(
+                  (vehicle, index) => (
+                    <div
+                      key={vehicle.id}
+                      ref={(element) => {
+                        cardsRef.current[index] = element;
+                      }}
+                      className="vehicle-card vehicle-carousel-card"
+                      role="button"
+                      tabIndex={0}
+                      aria-current={
+                        index === activeIndex
+                          ? "true"
+                          : undefined
+                      }
+                      onClick={() =>
+                        handleVehicleClick(vehicle)
+                      }
+                      onKeyDown={(event) =>
+                        handleVehicleKeyDown(
+                          event,
+                          vehicle
+                        )
+                      }
+                    >
                     <div className="vehicle-card-image">
                       <img
                         src={porscheImage}
@@ -428,9 +669,48 @@ export default function MyVehicles() {
                       View Details
                       <ChevronRight size={14} />
                     </div>
-                  </div>
-                )
-              )}
+                    </div>
+                  )
+                )}
+              </div>
+              <div
+                ref={dragProxyRef}
+                className="vehicle-carousel-drag-proxy"
+                aria-hidden="true"
+              />
+
+              <div className="vehicle-carousel-controls">
+                <AnimatedButton
+                  className="secondary-action"
+                  onClick={() =>
+                    carouselApiRef.current?.previous()
+                  }
+                  aria-label="Show previous vehicle"
+                  disabled={vehicles.length < 2}
+                >
+                  <ChevronRight
+                    size={16}
+                    className="vehicle-carousel-prev-icon"
+                  />
+                  Previous
+                </AnimatedButton>
+
+                <span className="vehicle-carousel-position">
+                  {activeIndex + 1} / {vehicles.length}
+                </span>
+
+                <AnimatedButton
+                  className="secondary-action"
+                  onClick={() =>
+                    carouselApiRef.current?.next()
+                  }
+                  aria-label="Show next vehicle"
+                  disabled={vehicles.length < 2}
+                >
+                  Next
+                  <ChevronRight size={16} />
+                </AnimatedButton>
+              </div>
             </div>
           )}
 
