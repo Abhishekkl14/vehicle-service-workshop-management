@@ -23,6 +23,7 @@ import {
 } from "../../context/AuthContext";
 
 import AppLayout from "../../components/layout/AppLayout";
+import BorderGlow from "../../components/common/BorderGlow";
 import ProximityScaleGrid from "../../components/common/ProximityScaleGrid";
 
 import {
@@ -806,30 +807,43 @@ export default function CustomerDashboard() {
             const Icon = card.icon;
 
             return (
-              <AnimatedButton
-                type="button"
-                className="dashboard-card clickable"
+              <BorderGlow
                 key={card.key}
-                onClick={card.onClick}
+                className="dashboard-summary-glow"
+                edgeSensitivity={32}
+                glowColor="180 70 58"
+                backgroundColor="#ffffff"
+                borderRadius={16}
+                glowRadius={28}
+                glowIntensity={0.8}
+                coneSpread={25}
+                colors={["#00bfa6", "#38bdf8", "#f472b6"]}
+                fillOpacity={0.16}
               >
-                <div className="dashboard-card-icon">
-                  <Icon size={22} />
-                </div>
+                <AnimatedButton
+                  type="button"
+                  className="dashboard-card clickable"
+                  onClick={card.onClick}
+                >
+                  <div className="dashboard-card-icon">
+                    <Icon size={22} />
+                  </div>
 
-                <span>
-                  {card.label}
-                </span>
+                  <span>
+                    {card.label}
+                  </span>
 
-                <strong>
-                  {card.value === null
-                    ? "—"
-                    : card.value}
-                </strong>
+                  <strong>
+                    {card.value === null
+                      ? "—"
+                      : card.value}
+                  </strong>
 
-                <small>
-                  {card.hint}
-                </small>
-              </AnimatedButton>
+                  <small>
+                    {card.hint}
+                  </small>
+                </AnimatedButton>
+              </BorderGlow>
             );
           })}
 

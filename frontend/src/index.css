@@ -674,9 +674,21 @@ input {
 ======================================== */
 
 .app-shell {
+  position: relative;
   min-height: 100vh;
   display: flex;
-  background: var(--ice-glass);
+  overflow: hidden;
+  background: #5227ff;
+}
+
+.app-background-waves {
+  position: fixed;
+  z-index: 0;
+}
+
+.app-main {
+  position: relative;
+  z-index: 1;
 }
 
 /* SIDEBAR */
@@ -749,6 +761,11 @@ input {
   overflow-y: auto;
 
   padding-top: 4px;
+}
+
+.sidebar-option-wheel {
+  min-height: 390px;
+  margin: 0 -2px;
 }
 
 .nav-section-label {
@@ -972,7 +989,18 @@ input {
 /* CONTENT */
 
 .app-content {
+  position: relative;
+  z-index: 1;
   padding: 32px;
+}
+
+.dashboard-page-header .page-eyebrow,
+.dashboard-page-header h1,
+.dashboard-page-header p,
+.vehicles-header .page-eyebrow,
+.vehicles-header h1,
+.vehicles-header p {
+  color: white;
 }
 
 .dashboard-page {
@@ -1012,6 +1040,11 @@ input {
   font-size: 14px;
 }
 
+.dashboard-page-header .page-header h1,
+.dashboard-page-header .page-header p:last-child {
+  color: white;
+}
+
 /* CARDS */
 
 .dashboard-grid {
@@ -1035,6 +1068,17 @@ input {
   box-shadow:
     0 6px 20px
       rgba(3, 49, 58, 0.04);
+}
+
+.dashboard-summary-glow {
+  width: 100%;
+  height: 100%;
+}
+
+.dashboard-summary-glow .dashboard-card {
+  height: 100%;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .dashboard-card-icon {
@@ -8406,14 +8450,18 @@ input {
 
 .proximity-grid-header h2 {
   margin: 8px 0 0;
-  color: var(--quantum-blue);
+  color: white;
   font-size: 22px;
 }
 
 .proximity-grid-header p {
   margin: 6px 0 0;
-  color: var(--text-secondary);
+  color: white;
   font-size: 13px;
+}
+
+.proximity-grid-header .page-eyebrow {
+  color: white;
 }
 
 .proximity-stage {

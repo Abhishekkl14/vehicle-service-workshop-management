@@ -16,9 +16,10 @@
   History,
 } from "lucide-react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import AnimatedButton from "../../components/ui/animated-button";
+import OptionWheel from "../../components/common/OptionWheel";
 
 const navigation = {
   CUSTOMER: [
@@ -160,9 +161,17 @@ export default function Sidebar({
   onLogout,
 }) {
   const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const role = user?.role;
   const items = navigation[role] || [];
+  const activeIndex = Math.max(
+    0,
+    items.findIndex(
+      (item) => location.pathname === item.path
+    )
+  );
 
   const roleLabel = {
     CUSTOMER: "Customer",
@@ -194,24 +203,17 @@ export default function Sidebar({
           WORKSPACE
         </div>
 
-        {items.map((item) => {
-          const Icon = item.icon;
-
-          return (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
-              }
-            >
-              <Icon size={18} />
-              <span>{item.label}</span>
-            </NavLink>
-          );
-        })}
+        <OptionWheel
+          items={items.map((item) => item.label)}
+          defaultSelected={activeIndex}
+          className="sidebar-option-wheel"
+          fontSize={1.05}
+          spacing={1.7}
+          onChange={(index) => {
+            const item = items[index];
+            if (item) navigate(item.path);
+          }}
+        />
       </nav>
 
       <div className="sidebar-bottom">
