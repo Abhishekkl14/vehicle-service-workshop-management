@@ -189,7 +189,7 @@ export default function Sidebar({
 
         <div>
           <div className="sidebar-brand">
-            Auto<span>Flow</span>
+            Garage<span> 360</span>
           </div>
 
           <div className="sidebar-role">
@@ -207,8 +207,8 @@ export default function Sidebar({
           items={items.map((item) => item.label)}
           defaultSelected={activeIndex}
           className="sidebar-option-wheel"
-          fontSize={1.05}
-          spacing={1.7}
+          fontSize={1.45}
+          spacing={1.8}
           onChange={(index) => {
             const item = items[index];
             if (item) navigate(item.path);
@@ -222,7 +222,7 @@ export default function Sidebar({
           to={`/${role?.toLowerCase()}/settings`}
           className="sidebar-link"
         >
-          <Settings size={18} />
+          <Settings size={20} />
           <span>Settings</span>
         </NavLink>
 
@@ -230,7 +230,7 @@ export default function Sidebar({
           className="sidebar-logout"
           onClick={onLogout}
         >
-          <LogOut size={18} />
+          <LogOut size={20} />
           <span>Logout</span>
         </AnimatedButton>
 

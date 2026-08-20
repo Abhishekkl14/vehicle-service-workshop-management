@@ -999,7 +999,7 @@ input {
   position: relative;
   z-index: 1;
   /* adjusted left padding to better match advisor gap */
-  padding: 32px 32px 32px 48px;
+  padding: 40px 70px 40px 48px;
 }
 
 .dashboard-page-header .page-eyebrow,
@@ -2190,7 +2190,7 @@ input {
 ===================================================== */
 
 .bookings-page {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -3489,7 +3489,7 @@ input {
 ===================================================== */
 
 .history-page {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -7652,7 +7652,7 @@ input {
 ===================================================== */
 
 .notifications-page {
-  max-width: 1050px;
+  max-width: 1400px;
 
   margin: 0 auto;
 }
