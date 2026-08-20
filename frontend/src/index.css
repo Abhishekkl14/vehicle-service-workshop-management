@@ -761,6 +761,13 @@ input {
   overflow-y: auto;
 
   padding-top: 4px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar-option-wheel {
