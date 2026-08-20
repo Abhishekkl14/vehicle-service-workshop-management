@@ -1,0 +1,31 @@
+.silk-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: -1; /* keep behind UI */
+}
+
+/* Fallback visual: blurred radial gradients tuned to the silk color */
+.silk-fallback {
+  width: 1080px;
+  height: 1080px;
+  border-radius: 50%;
+  background: radial-gradient(40% 40% at 30% 30%, var(--silk-color, #6ce1c4) 0%, rgba(108,225,196,0.7) 20%, rgba(255,255,255,0.2) 60%, transparent 80%), radial-gradient(30% 30% at 70% 70%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+  filter: blur(28px) saturate(120%);
+  transform-origin: center;
+  animation: silkFlow 14s linear infinite;
+}
+
+@keyframes silkFlow {
+  0% { transform: translateZ(0) rotate(0deg) scale(1); }
+  25% { transform: translateX(-2%) rotate(8deg) scale(1.02); }
+  50% { transform: translateY(-2%) rotate(0deg) scale(1.04); }
+  75% { transform: translateX(2%) rotate(-6deg) scale(1.02); }
+  100% { transform: translateZ(0) rotate(0deg) scale(1); }
+}
+
+/* Ensure inner content isn't affected */
+.silk-container * { pointer-events: none; }

@@ -28,7 +28,7 @@ export default function AppLayout({
 
       <GradientWaves
         className="app-background-waves"
-        horizonColor="#5227FF"
+        horizonColor="#00e9b6"
         waveColor="#FF9FFC"
         crestColor="#FFFFFF"
         speed={0.4}

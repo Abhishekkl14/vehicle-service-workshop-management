@@ -678,7 +678,7 @@ input {
   min-height: 100vh;
   display: flex;
   overflow: hidden;
-  background: #5227ff;
+  background: #01161d;
 }
 
 .app-background-waves {
@@ -1305,7 +1305,7 @@ input {
 .vehicles-header h1 {
   margin: 0;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 30px;
   letter-spacing: -1px;
@@ -1398,7 +1398,7 @@ input {
   border: 1px solid var(--border);
   border-radius: 18px;
 
-  background: white;
+  background: rgb(246, 248, 248);
 
   box-shadow:
     0 6px 22px
@@ -2192,7 +2192,7 @@ input {
 .bookings-header h1 {
   margin: 0;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 30px;
   letter-spacing: -1px;
@@ -2398,7 +2398,7 @@ input {
 }
 
 .booking-vehicle svg {
-  color: var(--quantum-blue);
+  color: var(--white);
 }
 
 /* META */
@@ -2416,7 +2416,7 @@ input {
   align-items: center;
   gap: 6px;
 
-  color: var(--text-secondary);
+  color: var(--white);
 
   font-size: 11px;
 }

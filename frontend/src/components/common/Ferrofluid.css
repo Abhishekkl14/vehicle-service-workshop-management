@@ -1,0 +1,36 @@
+.ferrofluid-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none; /* let user interact with UI above */
+  z-index: -1; /* keep behind app content */
+}
+
+
+/* Simple CSS fallback: animated gradient so users without the external package still get a background */
+.ferrofluid-fallback {
+  width: 120%;
+  height: 120%;
+  position: absolute;
+  left: -10%;
+  top: -10%;
+  background: linear-gradient(120deg, #6ce1c4 0%, #FF9FFC 40%, #ffffff 100%);
+  filter: blur(30px) saturate(110%);
+  opacity: 0.9;
+  transform-origin: center;
+  animation: ferroflow 18s linear infinite;
+}
+
+@keyframes ferroflow {
+  0% { transform: scale(1) translateX(0) translateY(0); }
+  25% { transform: scale(1.03) translateX(-3%) translateY(2%); }
+  50% { transform: scale(1.06) translateX(0) translateY(-3%); }
+  75% { transform: scale(1.03) translateX(3%) translateY(2%); }
+  100% { transform: scale(1) translateX(0) translateY(0); }
+}
+
+/* Make sure the ferrofluid background doesn't interfere with keyboard focus outlines, etc. */
+.ferrofluid-container * { pointer-events: none; }
