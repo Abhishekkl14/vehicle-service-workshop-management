@@ -8,6 +8,7 @@ import {
 import {
   getCurrentUser,
   loginUser,
+  registerUser,
 } from "../api/authApi";
 
 const AuthContext = createContext(null);
@@ -54,6 +55,22 @@ export function AuthProvider({ children }) {
     return currentUser;
   };
 
+  const register = async (data) => {
+    // data: { first_name, last_name, email, phone, password }
+    const tokenData = await registerUser(data);
+
+    // Backend returns TokenResponse { access_token }
+    localStorage.setItem(
+      "access_token",
+      tokenData.access_token
+    );
+
+    const currentUser = await getCurrentUser();
+    setUser(currentUser);
+
+    return currentUser;
+  };
+
   const logout = () => {
     localStorage.removeItem("access_token");
     setUser(null);
@@ -65,6 +82,7 @@ export function AuthProvider({ children }) {
         user,
         loading,
         login,
+        register,
         logout,
       }}
     >

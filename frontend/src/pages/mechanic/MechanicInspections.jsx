@@ -210,10 +210,10 @@ export default function MechanicInspections() {
      VIEW
   ===================================================== */
 
-  const handleView = () => {
+  const handleView = (inspectionId) => {
 
     navigate(
-      "/mechanic/dashboard"
+      `/mechanic/inspections/${inspectionId}`
     );
 
   };
@@ -476,7 +476,7 @@ export default function MechanicInspections() {
                       <AnimatedButton
                         type="button"
                         className="booking-view-button"
-                        onClick={handleView}
+                        onClick={() => handleView(inspection.id)}
                       >
 
                         View

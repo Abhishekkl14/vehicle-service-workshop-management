@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/layout/AppLayout";
 
 import {
@@ -2086,6 +2087,8 @@ export default function AdvisorDashboard() {
 
   const { user } = useAuth();
 
+  const navigate = useNavigate();
+
 
   const [selectedDate, setSelectedDate] =
     useState(todayStr());
@@ -3895,15 +3898,27 @@ export default function AdvisorDashboard() {
 
                                 <div className="advisor-workflow-panel-head">
 
-                                  <h3>
+                                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
 
-                                    <ClipboardList
-                                      size={16}
-                                    />
+                                        <h3 style={{ margin: 0 }}>
 
-                                    Inspection Findings ({inspection.items?.length || 0})
+                                          <ClipboardList
+                                            size={16}
+                                          />
 
-                                  </h3>
+                                          Inspection Findings ({inspection.items?.length || 0})
+
+                                        </h3>
+
+                                        <AnimatedButton
+                                          type="button"
+                                          className="secondary-action"
+                                          onClick={() => navigate(`/advisor/inspections/${inspection.id}`)}
+                                        >
+                                          View details
+                                        </AnimatedButton>
+
+                                      </div>
 
                                 </div>
 

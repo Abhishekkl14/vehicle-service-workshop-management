@@ -177,6 +177,15 @@ function WorkOrderCard({
   const [createError, setCreateError] =
     useState("");
 
+  // Only allow creating inspections for these work order statuses.
+  const canCreateInspection = [
+    "CREATED",
+    "ASSIGNED",
+    "INSPECTION",
+  ].includes(
+    String(workOrder?.status || "").toUpperCase()
+  );
+
 
   const [showAddForm, setShowAddForm] =
     useState(false);
@@ -2567,21 +2576,33 @@ function WorkOrderCard({
                 </div>
 
 
-                <AnimatedButton
-                  type="button"
-                  className="primary-action"
-                  onClick={() =>
-                    setShowCreateForm(true)
-                  }
-                >
+                {canCreateInspection ? (
+                  <AnimatedButton
+                    type="button"
+                    className="primary-action"
+                    onClick={() =>
+                      setShowCreateForm(true)
+                    }
+                  >
 
-                  <Plus
-                    size={15}
-                  />
+                    <Plus
+                      size={15}
+                    />
 
-                  Create Inspection
+                    Create Inspection
 
-                </AnimatedButton>
+                  </AnimatedButton>
+                ) : (
+                  <AnimatedButton
+                    type="button"
+                    className="primary-action"
+                    disabled
+                    title={`Cannot create inspection for work order status: ${workOrder?.status || "UNKNOWN"}`}
+                  >
+                    <Plus size={15} />
+                    Create Inspection
+                  </AnimatedButton>
+                )}
 
               </div>
 

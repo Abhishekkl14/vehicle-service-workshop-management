@@ -23,3 +23,18 @@ export async function getCurrentUser() {
   const response = await api.get("/api/v1/auth/me");
   return response.data;
 }
+
+export async function registerUser(data) {
+  // data: { first_name, last_name, email, phone, password }
+  const response = await api.post(
+    "/api/v1/auth/register",
+    data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+}

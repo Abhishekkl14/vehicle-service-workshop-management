@@ -6149,7 +6149,7 @@ input {
 .mechanic-header h1 {
   margin: 8px 0 6px;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 29px;
 }
@@ -6159,7 +6159,7 @@ input {
 
   margin: 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 13px;
 }
@@ -7671,7 +7671,7 @@ input {
 .notifications-header p:last-child {
   margin: 8px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 13px;
 }

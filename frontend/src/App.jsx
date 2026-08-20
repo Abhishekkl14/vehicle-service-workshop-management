@@ -533,12 +533,36 @@ export default function App() {
 
 
           <Route
+            path="/mechanic/work-orders/:workOrderId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["MECHANIC"]}
+              >
+                <WorkOrderDetails />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
             path="/mechanic/inspections"
             element={
               <ProtectedRoute
                 allowedRoles={["MECHANIC"]}
               >
                 <MechanicInspections />
+              </ProtectedRoute>
+            }
+          />
+
+
+          <Route
+            path="/mechanic/inspections/:inspectionId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["MECHANIC"]}
+              >
+                <InspectionDetails />
               </ProtectedRoute>
             }
           />

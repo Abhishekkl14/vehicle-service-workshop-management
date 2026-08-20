@@ -331,7 +331,7 @@ export default function MechanicWorkOrders() {
   ) => {
 
     navigate(
-      "/mechanic/dashboard"
+      `/mechanic/work-orders/${workOrderId}`
     );
 
   };
