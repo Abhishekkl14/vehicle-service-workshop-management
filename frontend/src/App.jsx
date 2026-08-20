@@ -24,6 +24,7 @@ import WorkOrderDetails from "./pages/customer/WorkOrderDetails";
 import InspectionDetails from "./pages/customer/InspectionDetails";
 import Invoices from "./pages/customer/Invoices";
 import InvoiceDetails from "./pages/customer/InvoiceDetails";
+import Payments from "./pages/customer/Payments";
 import Notifications from "./pages/customer/Notifications";
 import CustomerWorkOrders from "./pages/customer/CustomerWorkOrders";
 import CustomerInspections from "./pages/customer/CustomerInspections";
@@ -291,6 +292,17 @@ export default function App() {
                 allowedRoles={["CUSTOMER"]}
               >
                 <InvoiceDetails />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/customer/payments"
+            element={
+              <ProtectedRoute
+                allowedRoles={["CUSTOMER"]}
+              >
+                <Payments />
               </ProtectedRoute>
             }
           />

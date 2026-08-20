@@ -201,301 +201,87 @@ export default function AdvisorEstimates() {
   return (
     <AppLayout>
 
-      <div className="bookings-page">
+      <div className="advisor-dashboard">
 
-        {/* =================================================
-            HEADER
-        ================================================= */}
-
-        <div className="bookings-header">
-
+        <div className="advisor-header">
           <div>
-
-            <p className="page-eyebrow">
-              ESTIMATES
-            </p>
-
-            <h1>
-              Estimates
-            </h1>
-
-            <p>
-              View and manage estimates
-              for customer vehicles.
-            </p>
-
+            <p className="page-eyebrow">ESTIMATES</p>
+            <h1><FileText size={24} /> Estimates</h1>
+            <p>View and manage estimates for customer vehicles.</p>
           </div>
 
-
-          <div className="bookings-actions">
-
-            <AnimatedButton
-              type="button"
-              className="secondary-action"
-              onClick={loadEstimates}
-              disabled={loading}
-            >
-
-              <RefreshCw
-                size={16}
-                className={
-                  loading
-                    ? "spin"
-                    : ""
-                }
-              />
-
-              Refresh
-
-            </AnimatedButton>
-
-          </div>
-
+          <AnimatedButton
+            type="button"
+            className="secondary-action"
+            onClick={loadEstimates}
+            disabled={loading}
+          >
+            <RefreshCw size={16} className={loading ? "spin" : ""} />
+            Refresh
+          </AnimatedButton>
         </div>
 
+        <div className="advisor-section">
 
-        {/* =================================================
-            ERROR
-        ================================================= */}
+          {error && (
+            <div className="advisor-error">
+              <AlertCircle size={16} />
+              <span>{error}</span>
+              <AnimatedButton type="button" onClick={loadEstimates}>Try Again</AnimatedButton>
+            </div>
+          )}
 
-        {error && (
-
-          <div className="notice-error">
-
-            <AlertCircle
-              size={16}
-            />
-
-            <span>
-              {error}
-            </span>
-
-            <AnimatedButton
-              type="button"
-              onClick={loadEstimates}
-            >
-              Try Again
-            </AnimatedButton>
-
-          </div>
-
-        )}
-
-
-        {/* =================================================
-            LOADING
-        ================================================= */}
-
-        {loading && !error && (
-
-          <div className="booking-list">
-
-            {[1, 2, 3].map(
-              (item) => (
-
-                <div
-                  className="booking-skeleton"
-                  key={item}
-                >
-
-                  <div
-                    className="skeleton skeleton-icon"
-                  />
-
+          {loading && !error && (
+            <div className="booking-list">
+              {[1,2,3].map((item) => (
+                <div className="booking-skeleton" key={item}>
+                  <div className="skeleton skeleton-icon" />
                   <div className="booking-skeleton-content">
-
-                    <div
-                      className="skeleton skeleton-title"
-                    />
-
-                    <div
-                      className="skeleton skeleton-line"
-                    />
-
-                    <div
-                      className="skeleton skeleton-line short"
-                    />
-
+                    <div className="skeleton skeleton-title" />
+                    <div className="skeleton skeleton-line" />
+                    <div className="skeleton skeleton-line short" />
                   </div>
-
                 </div>
-              )
-            )}
-
-          </div>
-
-        )}
-
-
-        {/* =================================================
-            EMPTY STATE
-        ================================================= */}
-
-        {!loading &&
-          !error &&
-          estimates.length === 0 && (
-
-            <div className="bookings-empty">
-
-              <div className="empty-booking-icon">
-
-                <FileText
-                  size={30}
-                />
-
-              </div>
-
-              <h2>
-                No estimates yet
-              </h2>
-
-              <p>
-                When estimates are created,
-                they will appear here for
-                review.
-              </p>
-
+              ))}
             </div>
+          )}
 
-        )}
+          {!loading && !error && estimates.length === 0 && (
+            <div className="advisor-empty">
+              <div className="advisor-empty-icon"><FileText size={26} /></div>
+              <h3>No estimates yet</h3>
+              <p>When estimates are created, they will appear here for review.</p>
+            </div>
+          )}
 
-
-        {/* =================================================
-            ESTIMATE TABLE
-        ================================================= */}
-
-        {!loading &&
-          !error &&
-          estimates.length > 0 && (
-
-            <div className="bookings-table-wrapper">
-
-              <table className="bookings-table">
-
+          {!loading && !error && estimates.length > 0 && (
+            <div className="advisor-part-table-wrap">
+              <table className="advisor-part-table">
                 <thead>
-
                   <tr>
-
-                    <th>
-                      ID
-                    </th>
-
-                    <th>
-                      Work Order
-                    </th>
-
-                    <th>
-                      Total
-                    </th>
-
-                    <th>
-                      Status
-                    </th>
-
-                    <th>
-                      Created At
-                    </th>
-
+                    <th>ID</th>
+                    <th>Work Order</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Created At</th>
                   </tr>
-
                 </thead>
-
                 <tbody>
-
-                  {estimates.map(
-                    (estimate) => (
-
-                      <tr
-                        key={estimate.id}
-                      >
-
-                        <td>
-
-                          <div className="table-id-cell">
-
-                            <FileText
-                              size={16}
-                            />
-
-                            <span>
-                              #{estimate.id}
-                            </span>
-
-                          </div>
-
-                        </td>
-
-                        <td>
-
-                          <div className="table-id-cell">
-
-                            <Wrench
-                              size={14}
-                            />
-
-                            <span>
-                              #{estimate.work_order_id}
-                            </span>
-
-                          </div>
-
-                        </td>
-
-                        <td>
-
-                          <strong>
-                            {formatCurrency(
-                              estimate.total_amount
-                            )}
-                          </strong>
-
-                        </td>
-
-                        <td>
-
-                          <span
-                            className={getStatusClass(
-                              estimate.status
-                            )}
-                          >
-
-                            {estimate.status ||
-                              "DRAFT"}
-
-                          </span>
-
-                        </td>
-
-                        <td>
-
-                          <div className="table-date-cell">
-
-                            <CalendarDays
-                              size={14}
-                            />
-
-                            <span>
-                              {formatDate(
-                                estimate.created_at
-                              )}
-                            </span>
-
-                          </div>
-
-                        </td>
-
-                      </tr>
-
-                    )
-                  )}
-
+                  {estimates.map((estimate) => (
+                    <tr key={estimate.id}>
+                      <td><strong>#{estimate.id}</strong></td>
+                      <td>#{estimate.work_order_id}</td>
+                      <td><strong>{formatCurrency(estimate.total_amount)}</strong></td>
+                      <td><span className={getStatusClass(estimate.status)}>{estimate.status || "DRAFT"}</span></td>
+                      <td>{formatDate(estimate.created_at)}</td>
+                    </tr>
+                  ))}
                 </tbody>
-
               </table>
-
             </div>
+          )}
 
-        )}
+        </div>
 
       </div>
 

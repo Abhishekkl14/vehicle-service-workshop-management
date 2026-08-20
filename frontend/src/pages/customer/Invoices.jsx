@@ -32,19 +32,18 @@ export default function Invoices() {
           <div>
 
             <p className="page-eyebrow">
-              INVOICES &amp; PAYMENTS
-            </p>
+                INVOICES
+              </p>
 
 
-            <h1>
-              Invoices &amp; Payments
-            </h1>
+              <h1>
+                Invoices
+              </h1>
 
 
-            <p>
-              View your invoices and make
-              payments.
-            </p>
+              <p>
+                View your invoices. Payments can be made from the invoice details page.
+              </p>
 
           </div>
 
@@ -121,6 +120,43 @@ export default function Invoices() {
               <p>
                 View completed services
                 and their invoices.
+              </p>
+
+            </div>
+
+            <ChevronRight
+              size={18}
+            />
+
+          </AnimatedButton>
+
+
+          <AnimatedButton
+            type="button"
+            className="hub-nav-card"
+            onClick={() =>
+              navigate(
+                "/customer/payments"
+              )
+            }
+          >
+
+            <div className="hub-nav-icon">
+
+              <Receipt
+                size={20}
+              />
+
+            </div>
+
+            <div>
+
+              <h3>
+                Payments
+              </h3>
+
+              <p>
+                View payment hub and guidance on where to record payments.
               </p>
 
             </div>

@@ -47,64 +47,67 @@ export default function AdvisorInvoices() {
 
   return (
     <AppLayout>
-      <div className="page-header">
-        <h1>
-          <Receipt size={24} /> Invoices
-        </h1>
-      </div>
-      <div className="content-area">
-        {loading && <p>Loading invoices...</p>}
-        {error && <p className="error-text">{error}</p>}
-        {!loading && !error && invoices.length === 0 && (
-          <div className="empty-state">
-            <Receipt size={48} />
-            <p>No invoices found</p>
+
+      <div className="advisor-dashboard">
+
+        <div className="advisor-header">
+          <div>
+            <p className="page-eyebrow">INVOICES</p>
+            <h1><Receipt size={24} /> Invoices</h1>
+            <p>View and manage invoices generated from completed work orders.</p>
           </div>
-        )}
-        {!loading && !error && invoices.length > 0 && (
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Invoice #</th>
-                <th>Work Order</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Issued</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoices.map((inv) => (
-                <tr key={inv.id}>
-                  <td>{inv.invoice_number}</td>
-                  <td>WO#{inv.work_order_id}</td>
-                  <td>
-                    <span className={`status-badge status-${inv.status?.toLowerCase()}`}>
-                      {inv.status}
-                    </span>
-                  </td>
-                  <td>₹{Number(inv.total_amount).toLocaleString()}</td>
-                  <td>
-                    {inv.issued_at
-                      ? new Date(inv.issued_at).toLocaleDateString()
-                      : "—"}
-                  </td>
-                  <td>
-                    <AnimatedButton
-                      className="btn btn-sm btn-primary"
-                      onClick={() =>
-                        navigate(`/advisor/invoices/${inv.id}`)
-                      }
-                    >
-                      View
-                    </AnimatedButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        </div>
+
+        <div className="advisor-section">
+
+          {loading && <p>Loading invoices...</p>}
+          {error && <div className="advisor-error"><AlertCircle size={16} /> <span>{error}</span></div>}
+
+          {!loading && !error && invoices.length === 0 && (
+            <div className="advisor-empty">
+              <div className="advisor-empty-icon"><Receipt size={26} /></div>
+              <h3>No invoices found</h3>
+              <p>Invoices will appear here once they are issued for completed work orders.</p>
+            </div>
+          )}
+
+          {!loading && !error && invoices.length > 0 && (
+            <div className="advisor-part-table-wrap">
+              <table className="advisor-part-table">
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Work Order</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Issued</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoices.map((inv) => (
+                    <tr key={inv.id}>
+                      <td>#{inv.invoice_number}</td>
+                      <td>WO#{inv.work_order_id}</td>
+                      <td><span className={`status-badge status-${inv.status?.toLowerCase()}`}>{inv.status}</span></td>
+                      <td>₹{Number(inv.total_amount).toLocaleString()}</td>
+                      <td>{inv.issued_at ? new Date(inv.issued_at).toLocaleDateString() : "—"}</td>
+                      <td>
+                        <AnimatedButton className="secondary-action" onClick={() => navigate(`/advisor/invoices/${inv.id}`)}>
+                          View
+                        </AnimatedButton>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+        </div>
+
       </div>
+
     </AppLayout>
   );
 }

@@ -1227,13 +1227,13 @@ export default function CustomerDashboard() {
           </section>
 
 
-          {/* INVOICES & PAYMENTS */}
+          {/* INVOICES */}
 
           <section className="dashboard-section">
 
             <SectionHeader
-              title="Invoices & Payments"
-              subtitle="Billing and payment records for completed work"
+              title="Invoices"
+              subtitle="Billing records for completed work. Make payments from the invoice details page."
             />
 
             <div className="dashboard-info-card">

@@ -678,7 +678,7 @@ input {
   min-height: 100vh;
   display: flex;
   overflow: hidden;
-  background: #01161d;
+  background: #118a84;
 }
 
 .app-background-waves {
@@ -991,7 +991,8 @@ input {
 .app-content {
   position: relative;
   z-index: 1;
-  padding: 32px;
+  /* adjusted left padding to better match advisor gap */
+  padding: 32px 32px 32px 48px;
 }
 
 .dashboard-page-header .page-eyebrow,
@@ -1004,6 +1005,12 @@ input {
 }
 
 .dashboard-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* CUSTOMER PAGES: align invoices/payments with dashboard */
+.invoice-page {
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -1314,7 +1321,7 @@ input {
 .vehicles-header p:last-child {
   margin: 8px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 14px;
 }
@@ -2201,7 +2208,7 @@ input {
 .bookings-header p:last-child {
   margin: 8px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 13px;
 }
@@ -2244,7 +2251,7 @@ input {
 .bookings-error p {
   margin: 4px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 11px;
 }
@@ -3491,7 +3498,7 @@ input {
 .history-header h1 {
   margin: 0;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 30px;
   letter-spacing: -1px;
@@ -3500,7 +3507,7 @@ input {
 .history-header p:last-child {
   margin: 8px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 13px;
 }
@@ -4968,7 +4975,7 @@ input {
 .advisor-header h1 {
   margin: 8px 0 6px;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 29px;
 }
@@ -4978,7 +4985,7 @@ input {
 
   margin: 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 13px;
 }
@@ -5002,9 +5009,9 @@ input {
     rgba(16, 185, 129, 0.35);
   border-radius: 14px;
 
-  background: #ecfdf5;
+  background: #bbffeb;
 
-  color: var(--cyber-teal);
+  color: var(--White);
 
   font-size: 13px;
 
@@ -5111,7 +5118,7 @@ input {
 }
 
 .advisor-date-filter > label {
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 12px;
 
@@ -7655,7 +7662,7 @@ input {
 .notifications-header h1 {
   margin: 0;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 30px;
   letter-spacing: -1px;

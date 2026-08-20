@@ -19,104 +19,44 @@ export default function AdvisorPayments() {
   return (
     <AppLayout>
 
-      <div className="bookings-page">
+      <div className="advisor-dashboard">
 
-        {/* =================================================
-            HEADER
-        ================================================= */}
-
-        <div className="bookings-header">
-
+        <div className="advisor-header">
           <div>
-
-            <p className="page-eyebrow">
-              PAYMENTS
-            </p>
-
-            <h1>
-              Payments
-            </h1>
-
-            <p>
-              Payment tracking available in
-              Invoices section.
-            </p>
-
+            <p className="page-eyebrow">PAYMENTS</p>
+            <h1><CreditCard size={24} /> Payments</h1>
+            <p>Payment tracking available in the Invoices section.</p>
           </div>
-
         </div>
 
+        <div className="advisor-section">
 
-        {/* =================================================
-            INFO CARD
-        ================================================= */}
-
-        <div className="bookings-empty">
-
-          <div className="empty-booking-icon">
-
-            <CreditCard
-              size={30}
-            />
-
+          <div className="advisor-empty">
+            <div className="advisor-empty-icon">
+              <CreditCard size={26} />
+            </div>
+            <h3>Payment Tracking</h3>
+            <p>Payment tracking is available in the Invoices section. View invoices and record payments from there.</p>
           </div>
 
-          <h2>
-            Payment Tracking
-          </h2>
+          <div style={{ marginTop: 18 }} className="hub-nav-grid">
+            <AnimatedButton
+              type="button"
+              className="hub-nav-card"
+              onClick={() => navigate("/advisor/invoices")}
+            >
+              <div className="hub-nav-icon">
+                <CreditCard size={20} />
+              </div>
 
-          <p>
-            Payment tracking is available in
-            the Invoices section. View
-            invoices and record payments
-            from there.
-          </p>
+              <div>
+                <h3>Invoices &amp; Payments</h3>
+                <p>View invoices and record payments.</p>
+              </div>
 
-        </div>
-
-
-        {/* =================================================
-            NAVIGATION
-        ================================================= */}
-
-        <div className="hub-nav-grid">
-
-          <AnimatedButton
-            type="button"
-            className="hub-nav-card"
-            onClick={() =>
-              navigate(
-                "/advisor/invoices"
-              )
-            }
-          >
-
-            <div className="hub-nav-icon">
-
-              <CreditCard
-                size={20}
-              />
-
-            </div>
-
-            <div>
-
-              <h3>
-                Invoices &amp; Payments
-              </h3>
-
-              <p>
-                View invoices and record
-                payments.
-              </p>
-
-            </div>
-
-            <ChevronRight
-              size={18}
-            />
-
-          </AnimatedButton>
+              <ChevronRight size={18} />
+            </AnimatedButton>
+          </div>
 
         </div>
 
