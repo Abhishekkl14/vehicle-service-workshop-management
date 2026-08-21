@@ -19,12 +19,14 @@ from app.models.invoice import Invoice
 from app.models.invoice_item import InvoiceItem
 from app.models.payment import Payment
 from app.models.notification import Notification
+from app.models.customer_service_history import CustomerServiceHistory
 
 
 __all__ = [
     "Role",
     "User",
     "Customer",
+    "CustomerServiceHistory",
     "VehicleType",
     "Vehicle",
     "Service",
