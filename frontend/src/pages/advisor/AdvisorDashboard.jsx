@@ -181,6 +181,38 @@ const formatTime = (value) => {
 };
 
 
+const formatCustomerName = (customer) => {
+  const user = customer?.user;
+
+  if (!user?.first_name) {
+    return null;
+  }
+
+  return [user.first_name, user.last_name]
+    .filter(Boolean)
+    .join(" ");
+};
+
+
+const formatVehicleLabel = (vehicle) => {
+  if (!vehicle?.registration_number) {
+    return null;
+  }
+
+  const descriptor = [
+    vehicle.make,
+    vehicle.model,
+    vehicle.manufacturing_year,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return descriptor
+    ? `${vehicle.registration_number} · ${descriptor}`
+    : vehicle.registration_number;
+};
+
+
 const getBookingStatusClass = (
   status
 ) => {
@@ -3162,7 +3194,18 @@ export default function AdvisorDashboard() {
                               size={14}
                             />
 
-                            Customer #{booking.customer_id}
+                            {formatCustomerName(
+                              booking.customer
+                            ) ||
+                              `Customer #${booking.customer_id}`}
+
+                            {booking.customer
+                              ?.user?.phone && (
+                              <span className="meta-sub">
+                                {" "}
+                                · {booking.customer.user.phone}
+                              </span>
+                            )}
 
                           </div>
 
@@ -3173,7 +3216,10 @@ export default function AdvisorDashboard() {
                               size={14}
                             />
 
-                            Vehicle #{booking.vehicle_id}
+                            {formatVehicleLabel(
+                              booking.vehicle
+                            ) ||
+                              `Vehicle #${booking.vehicle_id}`}
 
                           </div>
 
@@ -3184,7 +3230,9 @@ export default function AdvisorDashboard() {
                               size={14}
                             />
 
-                            Service #{booking.service_id}
+                            {booking.service
+                              ?.name ||
+                              `Service #${booking.service_id}`}
 
                           </div>
 
@@ -3447,6 +3495,59 @@ export default function AdvisorDashboard() {
 
                         <div>
 
+                          <User
+                            size={14}
+                          />
+
+                          {formatCustomerName(
+                            workOrder.booking
+                              ?.customer
+                          ) ||
+                            `Customer #${workOrder.booking
+                              ?.customer_id ??
+                              workOrder.booking_id}`}
+
+                          {workOrder.booking
+                            ?.customer?.user
+                            ?.phone && (
+                            <span className="meta-sub">
+                              {" "}
+                              · {workOrder.booking.customer.user.phone}
+                            </span>
+                          )}
+
+                        </div>
+
+
+                        <div>
+
+                          <Car
+                            size={14}
+                          />
+
+                          {formatVehicleLabel(
+                            workOrder.vehicle
+                          ) ||
+                            `Vehicle #${workOrder.vehicle_id}`}
+
+                        </div>
+
+
+                        <div>
+
+                          <Wrench
+                            size={14}
+                          />
+
+                          {workOrder.booking
+                            ?.service?.name ||
+                            `Booking #${workOrder.booking_id}`}
+
+                        </div>
+
+
+                        <div>
+
                           <CalendarDays
                             size={14}
                           />
@@ -3458,24 +3559,22 @@ export default function AdvisorDashboard() {
 
                         <div>
 
-                          <Car
-                            size={14}
-                          />
-
-                          Vehicle #{workOrder.vehicle_id}
-
-                        </div>
-
-
-                        <div>
-
                           <Wrench
                             size={14}
                           />
 
-                          Mechanic {workOrder.assigned_mechanic_id
-                            ? `#${workOrder.assigned_mechanic_id}`
-                            : "Not assigned"}
+                          Mechanic{" "}
+                          {workOrder.mechanic
+                            ?.first_name
+                            ? [
+                                workOrder.mechanic.first_name,
+                                workOrder.mechanic.last_name,
+                              ]
+                                .filter(Boolean)
+                                .join(" ")
+                            : workOrder.assigned_mechanic_id
+                              ? `#${workOrder.assigned_mechanic_id}`
+                              : "Not assigned"}
 
                         </div>
 
@@ -3709,6 +3808,60 @@ export default function AdvisorDashboard() {
 
                           <div>
 
+                            <User
+                              size={14}
+                            />
+
+                            {formatCustomerName(
+                              wo.booking
+                                ?.customer
+                            ) ||
+                              `Customer #${
+                                wo.booking
+                                  ?.customer_id ??
+                                  wo.booking_id
+                              }`}
+
+                            {wo.booking?.customer
+                              ?.user?.phone && (
+                              <span className="meta-sub">
+                                {" "}
+                                · {wo.booking.customer.user.phone}
+                              </span>
+                            )}
+
+                          </div>
+
+
+                          <div>
+
+                            <Car
+                              size={14}
+                            />
+
+                            {formatVehicleLabel(
+                              wo.vehicle
+                            ) ||
+                              `Vehicle #${wo.vehicle_id}`}
+
+                          </div>
+
+
+                          <div>
+
+                            <Wrench
+                              size={14}
+                            />
+
+                            {wo.booking?.service
+                              ?.name ||
+                              `Booking #${wo.booking_id}`}
+
+                          </div>
+
+
+                          <div>
+
                             <CalendarDays
                               size={14}
                             />
@@ -3720,23 +3873,22 @@ export default function AdvisorDashboard() {
 
                           <div>
 
-                            <Car
-                              size={14}
-                            />
-
-                            Vehicle #{wo.vehicle_id}
-
-                          </div>
-
-
-                          <div>
-
                             <Wrench
                               size={14}
                             />
 
-                            Mechanic #{wo.assigned_mechanic_id || "—"}
-
+                            Mechanic{" "}
+                            {wo.mechanic
+                              ?.first_name
+                              ? [
+                                  wo.mechanic.first_name,
+                                  wo.mechanic.last_name,
+                                ]
+                                  .filter(Boolean)
+                                  .join(" ")
+                              : wo.assigned_mechanic_id
+                                ? `#${wo.assigned_mechanic_id}`
+                                : "—"}
 
                           </div>
 

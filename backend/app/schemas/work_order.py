@@ -1,6 +1,13 @@
-from datetime import datetime
+from datetime import date, datetime, time
 
 from pydantic import BaseModel, ConfigDict, Field
+
+from app.schemas.booking import (
+    BookingCustomerBrief,
+    BookingServiceBrief,
+    BookingUserBrief,
+    BookingVehicleBrief,
+)
 
 
 class WorkOrderCreate(BaseModel):
@@ -8,6 +15,19 @@ class WorkOrderCreate(BaseModel):
     vehicle_id: int
     complaint: str | None = None
     mechanic_id: int | None = None
+
+
+class WorkOrderBookingBrief(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
+    id: int
+    status: str
+    booking_date: date
+    booking_time: time
+    customer: BookingCustomerBrief | None = None
+    service: BookingServiceBrief | None = None
 
 
 class WorkOrderResponse(BaseModel):
@@ -30,6 +50,10 @@ class WorkOrderResponse(BaseModel):
     rejected_at: datetime | None
     rejected_by: int | None
     rejection_reason: str | None
+
+    vehicle: BookingVehicleBrief | None = None
+    mechanic: BookingUserBrief | None = None
+    booking: WorkOrderBookingBrief | None = None
 
 
 class WorkOrderApproveRequest(BaseModel):
