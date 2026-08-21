@@ -1866,7 +1866,7 @@ input {
 ===================================================== */
 
 .vehicle-details-page {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -1886,7 +1886,7 @@ input {
   border: 0;
   background: transparent;
 
-  color: var(--quantum-blue);
+  color: var(--white);
 
   font-size: 12px;
   font-weight: 750;
@@ -1897,7 +1897,7 @@ input {
 .vehicle-details-header h1 {
   margin: 0;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 30px;
   letter-spacing: -1px;
@@ -1906,7 +1906,7 @@ input {
 .vehicle-details-header p:last-child {
   margin: 8px 0 0;
 
-  color: var(--text-secondary);
+  color: var(--white-secondary);
 
   font-size: 13px;
 }
@@ -2602,7 +2602,7 @@ input {
 ===================================================== */
 
 .create-booking-page {
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -3055,7 +3055,7 @@ input {
 ===================================================== */
 
 .booking-details-page {
-  max-width: 1050px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -3075,7 +3075,7 @@ input {
 .booking-details-title-row h1 {
   margin: 0;
 
-  color: var(--cyber-teal);
+  color: var(--white);
 
   font-size: 30px;
   letter-spacing: -0.8px;
@@ -3907,7 +3907,7 @@ input {
 ===================================================== */
 
 .estimate-page {
-  max-width: 1050px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -4403,7 +4403,7 @@ input {
 ===================================================== */
 
 .work-order-page {
-  max-width: 1050px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -4501,7 +4501,7 @@ input {
 ===================================================== */
 
 .inspection-page {
-  max-width: 1050px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -7198,7 +7198,7 @@ input {
 ===================================================== */
 
 .invoice-page {
-  max-width: 1050px;
+  max-width: 1400px;
 
   margin: 0 auto;
 }
