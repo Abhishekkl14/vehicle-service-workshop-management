@@ -70,7 +70,7 @@ class WorkOrderService:
             )
 
         # Mechanic → only assigned work orders
-        if role == "MECHANIC":
+        if role == "TECHNICIAN":
 
             return self.repository.get_by_id_and_mechanic(
                 work_order_id,
@@ -110,7 +110,7 @@ class WorkOrderService:
             )
 
         # Mechanic → only assigned work orders
-        if role == "MECHANIC":
+        if role == "TECHNICIAN":
 
             return self.repository.get_by_status_and_mechanic(
                 status,
@@ -188,7 +188,7 @@ class WorkOrderService:
                 )
 
             # Verify role
-            if mechanic.role.name != "MECHANIC":
+            if mechanic.role.name != "TECHNICIAN":
                 raise ValueError(
                     "Selected user is not a mechanic"
                 )
@@ -218,7 +218,7 @@ class WorkOrderService:
         role = current_user.role.name
 
         # Mechanic → must be assigned to the work order
-        if role == "MECHANIC":
+        if role == "TECHNICIAN":
 
             work_order = self.repository.get_by_id_and_mechanic(
                 work_order_id,
@@ -572,7 +572,7 @@ class WorkOrderService:
         # instead; the advisor approval step (implemented in a later
         # phase) is the only route that moves SUBMITTED_FOR_APPROVAL
         # → COMPLETED.
-        if role == "MECHANIC":
+        if role == "TECHNICIAN":
 
             raise PermissionError(
                 "Mechanics cannot complete work orders directly. "
