@@ -53,7 +53,7 @@ function RoleRedirect() {
   if (loading) {
     return (
       <div className="loading-screen">
-        Loading AutoFlow...
+        Loading Garage 360...
       </div>
     );
   }

@@ -580,7 +580,7 @@ export default function MyVehicles() {
 
               <p>
                 You don't have any vehicles
-                registered with AutoFlow yet.
+                registered with Garage 360 yet.
               </p>
 
               <AnimatedButton

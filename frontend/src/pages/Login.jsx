@@ -153,7 +153,7 @@ export default function Login() {
           </div>
 
           <div className="brand-name">
-            Auto<span>Flow</span>
+            Garage<span> 360</span>
           </div>
 
           <h1>
@@ -220,7 +220,7 @@ export default function Login() {
             </div>
 
             <div className="brand-name">
-              Auto<span>Flow</span>
+              Garage<span> 360</span>
             </div>
 
           </div>
