@@ -512,7 +512,7 @@ export default function App() {
             path="/mechanic/dashboard"
             element={
               <ProtectedRoute
-                allowedRoles={["MECHANIC"]}
+                allowedRoles={["TECHNICIAN"]}
               >
                 <MechanicDashboard />
               </ProtectedRoute>
@@ -524,7 +524,7 @@ export default function App() {
             path="/mechanic/work-orders"
             element={
               <ProtectedRoute
-                allowedRoles={["MECHANIC"]}
+                allowedRoles={["TECHNICIAN"]}
               >
                 <MechanicWorkOrders />
               </ProtectedRoute>
@@ -536,7 +536,7 @@ export default function App() {
             path="/mechanic/work-orders/:workOrderId"
             element={
               <ProtectedRoute
-                allowedRoles={["MECHANIC"]}
+                allowedRoles={["TECHNICIAN"]}
               >
                 <WorkOrderDetails />
               </ProtectedRoute>
@@ -548,7 +548,7 @@ export default function App() {
             path="/mechanic/inspections"
             element={
               <ProtectedRoute
-                allowedRoles={["MECHANIC"]}
+                allowedRoles={["TECHNICIAN"]}
               >
                 <MechanicInspections />
               </ProtectedRoute>
@@ -560,7 +560,7 @@ export default function App() {
             path="/mechanic/inspections/:inspectionId"
             element={
               <ProtectedRoute
-                allowedRoles={["MECHANIC"]}
+                allowedRoles={["TECHNICIAN"]}
               >
                 <InspectionDetails />
               </ProtectedRoute>
@@ -572,7 +572,7 @@ export default function App() {
             path="/mechanic/notifications"
             element={
               <ProtectedRoute
-                allowedRoles={["MECHANIC"]}
+                allowedRoles={["TECHNICIAN"]}
               >
                 <MechanicNotifications />
               </ProtectedRoute>

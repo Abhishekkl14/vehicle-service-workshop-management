@@ -17,6 +17,27 @@ import AnimatedButton from "../components/ui/animated-button";
 import LoadingScreen from "../components/common/LoadingScreen";
 
 
+// =====================================================
+// ROLE → DASHBOARD
+// =====================================================
+
+const getDashboardPath = (role) => {
+  switch (role) {
+    case "CUSTOMER":
+      return "/customer/dashboard";
+
+    case "SERVICE_ADVISOR":
+      return "/advisor/dashboard";
+
+    case "TECHNICIAN":
+    case "MECHANIC":
+      return "/mechanic/dashboard";
+
+    default:
+      return "/login";
+  }
+};
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -29,32 +50,35 @@ export default function Login() {
     useState(false);
 
   const [error, setError] = useState("");
+
   const [submitting, setSubmitting] =
     useState(false);
+
   const [showLoading, setShowLoading] =
     useState(false);
+
   const [pendingUser, setPendingUser] =
     useState(null);
 
+
   // =====================================================
-  // ROLE → DASHBOARD
+  // LOADING COMPLETE
+  // IMPORTANT: ALL HOOKS MUST BE ABOVE CONDITIONAL RETURNS
   // =====================================================
 
-  const getDashboardPath = (role) => {
-    switch (role) {
-      case "CUSTOMER":
-        return "/customer/dashboard";
-
-      case "SERVICE_ADVISOR":
-        return "/advisor/dashboard";
-
-      case "MECHANIC":
-        return "/mechanic/dashboard";
-
-      default:
-        return "/login";
+  const handleLoadingComplete = useCallback(() => {
+    if (!pendingUser) {
+      return;
     }
-  };
+
+    navigate(
+      getDashboardPath(pendingUser.role),
+      {
+        replace: true,
+      }
+    );
+  }, [pendingUser, navigate]);
+
 
   // =====================================================
   // ALREADY AUTHENTICATED
@@ -68,6 +92,7 @@ export default function Login() {
       />
     );
   }
+
 
   // =====================================================
   // LOGIN
@@ -87,6 +112,7 @@ export default function Login() {
 
       setPendingUser(loggedInUser);
       setShowLoading(true);
+
     } catch (error) {
       const message =
         error?.response?.data?.detail ||
@@ -97,23 +123,12 @@ export default function Login() {
           ? "Invalid login details."
           : message
       );
+
     } finally {
       setSubmitting(false);
     }
   };
 
-  // =====================================================
-  // LOADING COMPLETE
-  // =====================================================
-
-  const handleLoadingComplete = useCallback(() => {
-    if (pendingUser) {
-      navigate(
-        getDashboardPath(pendingUser.role),
-        { replace: true }
-      );
-    }
-  }, [pendingUser, navigate]);
 
   // =====================================================
   // UI
@@ -127,6 +142,7 @@ export default function Login() {
       ================================================= */}
 
       <section className="login-brand-panel">
+
         <div className="brand-content">
 
           <div className="brand-mark">
@@ -182,10 +198,10 @@ export default function Login() {
             </div>
           </div>
 
-
-
         </div>
+
       </section>
+
 
       {/* ================================================
           LOGIN PANEL
@@ -209,6 +225,7 @@ export default function Login() {
 
           </div>
 
+
           {/* Heading */}
 
           <div className="login-heading">
@@ -227,6 +244,7 @@ export default function Login() {
             </p>
 
           </div>
+
 
           {/* Login form */}
 
@@ -261,6 +279,7 @@ export default function Login() {
               </div>
 
             </div>
+
 
             {/* Password */}
 
@@ -333,6 +352,7 @@ export default function Login() {
 
             </div>
 
+
             {/* Error */}
 
             {error && (
@@ -340,6 +360,7 @@ export default function Login() {
                 {error}
               </div>
             )}
+
 
             {/* Submit */}
 
@@ -355,8 +376,11 @@ export default function Login() {
 
           </form>
 
+
           <p className="login-footer">
+
             Don't have an account?{" "}
+
             <Link
               to="/register"
               style={{
@@ -367,11 +391,15 @@ export default function Login() {
             >
               Sign up
             </Link>
+
           </p>
 
         </div>
 
       </section>
+
+
+      {/* Loading */}
 
       {showLoading && (
         <LoadingScreen
