@@ -164,7 +164,9 @@ export default function Sidebar({
   const location = useLocation();
   const navigate = useNavigate();
 
-  const role = user?.role;
+  const rawRole = user?.role;
+  // Backend may return the mechanic role as either "MECHANIC" or "TECHNICIAN"
+  const role = rawRole === "TECHNICIAN" ? "MECHANIC" : rawRole;
   const items = navigation[role] || [];
   const activeIndex = Math.max(
     0,

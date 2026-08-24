@@ -84,6 +84,7 @@ function RoleRedirect() {
         />
       );
 
+    case "TECHNICIAN":
     case "MECHANIC":
       return (
         <Navigate
