@@ -8546,3 +8546,226 @@ input {
   color: #b0bec5;
   letter-spacing: 0.5px;
 }
+
+
+/* ================================================
+   CUSTOMER DASHBOARD — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-dashboard (Customer Dashboard
+   page only). All boxes use dark glass backgrounds
+   with white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken remaining boxes so white text stays readable --- */
+
+.customer-dashboard .dashboard-section {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.customer-dashboard .booking-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-dashboard .booking-notes {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.customer-dashboard .dashboard-empty {
+  background: rgba(255, 255, 255, 0.05);
+
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* --- top summary cards: dark glass + white text --- */
+
+.customer-dashboard .dashboard-summary-glow .dashboard-card {
+  background: transparent;
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-dashboard .dashboard-card span,
+.customer-dashboard .dashboard-card strong,
+.customer-dashboard .dashboard-card small {
+  color: #ffffff;
+}
+
+.customer-dashboard .dashboard-card-icon {
+  color: var(--aqua-foam);
+}
+
+/* --- invoice info card: dark glass + white text --- */
+
+.customer-dashboard .dashboard-info-card {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.customer-dashboard .dashboard-info-card h3,
+.customer-dashboard .dashboard-info-card p {
+  color: #ffffff;
+}
+
+/* --- white text (outside the two excluded boxes) --- */
+
+.customer-dashboard .section-header h2,
+.customer-dashboard .section-header p,
+.customer-dashboard .section-view-link,
+.customer-dashboard .booking-title-row h2,
+.customer-dashboard .booking-vehicle,
+.customer-dashboard .booking-vehicle svg,
+.customer-dashboard .booking-meta div,
+.customer-dashboard .booking-meta svg,
+.customer-dashboard .booking-notes,
+.customer-dashboard .bookings-error p,
+.customer-dashboard .dashboard-empty h3,
+.customer-dashboard .dashboard-empty p {
+  color: #ffffff;
+}
+
+.customer-dashboard .section-view-link:hover {
+  color: var(--aqua-foam);
+}
+
+.customer-dashboard .dashboard-warn {
+  color: #ffd166;
+}
+
+.customer-dashboard .proximity-card-title {
+  color: #ffffff;
+}
+
+/* status pills keep their own light backgrounds + colored text */
+
+/* --- font size +15% (all dashboard text) --- */
+
+.customer-dashboard .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-dashboard .page-header h1 {
+  font-size: 35px;
+}
+
+.customer-dashboard .page-header p:last-child {
+  font-size: 16px;
+}
+
+.customer-dashboard .primary-action,
+.customer-dashboard .secondary-action {
+  font-size: 14px;
+}
+
+/* top summary cards */
+
+.customer-dashboard .dashboard-card span {
+  font-size: 10px;
+}
+
+.customer-dashboard .dashboard-card strong {
+  font-size: 32px;
+}
+
+.customer-dashboard .dashboard-card small {
+  font-size: 13px;
+}
+
+/* invoice info card */
+
+.customer-dashboard .dashboard-info-card h3 {
+  font-size: 17px;
+}
+
+.customer-dashboard .dashboard-info-card p {
+  font-size: 14px;
+}
+
+/* section headers */
+
+.customer-dashboard .section-header h2 {
+  font-size: 20px;
+}
+
+.customer-dashboard .section-header p {
+  font-size: 14px;
+}
+
+.customer-dashboard .section-view-link {
+  font-size: 13px;
+}
+
+/* booking cards */
+
+.customer-dashboard .booking-title-row h2 {
+  font-size: 18px;
+}
+
+.customer-dashboard .booking-status {
+  font-size: 10px;
+}
+
+.customer-dashboard .booking-vehicle {
+  font-size: 13px;
+}
+
+.customer-dashboard .booking-meta div {
+  font-size: 15px;
+}
+
+.customer-dashboard .booking-notes {
+  font-size: 12px;
+}
+
+.customer-dashboard .booking-view-button {
+  font-size: 13px;
+}
+
+/* error banner */
+
+.customer-dashboard .bookings-error strong {
+  font-size: 15px;
+}
+
+.customer-dashboard .bookings-error p {
+  font-size: 13px;
+}
+
+.customer-dashboard .bookings-error button {
+  font-size: 13px;
+}
+
+/* empty states + warning */
+
+.customer-dashboard .dashboard-empty h3 {
+  font-size: 16px;
+}
+
+.customer-dashboard .dashboard-empty p {
+  font-size: 14px;
+}
+
+.customer-dashboard .dashboard-warn {
+  font-size: 13px;
+}
+
+/* proximity services grid */
+
+.customer-dashboard .proximity-grid-header h2 {
+  font-size: 25px;
+}
+
+.customer-dashboard .proximity-grid-header p {
+  font-size: 15px;
+}
+
+.customer-dashboard .proximity-card-title {
+  font-size: 14px;
+}
+
+.customer-dashboard .proximity-stage-label {
+  font-size: 13px;
+}

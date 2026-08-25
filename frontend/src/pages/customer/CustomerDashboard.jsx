@@ -750,7 +750,7 @@ export default function CustomerDashboard() {
 
   return (
     <AppLayout>
-      <div className="dashboard-page">
+      <div className="dashboard-page customer-dashboard">
 
         {/* =============================================
             HEADER
@@ -812,7 +812,7 @@ export default function CustomerDashboard() {
                 className="dashboard-summary-glow"
                 edgeSensitivity={32}
                 glowColor="180 70 58"
-                backgroundColor="#ffffff"
+                backgroundColor="rgba(3, 49, 58, 0.45)"
                 borderRadius={16}
                 glowRadius={28}
                 glowIntensity={0.8}
