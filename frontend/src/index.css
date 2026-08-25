@@ -7945,6 +7945,138 @@ input {
   font-size: 12px;
 }
 
+
+/* ================================================
+   NOTIFICATIONS PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-notifications (Notifications
+   page only; reuses booking-skeleton classes for
+   loading). Dark glass cards with white text; font
+   sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-notifications .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-notifications .notification-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-notifications .notification-card.unread {
+  background: rgba(3, 49, 58, 0.55);
+}
+
+.customer-notifications .notification-card-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.customer-notifications .notifications-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.customer-notifications .notifications-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.customer-notifications .notification-card-footer {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+/* --- header: explicit colors (the subtitle's
+   var(--white-secondary) is undefined and falls
+   back to inherited dark text) --- */
+
+.customer-notifications .notifications-header .page-eyebrow,
+.customer-notifications .notifications-header h1,
+.customer-notifications .notifications-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.customer-notifications .notification-card-heading h2,
+.customer-notifications .notification-card-meta,
+.customer-notifications .notification-card-meta svg,
+.customer-notifications .notification-message,
+.customer-notifications .notification-type,
+.customer-notifications .notification-type svg,
+.customer-notifications .notifications-empty h3,
+.customer-notifications .notifications-empty p,
+.customer-notifications .unread-toggle,
+.customer-notifications .notifications-count {
+  color: #ffffff;
+}
+
+/* notification badges keep their own light backgrounds + colored text */
+/* "Mark as read" link keeps its blue accent */
+/* checkbox accent-color keeps its blue */
+
+/* --- font size +15% --- */
+
+.customer-notifications .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-notifications .notifications-header h1 {
+  font-size: 35px;
+}
+
+.customer-notifications .notifications-header p:last-child {
+  font-size: 15px;
+}
+
+.customer-notifications .secondary-action {
+  font-size: 14px;
+}
+
+.customer-notifications .unread-toggle {
+  font-size: 14px;
+}
+
+.customer-notifications .notifications-count {
+  font-size: 13px;
+}
+
+.customer-notifications .notification-card-heading h2 {
+  font-size: 15px;
+}
+
+.customer-notifications .notification-card-meta {
+  font-size: 12px;
+}
+
+.customer-notifications .notification-badge {
+  font-size: 9px;
+}
+
+.customer-notifications .notification-message {
+  font-size: 14px;
+}
+
+.customer-notifications .notification-type {
+  font-size: 12px;
+}
+
+.customer-notifications .notification-read-button {
+  font-size: 11px !important;
+}
+
+.customer-notifications .notifications-empty h3 {
+  font-size: 18px;
+}
+
+.customer-notifications .notifications-empty p {
+  font-size: 14px;
+}
+
 /* =====================================================
    INVOICES HUB
 ===================================================== */
@@ -8768,4 +8900,808 @@ input {
 
 .customer-dashboard .proximity-stage-label {
   font-size: 13px;
+}
+
+
+/* ================================================
+   MY VEHICLES PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-vehicles (My Vehicles page
+   only). Dark glass boxes with white text; font
+   sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-vehicles .vehicle-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-vehicles .vehicle-details,
+.customer-vehicles .vehicle-card-action {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-vehicles .vehicles-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* registration pill: translucent box so white number stays visible */
+.customer-vehicles .vehicle-registration {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* --- white text --- */
+
+.customer-vehicles .vehicle-card h2,
+.customer-vehicles .vehicle-registration,
+.customer-vehicles .vehicle-registration svg,
+.customer-vehicles .vehicle-details div,
+.customer-vehicles .vehicle-details svg,
+.customer-vehicles .vehicles-empty h2,
+.customer-vehicles .vehicles-empty p,
+.customer-vehicles .vehicles-error p,
+.customer-vehicles .vehicle-carousel-position {
+  color: #ffffff;
+}
+
+.customer-vehicles .vehicle-card-action:hover {
+  color: var(--aqua-foam);
+}
+
+/* error banner keeps its raspberry identity */
+
+/* --- font size +15% --- */
+
+.customer-vehicles .page-eyebrow {
+  font-size: 12px;
+}
+
+/* explicit header colors — the subtitle's var(--white-secondary)
+   is undefined and falls back to inherited dark text */
+.customer-vehicles .vehicles-header .page-eyebrow,
+.customer-vehicles .vehicles-header h1,
+.customer-vehicles .vehicles-header p {
+  color: #ffffff;
+}
+
+.customer-vehicles .vehicles-header h1 {
+  font-size: 35px;
+}
+
+.customer-vehicles .vehicles-header p:last-child {
+  font-size: 16px;
+}
+
+.customer-vehicles .primary-action,
+.customer-vehicles .secondary-action {
+  font-size: 14px;
+}
+
+.customer-vehicles .vehicle-card h2 {
+  font-size: 21px;
+}
+
+.customer-vehicles .vehicle-registration {
+  font-size: 14px;
+}
+
+.customer-vehicles .vehicle-details div {
+  font-size: 13px;
+}
+
+.customer-vehicles .vehicle-card-action {
+  font-size: 14px;
+}
+
+.customer-vehicles .vehicles-error strong {
+  font-size: 15px;
+}
+
+.customer-vehicles .vehicles-error p {
+  font-size: 13px;
+}
+
+.customer-vehicles .vehicles-error button {
+  font-size: 13px;
+}
+
+.customer-vehicles .vehicles-empty h2 {
+  font-size: 21px;
+}
+
+.customer-vehicles .vehicles-empty p {
+  font-size: 14px;
+}
+
+.customer-vehicles .vehicle-carousel-position {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   BOOKINGS PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-bookings (Bookings page only).
+   Dark glass boxes with white text; font sizes
+   increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-bookings .booking-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-bookings .booking-notes {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.customer-bookings .bookings-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* --- header: explicit colors (the subtitle's
+   var(--white-secondary) is undefined and falls
+   back to inherited dark text) --- */
+
+.customer-bookings .bookings-header .page-eyebrow,
+.customer-bookings .bookings-header h1,
+.customer-bookings .bookings-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.customer-bookings .booking-title-row h2,
+.customer-bookings .booking-vehicle,
+.customer-bookings .booking-vehicle svg,
+.customer-bookings .booking-meta div,
+.customer-bookings .booking-meta svg,
+.customer-bookings .booking-notes,
+.customer-bookings .bookings-error p,
+.customer-bookings .bookings-empty h2,
+.customer-bookings .bookings-empty p {
+  color: #ffffff;
+}
+
+/* status pills keep their own light backgrounds + colored text */
+/* error banner keeps its raspberry identity */
+/* "View" link keeps its blue accent */
+
+/* --- font size +15% --- */
+
+.customer-bookings .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-bookings .bookings-header h1 {
+  font-size: 35px;
+}
+
+.customer-bookings .bookings-header p:last-child {
+  font-size: 15px;
+}
+
+.customer-bookings .primary-action,
+.customer-bookings .secondary-action {
+  font-size: 14px;
+}
+
+.customer-bookings .booking-title-row h2 {
+  font-size: 18px;
+}
+
+.customer-bookings .booking-status {
+  font-size: 10px;
+}
+
+.customer-bookings .booking-vehicle {
+  font-size: 13px;
+}
+
+.customer-bookings .booking-meta div {
+  font-size: 15px;
+}
+
+.customer-bookings .booking-notes {
+  font-size: 12px;
+}
+
+.customer-bookings .booking-view-button {
+  font-size: 13px;
+}
+
+.customer-bookings .bookings-error strong {
+  font-size: 15px;
+}
+
+.customer-bookings .bookings-error p {
+  font-size: 13px;
+}
+
+.customer-bookings .bookings-error button {
+  font-size: 13px;
+}
+
+.customer-bookings .bookings-empty h2 {
+  font-size: 21px;
+}
+
+.customer-bookings .bookings-empty p {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   SERVICE HISTORY PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-history (Service History page
+   only). Dark glass boxes with white text; font
+   sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-history .history-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-history .history-card-grid {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-history .history-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-history .history-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* --- header: explicit colors (the subtitle's
+   var(--white-secondary) is undefined and falls
+   back to inherited dark text) --- */
+
+.customer-history .history-header .page-eyebrow,
+.customer-history .history-header h1,
+.customer-history .history-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.customer-history .history-card-heading h2,
+.customer-history .history-card-heading p,
+.customer-history .history-field span,
+.customer-history .history-field-value strong,
+.customer-history .history-field-value svg,
+.customer-history .history-field-value .history-amount,
+.customer-history .history-error p,
+.customer-history .history-empty h2,
+.customer-history .history-empty p {
+  color: #ffffff;
+}
+
+/* status pills keep their own light backgrounds + colored text */
+/* invoice notice keeps its raspberry identity */
+/* field links and view buttons keep their blue accent */
+
+/* --- font size +15% --- */
+
+.customer-history .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-history .history-header h1 {
+  font-size: 35px;
+}
+
+.customer-history .history-header p:last-child {
+  font-size: 15px;
+}
+
+.customer-history .primary-action,
+.customer-history .secondary-action {
+  font-size: 14px;
+}
+
+.customer-history .history-card-heading h2 {
+  font-size: 18px;
+}
+
+.customer-history .history-card-heading p {
+  font-size: 12px;
+}
+
+.customer-history .history-status {
+  font-size: 10px;
+}
+
+.customer-history .history-field span {
+  font-size: 11px;
+}
+
+.customer-history .history-field-value strong {
+  font-size: 14px;
+}
+
+.customer-history .history-field-value .history-amount {
+  font-size: 15px;
+}
+
+.customer-history .history-field-link {
+  font-size: 14px;
+}
+
+.customer-history .history-view-button {
+  font-size: 13px;
+}
+
+.customer-history .history-error strong {
+  font-size: 15px;
+}
+
+.customer-history .history-error p {
+  font-size: 13px;
+}
+
+.customer-history .history-error button {
+  font-size: 13px;
+}
+
+.customer-history .notice-error {
+  font-size: 13px;
+}
+
+.customer-history .notice-error button {
+  font-size: 12px;
+}
+
+.customer-history .history-empty h2 {
+  font-size: 21px;
+}
+
+.customer-history .history-empty p {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   WORK ORDERS PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-work-orders (My Work Orders
+   page only; reuses history/bookings classes).
+   Dark glass boxes with white text; font sizes
+   increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-work-orders .booking-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-work-orders .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-work-orders .history-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* --- header: explicit colors (the subtitle's
+   var(--white-secondary) is undefined and falls
+   back to inherited dark text) --- */
+
+.customer-work-orders .history-header .page-eyebrow,
+.customer-work-orders .history-header h1,
+.customer-work-orders .history-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.customer-work-orders .booking-title-row h2,
+.customer-work-orders .booking-meta div,
+.customer-work-orders .booking-meta svg,
+.customer-work-orders .history-error p,
+.customer-work-orders .history-empty h2,
+.customer-work-orders .history-empty p {
+  color: #ffffff;
+}
+
+/* status pills keep their own light backgrounds + colored text */
+/* error banner keeps its raspberry identity */
+/* "View" link keeps its blue accent */
+/* tab buttons keep their inline 13px size */
+
+/* --- font size +15% --- */
+
+.customer-work-orders .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-work-orders .history-header h1 {
+  font-size: 35px;
+}
+
+.customer-work-orders .history-header p:last-child {
+  font-size: 15px;
+}
+
+.customer-work-orders .primary-action,
+.customer-work-orders .secondary-action {
+  font-size: 14px;
+}
+
+.customer-work-orders .booking-title-row h2 {
+  font-size: 18px;
+}
+
+.customer-work-orders .booking-status {
+  font-size: 10px;
+}
+
+.customer-work-orders .booking-meta div {
+  font-size: 15px;
+}
+
+.customer-work-orders .booking-view-button {
+  font-size: 13px;
+}
+
+.customer-work-orders .history-error strong {
+  font-size: 15px;
+}
+
+.customer-work-orders .history-error p {
+  font-size: 13px;
+}
+
+.customer-work-orders .history-error button {
+  font-size: 13px;
+}
+
+.customer-work-orders .history-empty h2 {
+  font-size: 21px;
+}
+
+.customer-work-orders .history-empty p {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   INVOICES PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-invoices (Invoices page only).
+   Dark glass boxes with white text; font sizes
+   increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-invoices .hub-info-card {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.customer-invoices .hub-nav-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-invoices .hub-nav-card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* --- header: explicit colors (the subtitle's
+   var(--white-secondary) is undefined and falls
+   back to inherited dark text) --- */
+
+.customer-invoices .notifications-header .page-eyebrow,
+.customer-invoices .notifications-header h1,
+.customer-invoices .notifications-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.customer-invoices .hub-info-card h2,
+.customer-invoices .hub-info-card p,
+.customer-invoices .hub-nav-card,
+.customer-invoices .hub-nav-card h3,
+.customer-invoices .hub-nav-card p {
+  color: #ffffff;
+}
+
+/* icon chips and chevrons keep their blue accent */
+
+/* --- font size +15% --- */
+
+.customer-invoices .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-invoices .notifications-header h1 {
+  font-size: 35px;
+}
+
+.customer-invoices .notifications-header p:last-child {
+  font-size: 15px;
+}
+
+.customer-invoices .hub-info-card h2 {
+  font-size: 17px;
+}
+
+.customer-invoices .hub-info-card p {
+  font-size: 14px;
+}
+
+.customer-invoices .hub-nav-card h3 {
+  font-size: 15px;
+}
+
+.customer-invoices .hub-nav-card p {
+  font-size: 13px;
+}
+
+
+/* ================================================
+   INSPECTIONS PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-inspections (My Inspections
+   page only; reuses history/bookings classes).
+   Dark glass boxes with white text; font sizes
+   increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-inspections .booking-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-inspections .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-inspections .history-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* --- header: explicit colors (the subtitle's
+   var(--white-secondary) is undefined and falls
+   back to inherited dark text) --- */
+
+.customer-inspections .history-header .page-eyebrow,
+.customer-inspections .history-header h1,
+.customer-inspections .history-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.customer-inspections .booking-title-row h2,
+.customer-inspections .booking-meta div,
+.customer-inspections .booking-meta svg,
+.customer-inspections .history-error p,
+.customer-inspections .history-empty h2,
+.customer-inspections .history-empty p {
+  color: #ffffff;
+}
+
+/* status pills keep their own light backgrounds + colored text */
+/* error banner keeps its raspberry identity */
+/* "View" link keeps its blue accent */
+
+/* --- font size +15% --- */
+
+.customer-inspections .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-inspections .history-header h1 {
+  font-size: 35px;
+}
+
+.customer-inspections .history-header p:last-child {
+  font-size: 15px;
+}
+
+.customer-inspections .primary-action,
+.customer-inspections .secondary-action {
+  font-size: 14px;
+}
+
+.customer-inspections .booking-title-row h2 {
+  font-size: 18px;
+}
+
+.customer-inspections .booking-status {
+  font-size: 10px;
+}
+
+.customer-inspections .booking-meta div {
+  font-size: 15px;
+}
+
+.customer-inspections .booking-view-button {
+  font-size: 13px;
+}
+
+.customer-inspections .history-error strong {
+  font-size: 15px;
+}
+
+.customer-inspections .history-error p {
+  font-size: 13px;
+}
+
+.customer-inspections .history-error button {
+  font-size: 13px;
+}
+
+.customer-inspections .history-empty h2 {
+  font-size: 21px;
+}
+
+.customer-inspections .history-empty p {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   ESTIMATES PAGE — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-estimates (Estimates page
+   only; reuses bookings classes). Dark glass boxes
+   with white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.customer-estimates .booking-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.customer-estimates .booking-notes {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.customer-estimates .bookings-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* total amount pill: translucent box so white value stays visible */
+.customer-estimates .estimate-list-total {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* --- header: explicit colors (the subtitle's
+   var(--white-secondary) is undefined and falls
+   back to inherited dark text) --- */
+
+.customer-estimates .bookings-header .page-eyebrow,
+.customer-estimates .bookings-header h1,
+.customer-estimates .bookings-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.customer-estimates .booking-title-row h2,
+.customer-estimates .booking-vehicle,
+.customer-estimates .booking-vehicle svg,
+.customer-estimates .booking-meta div,
+.customer-estimates .booking-meta svg,
+.customer-estimates .estimate-list-field span,
+.customer-estimates .estimate-list-field strong,
+.customer-estimates .estimate-list-total strong,
+.customer-estimates .bookings-error p,
+.customer-estimates .bookings-empty h2,
+.customer-estimates .bookings-empty p {
+  color: #ffffff;
+}
+
+/* status pills keep their own light backgrounds + colored text */
+/* error banner keeps its raspberry identity */
+/* "View" link keeps its blue accent */
+
+/* --- font size +15% --- */
+
+.customer-estimates .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-estimates .bookings-header h1 {
+  font-size: 35px;
+}
+
+.customer-estimates .bookings-header p:last-child {
+  font-size: 15px;
+}
+
+.customer-estimates .primary-action,
+.customer-estimates .secondary-action {
+  font-size: 14px;
+}
+
+.customer-estimates .booking-title-row h2 {
+  font-size: 18px;
+}
+
+.customer-estimates .booking-status {
+  font-size: 10px;
+}
+
+.customer-estimates .booking-vehicle {
+  font-size: 13px;
+}
+
+.customer-estimates .booking-meta div {
+  font-size: 15px;
+}
+
+.customer-estimates .booking-view-button {
+  font-size: 13px;
+}
+
+.customer-estimates .estimate-list-field span {
+  font-size: 11px;
+}
+
+.customer-estimates .estimate-list-field strong {
+  font-size: 14px;
+}
+
+.customer-estimates .estimate-list-total strong {
+  font-size: 16px;
+}
+
+.customer-estimates .bookings-error strong {
+  font-size: 15px;
+}
+
+.customer-estimates .bookings-error p {
+  font-size: 13px;
+}
+
+.customer-estimates .bookings-error button {
+  font-size: 13px;
+}
+
+.customer-estimates .bookings-empty h2 {
+  font-size: 21px;
+}
+
+.customer-estimates .bookings-empty p {
+  font-size: 14px;
 }

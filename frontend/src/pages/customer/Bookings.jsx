@@ -368,7 +368,7 @@ export default function Bookings() {
 
     <AppLayout>
 
-      <div className="bookings-page">
+      <div className="bookings-page customer-bookings">
 
 
         {/* =================================================

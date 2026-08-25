@@ -21,7 +21,7 @@ export default function Invoices() {
   return (
     <AppLayout>
 
-      <div className="invoice-page">
+      <div className="invoice-page customer-invoices">
 
         {/* =================================================
             HEADER

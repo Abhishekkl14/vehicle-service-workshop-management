@@ -202,7 +202,7 @@ export default function CustomerInspections() {
   return (
     <AppLayout>
 
-      <div className="history-page">
+      <div className="history-page customer-inspections">
 
         {/* =================================================
             HEADER

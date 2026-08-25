@@ -221,7 +221,7 @@ export default function Estimates() {
 
     <AppLayout>
 
-      <div className="bookings-page">
+      <div className="bookings-page customer-estimates">
 
 
         {/* =================================================

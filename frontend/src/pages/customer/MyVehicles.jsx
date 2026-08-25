@@ -465,7 +465,7 @@ export default function MyVehicles() {
 
   return (
     <AppLayout>
-      <div className="vehicles-page">
+      <div className="vehicles-page customer-vehicles">
 
         {/* PAGE HEADER */}
 

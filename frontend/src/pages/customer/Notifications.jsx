@@ -190,7 +190,7 @@ export default function Notifications() {
   return (
     <AppLayout>
 
-      <div className="notifications-page">
+      <div className="notifications-page customer-notifications">
 
         {/* =================================================
             HEADER

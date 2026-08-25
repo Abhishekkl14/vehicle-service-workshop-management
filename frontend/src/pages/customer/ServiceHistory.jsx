@@ -307,7 +307,7 @@ export default function ServiceHistory() {
   return (
     <AppLayout>
 
-      <div className="history-page">
+      <div className="history-page customer-history">
 
         {/* =================================================
             HEADER

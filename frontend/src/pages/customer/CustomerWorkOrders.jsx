@@ -205,7 +205,7 @@ export default function CustomerWorkOrders() {
   return (
     <AppLayout>
 
-      <div className="history-page">
+      <div className="history-page customer-work-orders">
 
         {/* =================================================
             HEADER
