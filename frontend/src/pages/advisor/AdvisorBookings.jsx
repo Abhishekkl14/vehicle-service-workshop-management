@@ -326,7 +326,7 @@ export default function AdvisorBookings() {
 
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-bookings-scope">
 
 
         {/* =================================================

@@ -201,7 +201,7 @@ export default function AdvisorEstimates() {
   return (
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-estimates-scope">
 
         <div className="advisor-header">
           <div>

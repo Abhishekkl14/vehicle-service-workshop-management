@@ -38,7 +38,7 @@ export default function AdvisorNotifications() {
 
   return (
     <AppLayout>
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-notifications-scope">
         <div className="advisor-header">
           <div>
             <p className="page-eyebrow">NOTIFICATIONS</p>

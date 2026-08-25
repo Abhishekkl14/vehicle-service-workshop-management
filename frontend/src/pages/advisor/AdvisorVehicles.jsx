@@ -75,7 +75,7 @@ export default function AdvisorVehicles() {
   return (
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-vehicles-scope">
 
         {/* =================================================
             HEADER

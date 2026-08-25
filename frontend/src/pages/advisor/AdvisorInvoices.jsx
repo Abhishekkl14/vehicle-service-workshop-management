@@ -48,7 +48,7 @@ export default function AdvisorInvoices() {
   return (
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-invoices-scope">
 
         <div className="advisor-header">
           <div>

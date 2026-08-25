@@ -142,7 +142,7 @@ export default function AdvisorApprovals() {
 
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-approvals-scope">
 
 
         {/* =================================================

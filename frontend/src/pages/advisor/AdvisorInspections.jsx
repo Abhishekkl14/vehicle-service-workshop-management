@@ -43,7 +43,7 @@ export default function AdvisorInspections() {
 
   return (
     <AppLayout>
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-inspections-scope">
 
         <div className="advisor-header">
           <div>

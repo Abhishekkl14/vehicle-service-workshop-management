@@ -6132,6 +6132,1615 @@ input {
   }
 }
 
+
+/* ================================================
+   ADVISOR DASHBOARD — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-dashboard-scope (Advisor
+   Dashboard page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-dashboard-scope .dashboard-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+
+  box-shadow: none;
+}
+
+.advisor-dashboard-scope .booking-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .booking-notes {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-dashboard-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-dashboard-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-dashboard-scope .advisor-workflow {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-workflow-panel {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-workflow-empty {
+  background: rgba(3, 49, 58, 0.25);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-dashboard-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-dashboard-scope .advisor-estimate-card {
+  background: rgba(3, 49, 58, 0.3);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-estimate-totals {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-invoice-card {
+  background: rgba(3, 49, 58, 0.3);
+}
+
+.advisor-dashboard-scope .advisor-invoice-totals {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-create-estimate {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-dashboard-scope .advisor-workflow-note {
+  background: rgba(255, 200, 50, 0.12);
+
+  color: #f5c842;
+}
+
+.advisor-dashboard-scope .advisor-inspection-notes {
+  background: rgba(59, 130, 246, 0.1);
+
+  border-left-color: var(--quantum-blue);
+
+  color: #ffffff;
+}
+
+.advisor-dashboard-scope .advisor-inspection-notes strong {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.advisor-dashboard-scope .advisor-approve-comment input {
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.14);
+
+  color: #ffffff;
+}
+
+.advisor-dashboard-scope .advisor-date-input input[type="date"] {
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.14);
+
+  color: #ffffff;
+}
+
+.advisor-dashboard-scope .advisor-success {
+  background: rgba(16, 185, 129, 0.15);
+
+  border-color: rgba(16, 185, 129, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-dashboard-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-dashboard-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-dashboard-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-dashboard-scope .advisor-header .page-eyebrow,
+.advisor-dashboard-scope .advisor-header h1,
+.advisor-dashboard-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-dashboard-scope .dashboard-card span,
+.advisor-dashboard-scope .dashboard-card small,
+.advisor-dashboard-scope .section-header h2,
+.advisor-dashboard-scope .section-header p,
+.advisor-dashboard-scope .booking-title-row h2,
+.advisor-dashboard-scope .booking-meta div,
+.advisor-dashboard-scope .booking-meta svg,
+.advisor-dashboard-scope .advisor-empty h3,
+.advisor-dashboard-scope .advisor-empty p,
+.advisor-dashboard-scope .advisor-workflow-panel-head h3,
+.advisor-dashboard-scope .advisor-workflow-panel-head h3 svg,
+.advisor-dashboard-scope .advisor-workflow-empty p,
+.advisor-dashboard-scope .advisor-workflow-empty svg,
+.advisor-dashboard-scope .advisor-workflow-loading,
+.advisor-dashboard-scope .advisor-create-estimate h4,
+.advisor-dashboard-scope .advisor-form-field label,
+.advisor-dashboard-scope .advisor-stock-hint,
+.advisor-dashboard-scope .advisor-estimate-row strong,
+.advisor-dashboard-scope .advisor-estimate-totals span,
+.advisor-dashboard-scope .advisor-estimate-totals strong,
+.advisor-dashboard-scope .advisor-estimate-sent-note,
+.advisor-dashboard-scope .advisor-invoice-row strong,
+.advisor-dashboard-scope .advisor-invoice-totals span,
+.advisor-dashboard-scope .advisor-invoice-totals strong,
+.advisor-dashboard-scope .advisor-confirm-text,
+.advisor-dashboard-scope .advisor-grand-total-row,
+.advisor-dashboard-scope .advisor-grand-total-final,
+.advisor-dashboard-scope .advisor-date-filter > label {
+  color: #ffffff;
+}
+
+/* status pills keep their own light backgrounds + colored text */
+/* "Create Work Order", "Approve" etc. keep their own button colors */
+/* reject button keeps its red accent */
+/* "Work order created" chip keeps its green accent */
+
+/* --- form inputs: dark glass --- */
+
+.advisor-dashboard-scope .advisor-form-field select,
+.advisor-dashboard-scope .advisor-form-field input {
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.14);
+
+  color: #ffffff;
+}
+
+.advisor-dashboard-scope .advisor-form-field select:disabled,
+.advisor-dashboard-scope .advisor-form-field input:disabled {
+  background: rgba(255, 255, 255, 0.05);
+
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* --- font size +15% --- */
+
+.advisor-dashboard-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-dashboard-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-dashboard-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-dashboard-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .dashboard-card span {
+  font-size: 10px;
+}
+
+.advisor-dashboard-scope .dashboard-card strong {
+  font-size: 32px;
+}
+
+.advisor-dashboard-scope .dashboard-card small {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .section-header h2 {
+  font-size: 20px;
+}
+
+.advisor-dashboard-scope .section-header p {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .booking-title-row h2 {
+  font-size: 18px;
+}
+
+.advisor-dashboard-scope .booking-meta div {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-date-filter > label {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-date-input input[type="date"] {
+  font-size: 15px;
+}
+
+.advisor-dashboard-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-dashboard-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-workflow-panel-head h3 {
+  font-size: 16px;
+}
+
+.advisor-dashboard-scope .advisor-workflow-empty p {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-workflow-loading {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-create-estimate h4 {
+  font-size: 15px;
+}
+
+.advisor-dashboard-scope .advisor-form-field label {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .advisor-form-field select,
+.advisor-dashboard-scope .advisor-form-field input {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-stock-hint {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .advisor-workflow-note {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .advisor-part-table {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-dashboard-scope .advisor-estimate-row strong {
+  font-size: 15px;
+}
+
+.advisor-dashboard-scope .advisor-estimate-totals span {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .advisor-estimate-totals strong {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-estimate-sent-note {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .advisor-invoice-row strong {
+  font-size: 15px;
+}
+
+.advisor-dashboard-scope .advisor-invoice-totals span {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .advisor-invoice-totals strong {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-confirm-text {
+  font-size: 16px;
+}
+
+.advisor-dashboard-scope .advisor-grand-total-row {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-grand-total-final {
+  font-size: 16px;
+}
+
+.advisor-dashboard-scope .advisor-workflow-reload {
+  font-size: 13px;
+}
+
+.advisor-dashboard-scope .advisor-created-chip {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-success,
+.advisor-dashboard-scope .advisor-error {
+  font-size: 14px;
+}
+
+.advisor-dashboard-scope .advisor-success svg {
+  color: #10b981;
+}
+
+.advisor-dashboard-scope .advisor-error svg {
+  color: #ef4444;
+}
+
+
+/* ================================================
+   ADVISOR CUSTOMERS — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-customers-scope (Advisor
+   Customers page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-customers-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-customers-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-customers-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-customers-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-customers-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-customers-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-customers-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-customers-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-customers-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-customers-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-customers-scope .advisor-header .page-eyebrow,
+.advisor-customers-scope .advisor-header h1,
+.advisor-customers-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-customers-scope .section-header h2,
+.advisor-customers-scope .advisor-empty h3,
+.advisor-customers-scope .advisor-empty p,
+.advisor-customers-scope .advisor-part-table td strong {
+  color: #ffffff;
+}
+
+/* --- font size +15% (customer details enlarged) --- */
+
+.advisor-customers-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-customers-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-customers-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-customers-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-customers-scope .section-header h2 {
+  font-size: 20px;
+}
+
+.advisor-customers-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-customers-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-customers-scope .advisor-part-table {
+  font-size: 15px;
+}
+
+.advisor-customers-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-customers-scope .advisor-part-table td {
+  font-size: 15px;
+}
+
+.advisor-customers-scope .advisor-part-table td strong {
+  font-size: 16px;
+}
+
+.advisor-customers-scope .advisor-error {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   ADVISOR VEHICLES — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-vehicles-scope (Advisor
+   Vehicles page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-vehicles-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-vehicles-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-vehicles-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-vehicles-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-vehicles-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-vehicles-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-vehicles-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-vehicles-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-vehicles-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-vehicles-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-vehicles-scope .advisor-header .page-eyebrow,
+.advisor-vehicles-scope .advisor-header h1,
+.advisor-vehicles-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-vehicles-scope .section-header h2,
+.advisor-vehicles-scope .advisor-empty h3,
+.advisor-vehicles-scope .advisor-empty p,
+.advisor-vehicles-scope .advisor-part-table td strong {
+  color: #ffffff;
+}
+
+/* --- font size +15% (vehicle details enlarged) --- */
+
+.advisor-vehicles-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-vehicles-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-vehicles-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-vehicles-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-vehicles-scope .section-header h2 {
+  font-size: 20px;
+}
+
+.advisor-vehicles-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-vehicles-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-vehicles-scope .advisor-part-table {
+  font-size: 15px;
+}
+
+.advisor-vehicles-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-vehicles-scope .advisor-part-table td {
+  font-size: 15px;
+}
+
+.advisor-vehicles-scope .advisor-part-table td strong {
+  font-size: 16px;
+}
+
+.advisor-vehicles-scope .advisor-error {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   ADVISOR BOOKINGS — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-bookings-scope (Advisor
+   Bookings page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-bookings-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-bookings-scope .booking-card {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-bookings-scope .booking-notes {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-bookings-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-bookings-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-bookings-scope .advisor-success {
+  background: rgba(16, 185, 129, 0.15);
+
+  border-color: rgba(16, 185, 129, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-bookings-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-bookings-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-bookings-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.advisor-bookings-scope .advisor-date-input input[type="date"] {
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.14);
+
+  color: #ffffff;
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-bookings-scope .advisor-header .page-eyebrow,
+.advisor-bookings-scope .advisor-header h1,
+.advisor-bookings-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-bookings-scope .booking-title-row h2,
+.advisor-bookings-scope .booking-meta div,
+.advisor-bookings-scope .booking-meta svg,
+.advisor-bookings-scope .booking-notes,
+.advisor-bookings-scope .advisor-empty h3,
+.advisor-bookings-scope .advisor-empty p,
+.advisor-bookings-scope .advisor-date-filter > label,
+.advisor-bookings-scope .advisor-success svg {
+  color: #ffffff;
+}
+
+/* status pills keep their own backgrounds + colored text */
+/* "Create Work Order" button keeps its own accent */
+
+/* --- font size +15% --- */
+
+.advisor-bookings-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-bookings-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-bookings-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-bookings-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-bookings-scope .booking-title-row h2 {
+  font-size: 18px;
+}
+
+.advisor-bookings-scope .booking-meta div {
+  font-size: 14px;
+}
+
+.advisor-bookings-scope .booking-notes {
+  font-size: 14px;
+}
+
+.advisor-bookings-scope .advisor-date-filter > label {
+  font-size: 14px;
+}
+
+.advisor-bookings-scope .advisor-date-input input[type="date"] {
+  font-size: 15px;
+}
+
+.advisor-bookings-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-bookings-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-bookings-scope .advisor-success,
+.advisor-bookings-scope .advisor-error {
+  font-size: 14px;
+}
+
+.advisor-bookings-scope .advisor-success svg {
+  color: #10b981;
+}
+
+
+/* ================================================
+   ADVISOR WORK ORDERS — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-work-orders-scope (Advisor
+   Work Orders page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-work-orders-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-work-orders-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-work-orders-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-work-orders-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-work-orders-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-work-orders-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-work-orders-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-work-orders-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-work-orders-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-work-orders-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-work-orders-scope .advisor-header .page-eyebrow,
+.advisor-work-orders-scope .advisor-header h1,
+.advisor-work-orders-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-work-orders-scope .section-header h2,
+.advisor-work-orders-scope .advisor-empty h3,
+.advisor-work-orders-scope .advisor-empty p,
+.advisor-work-orders-scope .advisor-date-filter > label,
+.advisor-work-orders-scope .advisor-part-table td strong {
+  color: #ffffff;
+}
+
+/* status pills keep their own backgrounds + colored text */
+/* "View Details" button keeps its own accent */
+
+/* --- font size +15% --- */
+
+.advisor-work-orders-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-work-orders-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-work-orders-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-work-orders-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-work-orders-scope .advisor-date-filter > label {
+  font-size: 14px;
+}
+
+.advisor-work-orders-scope .section-header h2 {
+  font-size: 20px;
+}
+
+.advisor-work-orders-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-work-orders-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-work-orders-scope .advisor-part-table {
+  font-size: 15px;
+}
+
+.advisor-work-orders-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-work-orders-scope .advisor-part-table td {
+  font-size: 15px;
+}
+
+.advisor-work-orders-scope .advisor-part-table td strong {
+  font-size: 16px;
+}
+
+.advisor-work-orders-scope .advisor-error {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   ADVISOR INSPECTIONS — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-inspections-scope (Advisor
+   Inspections page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-inspections-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-inspections-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-inspections-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-inspections-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-inspections-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-inspections-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-inspections-scope .advisor-header .page-eyebrow,
+.advisor-inspections-scope .advisor-header h1,
+.advisor-inspections-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-inspections-scope .advisor-empty h3,
+.advisor-inspections-scope .advisor-empty p,
+.advisor-inspections-scope .advisor-part-table td strong {
+  color: #ffffff;
+}
+
+/* "View Details" button keeps its own accent */
+
+/* --- font size +15% --- */
+
+.advisor-inspections-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-inspections-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-inspections-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-inspections-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-inspections-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-inspections-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-inspections-scope .advisor-part-table {
+  font-size: 15px;
+}
+
+.advisor-inspections-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-inspections-scope .advisor-part-table td {
+  font-size: 15px;
+}
+
+.advisor-inspections-scope .advisor-part-table td strong {
+  font-size: 16px;
+}
+
+
+/* ================================================
+   ADVISOR ESTIMATES — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-estimates-scope (Advisor
+   Estimates page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-estimates-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-estimates-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-estimates-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-estimates-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-estimates-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-estimates-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-estimates-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-estimates-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-estimates-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-estimates-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-estimates-scope .advisor-header .page-eyebrow,
+.advisor-estimates-scope .advisor-header h1,
+.advisor-estimates-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-estimates-scope .advisor-empty h3,
+.advisor-estimates-scope .advisor-empty p,
+.advisor-estimates-scope .advisor-part-table td strong {
+  color: #ffffff;
+}
+
+/* status pills keep their own backgrounds + colored text */
+
+/* --- font size +15% --- */
+
+.advisor-estimates-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-estimates-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-estimates-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-estimates-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-estimates-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-estimates-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-estimates-scope .advisor-part-table {
+  font-size: 15px;
+}
+
+.advisor-estimates-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-estimates-scope .advisor-part-table td {
+  font-size: 15px;
+}
+
+.advisor-estimates-scope .advisor-part-table td strong {
+  font-size: 16px;
+}
+
+.advisor-estimates-scope .advisor-error {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   ADVISOR APPROVALS — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-approvals-scope (Advisor
+   Approvals page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-approvals-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-approvals-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-approvals-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-approvals-scope .booking-card {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-approvals-scope .booking-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-approvals-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-approvals-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-approvals-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-approvals-scope .advisor-header .page-eyebrow,
+.advisor-approvals-scope .advisor-header h1,
+.advisor-approvals-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-approvals-scope .booking-title-row h2,
+.advisor-approvals-scope .booking-meta div,
+.advisor-approvals-scope .booking-notes,
+.advisor-approvals-scope .advisor-empty h3,
+.advisor-approvals-scope .advisor-empty p {
+  color: #ffffff;
+}
+
+/* status pill + "View Details" button keep their own accents */
+
+/* --- font size +15% --- */
+
+.advisor-approvals-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-approvals-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-approvals-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-approvals-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-approvals-scope .booking-title-row h2 {
+  font-size: 20px;
+}
+
+.advisor-approvals-scope .booking-meta div {
+  font-size: 14px;
+}
+
+.advisor-approvals-scope .booking-notes {
+  font-size: 14px;
+}
+
+.advisor-approvals-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-approvals-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-approvals-scope .advisor-error {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   ADVISOR INVOICES — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-invoices-scope (Advisor
+   Invoices page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-invoices-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-invoices-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-invoices-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-invoices-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-invoices-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-invoices-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-invoices-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-invoices-scope .advisor-header .page-eyebrow,
+.advisor-invoices-scope .advisor-header h1,
+.advisor-invoices-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-invoices-scope .advisor-empty h3,
+.advisor-invoices-scope .advisor-empty p,
+.advisor-invoices-scope .advisor-part-table td strong {
+  color: #ffffff;
+}
+
+/* status badges keep their own backgrounds + colored text */
+/* "View" button keeps its own accent */
+
+/* --- font size +15% --- */
+
+.advisor-invoices-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-invoices-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-invoices-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-invoices-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-invoices-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-invoices-scope .advisor-part-table {
+  font-size: 15px;
+}
+
+.advisor-invoices-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-invoices-scope .advisor-part-table td {
+  font-size: 15px;
+}
+
+
+/* ================================================
+   ADVISOR PAYMENTS — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-payments-scope (Advisor
+   Payments page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-payments-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-payments-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-payments-scope .hub-nav-card {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-payments-scope .advisor-header .page-eyebrow,
+.advisor-payments-scope .advisor-header h1,
+.advisor-payments-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-payments-scope .advisor-empty h3,
+.advisor-payments-scope .advisor-empty p,
+.advisor-payments-scope .hub-nav-card h3,
+.advisor-payments-scope .hub-nav-card p {
+  color: #ffffff;
+}
+
+/* hub-nav-icon + chevron keep their own accents */
+
+/* --- font size +15% --- */
+
+.advisor-payments-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-payments-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-payments-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-payments-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-payments-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-payments-scope .hub-nav-card h3 {
+  font-size: 17px;
+}
+
+.advisor-payments-scope .hub-nav-card p {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   ADVISOR NOTIFICATIONS — WHITE TEXT + DARK GLASS
+   Scoped to .advisor-notifications-scope (Advisor
+   Notifications page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.advisor-notifications-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-notifications-scope .advisor-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.advisor-notifications-scope .advisor-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.advisor-notifications-scope .advisor-part-table-wrap {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-notifications-scope .advisor-part-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.advisor-notifications-scope .advisor-part-table th {
+  color: rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.advisor-notifications-scope .advisor-part-table td {
+  color: #ffffff;
+
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.advisor-notifications-scope .advisor-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.advisor-notifications-scope .advisor-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.advisor-notifications-scope .advisor-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.advisor-notifications-scope .advisor-header .page-eyebrow,
+.advisor-notifications-scope .advisor-header h1,
+.advisor-notifications-scope .advisor-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.advisor-notifications-scope .section-header h2,
+.advisor-notifications-scope .advisor-empty h3,
+.advisor-notifications-scope .advisor-empty p,
+.advisor-notifications-scope .advisor-part-table td strong {
+  color: #ffffff;
+}
+
+/* status pills + "Mark as read" button keep their own accents */
+
+/* --- font size +15% --- */
+
+.advisor-notifications-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.advisor-notifications-scope .advisor-header h1 {
+  font-size: 33px;
+}
+
+.advisor-notifications-scope .advisor-header p {
+  font-size: 15px;
+}
+
+.advisor-notifications-scope .secondary-action {
+  font-size: 14px;
+}
+
+.advisor-notifications-scope .section-header h2 {
+  font-size: 20px;
+}
+
+.advisor-notifications-scope .advisor-empty h3 {
+  font-size: 18px;
+}
+
+.advisor-notifications-scope .advisor-empty p {
+  font-size: 14px;
+}
+
+.advisor-notifications-scope .advisor-part-table {
+  font-size: 15px;
+}
+
+.advisor-notifications-scope .advisor-part-table th {
+  font-size: 12px;
+}
+
+.advisor-notifications-scope .advisor-part-table td {
+  font-size: 15px;
+}
+
+.advisor-notifications-scope .advisor-part-table td strong {
+  font-size: 16px;
+}
+
+.advisor-notifications-scope .advisor-error {
+  font-size: 14px;
+}
+
 /* ==========================================================================
    MECHANIC DASHBOARD
    ========================================================================== */

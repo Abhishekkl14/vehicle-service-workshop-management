@@ -19,7 +19,7 @@ export default function AdvisorPayments() {
   return (
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-payments-scope">
 
         <div className="advisor-header">
           <div>

@@ -77,7 +77,7 @@ export default function AdvisorCustomers() {
   return (
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-customers-scope">
 
         {/* =================================================
             HEADER

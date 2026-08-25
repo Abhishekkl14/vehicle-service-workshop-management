@@ -248,7 +248,7 @@ export default function AdvisorWorkOrders() {
 
     <AppLayout>
 
-      <div className="advisor-dashboard">
+      <div className="advisor-dashboard advisor-work-orders-scope">
 
 
         {/* =================================================
