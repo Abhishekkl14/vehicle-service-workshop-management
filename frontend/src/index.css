@@ -7741,6 +7741,736 @@ input {
   font-size: 14px;
 }
 
+
+/* ================================================
+   MECHANIC DASHBOARD — WHITE TEXT + DARK GLASS
+   Scoped to .mechanic-dashboard-scope (Mechanic
+   Dashboard page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.mechanic-dashboard-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.mechanic-dashboard-scope .mechanic-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-dashboard-scope .mechanic-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-dashboard-scope .booking-card {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-dashboard-scope .booking-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-dashboard-scope .dashboard-card {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-dashboard-scope .mechanic-actual-panel,
+.mechanic-dashboard-scope .mechanic-inspection-panel {
+  background: rgba(3, 49, 58, 0.2);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.mechanic-dashboard-scope .mechanic-actual-section,
+.mechanic-dashboard-scope .mechanic-findings {
+  background: rgba(3, 49, 58, 0.15);
+
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-dashboard-scope .mechanic-item-form,
+.mechanic-dashboard-scope .mechanic-create-form {
+  background: rgba(3, 49, 58, 0.25);
+
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-dashboard-scope .mechanic-actual-summary {
+  background: rgba(3, 49, 58, 0.25);
+
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-dashboard-scope .inspection-items-list .inspection-item-card {
+  background: rgba(3, 49, 58, 0.25);
+
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-dashboard-scope .mechanic-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.mechanic-dashboard-scope .mechanic-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.mechanic-dashboard-scope .mechanic-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mechanic-dashboard-scope .mechanic-warning {
+  background: rgba(234, 179, 8, 0.12);
+
+  border-color: rgba(234, 179, 8, 0.35);
+
+  color: #ffffff;
+}
+
+.mechanic-dashboard-scope .mechanic-success {
+  background: rgba(16, 185, 129, 0.12);
+
+  border-color: rgba(16, 185, 129, 0.35);
+
+  color: #ffffff;
+}
+
+.mechanic-dashboard-scope .mechanic-submitted-chip {
+  background: rgba(16, 185, 129, 0.12);
+
+  border-color: rgba(16, 185, 129, 0.35);
+
+  color: #ffffff;
+}
+
+.mechanic-dashboard-scope .mechanic-rejection-note {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+/* --- header: explicit colors --- */
+
+.mechanic-dashboard-scope .mechanic-header .page-eyebrow,
+.mechanic-dashboard-scope .mechanic-header h1,
+.mechanic-dashboard-scope .mechanic-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.mechanic-dashboard-scope .booking-title-row h2,
+.mechanic-dashboard-scope .booking-meta div,
+.mechanic-dashboard-scope .booking-notes,
+.mechanic-dashboard-scope .dashboard-card span,
+.mechanic-dashboard-scope .dashboard-card small,
+.mechanic-dashboard-scope .section-header h2,
+.mechanic-dashboard-scope .section-header p,
+.mechanic-dashboard-scope .mechanic-empty h3,
+.mechanic-dashboard-scope .mechanic-empty p,
+.mechanic-dashboard-scope .mechanic-actual-header h4,
+.mechanic-dashboard-scope .mechanic-actual-header p,
+.mechanic-dashboard-scope .mechanic-actual-section-head h5,
+.mechanic-dashboard-scope .mechanic-actual-empty,
+.mechanic-dashboard-scope .mechanic-actual-item-info strong,
+.mechanic-dashboard-scope .mechanic-actual-item-info span,
+.mechanic-dashboard-scope .mechanic-actual-summary h5,
+.mechanic-dashboard-scope .mechanic-actual-summary-grid div span,
+.mechanic-dashboard-scope .mechanic-actual-summary-grid div strong,
+.mechanic-dashboard-scope .mechanic-actual-hint,
+.mechanic-dashboard-scope .mechanic-findings-header h4,
+.mechanic-dashboard-scope .mechanic-findings-header p,
+.mechanic-dashboard-scope .mechanic-no-findings,
+.mechanic-dashboard-scope .mechanic-inspection-summary .details-card-header h3,
+.mechanic-dashboard-scope .mechanic-inspection-summary .details-card-header p,
+.mechanic-dashboard-scope .mechanic-inspection-meta div,
+.mechanic-dashboard-scope .mechanic-inspection-empty h4,
+.mechanic-dashboard-scope .mechanic-inspection-empty p,
+.mechanic-dashboard-scope .mechanic-create-form label,
+.mechanic-dashboard-scope .mechanic-item-form label,
+.mechanic-dashboard-scope .inspection-items-list .inspection-item-card h3,
+.mechanic-dashboard-scope .inspection-item-detail span,
+.mechanic-dashboard-scope .inspection-item-detail p,
+.mechanic-dashboard-scope .mechanic-rejection-note strong {
+  color: #ffffff;
+}
+
+/* status pills + severity badges keep their own colors */
+
+/* --- form inputs + selects: readable on dark --- */
+
+.mechanic-dashboard-scope .mechanic-form-field input,
+.mechanic-dashboard-scope .mechanic-form-field select,
+.mechanic-dashboard-scope .mechanic-form-field textarea {
+  background: rgba(0, 0, 0, 0.25);
+
+  border-color: rgba(255, 255, 255, 0.18);
+
+  color: #ffffff;
+}
+
+.mechanic-dashboard-scope .mechanic-form-field input::placeholder,
+.mechanic-dashboard-scope .mechanic-form-field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* --- font size +15% --- */
+
+.mechanic-dashboard-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.mechanic-dashboard-scope .mechanic-header h1 {
+  font-size: 33px;
+}
+
+.mechanic-dashboard-scope .mechanic-header p {
+  font-size: 15px;
+}
+
+.mechanic-dashboard-scope .secondary-action {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .dashboard-card span {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .dashboard-card strong {
+  font-size: 28px;
+}
+
+.mechanic-dashboard-scope .dashboard-card small {
+  font-size: 13px;
+}
+
+.mechanic-dashboard-scope .section-header h2 {
+  font-size: 20px;
+}
+
+.mechanic-dashboard-scope .section-header p {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .booking-title-row h2 {
+  font-size: 20px;
+}
+
+.mechanic-dashboard-scope .booking-meta div {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .booking-notes {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-empty h3 {
+  font-size: 18px;
+}
+
+.mechanic-dashboard-scope .mechanic-empty p {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-header h4 {
+  font-size: 17px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-header p {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-section-head h5 {
+  font-size: 15px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-empty {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-item-info strong {
+  font-size: 15px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-item-info span {
+  font-size: 13px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-summary h5 {
+  font-size: 15px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-summary-grid div span {
+  font-size: 13px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-summary-grid div strong {
+  font-size: 22px;
+}
+
+.mechanic-dashboard-scope .mechanic-actual-hint {
+  font-size: 13px;
+}
+
+.mechanic-dashboard-scope .mechanic-findings-header h4 {
+  font-size: 17px;
+}
+
+.mechanic-dashboard-scope .mechanic-findings-header p {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-no-findings {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-inspection-summary .details-card-header h3 {
+  font-size: 18px;
+}
+
+.mechanic-dashboard-scope .mechanic-inspection-summary .details-card-header p {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-inspection-meta div {
+  font-size: 13px;
+}
+
+.mechanic-dashboard-scope .mechanic-inspection-empty h4 {
+  font-size: 17px;
+}
+
+.mechanic-dashboard-scope .mechanic-inspection-empty p {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-create-form label,
+.mechanic-dashboard-scope .mechanic-item-form label {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-form-field input,
+.mechanic-dashboard-scope .mechanic-form-field select,
+.mechanic-dashboard-scope .mechanic-form-field textarea {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .inspection-items-list .inspection-item-card h3 {
+  font-size: 17px;
+}
+
+.mechanic-dashboard-scope .inspection-item-detail span {
+  font-size: 13px;
+}
+
+.mechanic-dashboard-scope .inspection-item-detail p {
+  font-size: 14px;
+}
+
+.mechanic-dashboard-scope .mechanic-error,
+.mechanic-dashboard-scope .mechanic-warning,
+.mechanic-dashboard-scope .mechanic-success,
+.mechanic-dashboard-scope .mechanic-submitted-chip,
+.mechanic-dashboard-scope .mechanic-rejection-note {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   MECHANIC WORK ORDERS — WHITE TEXT + DARK GLASS
+   Scoped to .mechanic-work-orders-scope (Mechanic
+   Work Orders page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.mechanic-work-orders-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.mechanic-work-orders-scope .history-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-work-orders-scope .history-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-work-orders-scope .booking-card {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-work-orders-scope .booking-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-work-orders-scope .history-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.mechanic-work-orders-scope .history-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.mechanic-work-orders-scope .history-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mechanic-work-orders-scope .mechanic-submitted-chip {
+  background: rgba(16, 185, 129, 0.12);
+
+  border-color: rgba(16, 185, 129, 0.35);
+
+  color: #ffffff;
+}
+
+/* --- header: explicit colors --- */
+
+.mechanic-work-orders-scope .history-header .page-eyebrow,
+.mechanic-work-orders-scope .history-header h1,
+.mechanic-work-orders-scope .history-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.mechanic-work-orders-scope .booking-title-row h2,
+.mechanic-work-orders-scope .booking-meta div,
+.mechanic-work-orders-scope .history-empty h2,
+.mechanic-work-orders-scope .history-empty p,
+.mechanic-work-orders-scope .history-error strong,
+.mechanic-work-orders-scope .history-error p {
+  color: #ffffff;
+}
+
+/* status pills + action buttons keep their own accents */
+
+/* --- font size +15% --- */
+
+.mechanic-work-orders-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.mechanic-work-orders-scope .history-header h1 {
+  font-size: 33px;
+}
+
+.mechanic-work-orders-scope .history-header p {
+  font-size: 15px;
+}
+
+.mechanic-work-orders-scope .secondary-action {
+  font-size: 14px;
+}
+
+.mechanic-work-orders-scope .booking-title-row h2 {
+  font-size: 20px;
+}
+
+.mechanic-work-orders-scope .booking-meta div {
+  font-size: 14px;
+}
+
+.mechanic-work-orders-scope .history-empty h2 {
+  font-size: 22px;
+}
+
+.mechanic-work-orders-scope .history-empty p {
+  font-size: 14px;
+}
+
+.mechanic-work-orders-scope .history-error strong {
+  font-size: 16px;
+}
+
+.mechanic-work-orders-scope .history-error p {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   MECHANIC INSPECTIONS — WHITE TEXT + DARK GLASS
+   Scoped to .mechanic-inspections-scope (Mechanic
+   Inspections page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.mechanic-inspections-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.mechanic-inspections-scope .history-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-inspections-scope .history-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-inspections-scope .booking-card {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-inspections-scope .booking-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-inspections-scope .history-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.mechanic-inspections-scope .history-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.mechanic-inspections-scope .history-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.mechanic-inspections-scope .history-header .page-eyebrow,
+.mechanic-inspections-scope .history-header h1,
+.mechanic-inspections-scope .history-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.mechanic-inspections-scope .booking-title-row h2,
+.mechanic-inspections-scope .booking-meta div,
+.mechanic-inspections-scope .history-empty h2,
+.mechanic-inspections-scope .history-empty p,
+.mechanic-inspections-scope .history-error strong,
+.mechanic-inspections-scope .history-error p {
+  color: #ffffff;
+}
+
+/* status pills + "View" button keep their own accents */
+
+/* --- font size +15% --- */
+
+.mechanic-inspections-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.mechanic-inspections-scope .history-header h1 {
+  font-size: 33px;
+}
+
+.mechanic-inspections-scope .history-header p {
+  font-size: 15px;
+}
+
+.mechanic-inspections-scope .secondary-action {
+  font-size: 14px;
+}
+
+.mechanic-inspections-scope .booking-title-row h2 {
+  font-size: 20px;
+}
+
+.mechanic-inspections-scope .booking-meta div {
+  font-size: 14px;
+}
+
+.mechanic-inspections-scope .history-empty h2 {
+  font-size: 22px;
+}
+
+.mechanic-inspections-scope .history-empty p {
+  font-size: 14px;
+}
+
+.mechanic-inspections-scope .history-error strong {
+  font-size: 16px;
+}
+
+.mechanic-inspections-scope .history-error p {
+  font-size: 14px;
+}
+
+
+/* ================================================
+   MECHANIC NOTIFICATIONS — WHITE TEXT + DARK GLASS
+   Scoped to .mechanic-notifications-scope (Mechanic
+   Notifications page only). Dark glass boxes with
+   white text; font sizes increased ~15%.
+=============================================== */
+
+/* --- darken boxes so white text stays readable --- */
+
+.mechanic-notifications-scope .booking-skeleton {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.mechanic-notifications-scope .notifications-empty {
+  background: rgba(3, 49, 58, 0.62);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-notifications-scope .notifications-empty-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-notifications-scope .notification-card {
+  background: rgba(3, 49, 58, 0.35);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mechanic-notifications-scope .notification-card.unread {
+  background: rgba(3, 49, 58, 0.45);
+
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.mechanic-notifications-scope .notification-card-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mechanic-notifications-scope .notice-error {
+  background: rgba(194, 24, 91, 0.12);
+
+  border-color: rgba(194, 24, 91, 0.35);
+
+  color: #ffffff;
+}
+
+.mechanic-notifications-scope .notice-error button {
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ffffff;
+}
+
+.mechanic-notifications-scope .notice-error button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- header: explicit colors --- */
+
+.mechanic-notifications-scope .notifications-header .page-eyebrow,
+.mechanic-notifications-scope .notifications-header h1,
+.mechanic-notifications-scope .notifications-header p {
+  color: #ffffff;
+}
+
+/* --- white text --- */
+
+.mechanic-notifications-scope .notifications-toolbar label,
+.mechanic-notifications-scope .notifications-count,
+.mechanic-notifications-scope .notifications-empty h3,
+.mechanic-notifications-scope .notifications-empty p,
+.mechanic-notifications-scope .notification-card-heading h2,
+.mechanic-notifications-scope .notification-card-meta,
+.mechanic-notifications-scope .notification-message,
+.mechanic-notifications-scope .notification-type {
+  color: #ffffff;
+}
+
+/* notification-badge + "Mark as read" button keep their own accents */
+
+/* --- font size +15% --- */
+
+.mechanic-notifications-scope .page-eyebrow {
+  font-size: 12px;
+}
+
+.mechanic-notifications-scope .notifications-header h1 {
+  font-size: 33px;
+}
+
+.mechanic-notifications-scope .notifications-header p {
+  font-size: 15px;
+}
+
+.mechanic-notifications-scope .secondary-action {
+  font-size: 14px;
+}
+
+.mechanic-notifications-scope .notifications-toolbar label {
+  font-size: 14px;
+}
+
+.mechanic-notifications-scope .notifications-count {
+  font-size: 14px;
+}
+
+.mechanic-notifications-scope .notifications-empty h3 {
+  font-size: 18px;
+}
+
+.mechanic-notifications-scope .notifications-empty p {
+  font-size: 14px;
+}
+
+.mechanic-notifications-scope .notification-card-heading h2 {
+  font-size: 17px;
+}
+
+.mechanic-notifications-scope .notification-card-meta {
+  font-size: 13px;
+}
+
+.mechanic-notifications-scope .notification-message {
+  font-size: 14px;
+}
+
+.mechanic-notifications-scope .notification-type {
+  font-size: 13px;
+}
+
+.mechanic-notifications-scope .notice-error {
+  font-size: 14px;
+}
+
 /* ==========================================================================
    MECHANIC DASHBOARD
    ========================================================================== */

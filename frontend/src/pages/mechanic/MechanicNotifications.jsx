@@ -190,7 +190,7 @@ export default function MechanicNotifications() {
   return (
     <AppLayout>
 
-      <div className="notifications-page">
+      <div className="notifications-page mechanic-notifications-scope">
 
         {/* =================================================
             HEADER

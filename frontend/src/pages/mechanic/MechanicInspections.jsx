@@ -222,7 +222,7 @@ export default function MechanicInspections() {
   return (
     <AppLayout>
 
-      <div className="history-page">
+      <div className="history-page mechanic-inspections-scope">
 
         {/* =================================================
             HEADER

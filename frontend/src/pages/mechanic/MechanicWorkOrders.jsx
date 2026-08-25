@@ -340,7 +340,7 @@ export default function MechanicWorkOrders() {
   return (
     <AppLayout>
 
-      <div className="history-page">
+      <div className="history-page mechanic-work-orders-scope">
 
         {/* =================================================
             HEADER

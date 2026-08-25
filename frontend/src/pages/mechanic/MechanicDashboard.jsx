@@ -3353,7 +3353,7 @@ export default function MechanicDashboard() {
   return (
     <AppLayout>
 
-      <div className="mechanic-dashboard">
+      <div className="mechanic-dashboard mechanic-dashboard-scope">
 
         {/* =================================================
             HEADER
