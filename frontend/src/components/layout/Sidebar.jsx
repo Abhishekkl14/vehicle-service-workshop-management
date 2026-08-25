@@ -12,12 +12,12 @@
   Bell,
   Settings,
   LogOut,
-  Wrench,
   History,
 } from "lucide-react";
 
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Garage360Logo from "../../assets/Garage360.png";
 import AnimatedButton from "../../components/ui/animated-button";
 import OptionWheel from "../../components/common/OptionWheel";
 
@@ -186,7 +186,7 @@ export default function Sidebar({
 
       <div className="sidebar-header">
         <div className="sidebar-logo">
-          <Wrench size={22} />
+          <img src={Garage360Logo} alt="Garage 360" />
         </div>
 
         <div>

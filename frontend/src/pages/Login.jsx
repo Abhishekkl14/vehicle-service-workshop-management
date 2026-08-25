@@ -2,7 +2,6 @@
 import {
   Eye,
   EyeOff,
-  Car,
   Lock,
   Mail,
 } from "lucide-react";
@@ -13,6 +12,7 @@ import {
 } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import Garage360Logo from "../assets/Garage360.png";
 import AnimatedButton from "../components/ui/animated-button";
 import LoadingScreen from "../components/common/LoadingScreen";
 
@@ -146,10 +146,7 @@ export default function Login() {
         <div className="brand-content">
 
           <div className="brand-mark">
-            <Car
-              size={30}
-              strokeWidth={2.2}
-            />
+            <img src={Garage360Logo} alt="Garage 360" />
           </div>
 
           <div className="brand-name">
@@ -216,7 +213,7 @@ export default function Login() {
           <div className="mobile-brand">
 
             <div className="brand-mark">
-              <Car size={26} />
+              <img src={Garage360Logo} alt="Garage 360" />
             </div>
 
             <div className="brand-name">
