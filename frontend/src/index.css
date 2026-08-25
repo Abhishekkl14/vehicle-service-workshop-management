@@ -11747,6 +11747,207 @@ input {
 
 
 /* ================================================
+   CREATE BOOKING — WHITE TEXT + LARGER FONTS
+   Scoped to .customer-create-booking.
+   Dark glass boxes with white text; font sizes
+   increased ~15%.
+=============================================== */
+
+/* --- header --- */
+
+.customer-create-booking .create-booking-header .page-eyebrow,
+.customer-create-booking .create-booking-header h1,
+.customer-create-booking .create-booking-header p {
+  color: #ffffff;
+}
+
+/* --- loading --- */
+
+.customer-create-booking .booking-form-loading p {
+  color: #ffffff;
+}
+
+/* --- success --- */
+
+.customer-create-booking .booking-success h1,
+.customer-create-booking .booking-success p,
+.customer-create-booking .booking-success span {
+  color: #ffffff;
+}
+
+.customer-create-booking .booking-success-icon {
+  background: rgba(255, 255, 255, 0.1);
+  color: #5ce6c8;
+}
+
+/* --- form sections: dark glass --- */
+
+.customer-create-booking .booking-form-section {
+  background: rgba(3, 49, 58, 0.45);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* --- section header text --- */
+
+.customer-create-booking .booking-form-section-header h2,
+.customer-create-booking .booking-form-section-header p {
+  color: #ffffff;
+}
+
+/* --- section icon --- */
+
+.customer-create-booking .booking-form-section-icon {
+  background: rgba(255, 255, 255, 0.1);
+  color: #5ce6c8;
+}
+
+/* --- labels --- */
+
+.customer-create-booking .booking-form-section > label,
+.customer-create-booking .booking-date-time-grid label {
+  color: #ffffff;
+}
+
+/* --- selects --- */
+
+.customer-create-booking .booking-form-section select {
+  background: rgba(3, 49, 58, 0.6);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.customer-create-booking .booking-form-section select option {
+  background: #03313a;
+  color: #ffffff;
+}
+
+/* --- date/time inputs --- */
+
+.customer-create-booking .booking-input-icon {
+  background: rgba(3, 49, 58, 0.6);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.customer-create-booking .booking-input-icon svg {
+  color: #5ce6c8;
+}
+
+.customer-create-booking .booking-input-icon input {
+  color: #ffffff;
+}
+
+.customer-create-booking .booking-input-icon input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* --- textarea --- */
+
+.customer-create-booking .booking-form-section textarea {
+  background: rgba(3, 49, 58, 0.6);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.customer-create-booking .booking-form-section textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- character count --- */
+
+.customer-create-booking .character-count {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- field help --- */
+
+.customer-create-booking .field-help {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* --- selected service card --- */
+
+.customer-create-booking .selected-service {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.customer-create-booking .selected-service strong {
+  color: #ffffff;
+}
+
+.customer-create-booking .selected-service p {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.customer-create-booking .selected-service-meta span {
+  color: #5ce6c8;
+}
+
+/* --- error banner --- */
+
+.customer-create-booking .create-booking-error {
+  background: rgba(194, 24, 91, 0.15);
+  border-color: rgba(194, 24, 91, 0.3);
+}
+
+.customer-create-booking .create-booking-error strong {
+  color: #ff6b9d;
+}
+
+.customer-create-booking .create-booking-error p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* --- back button --- */
+
+.customer-create-booking .back-button {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.customer-create-booking .back-button:hover {
+  color: #ffffff;
+}
+
+/* --- font size +15% --- */
+
+.customer-create-booking .page-eyebrow {
+  font-size: 12px;
+}
+
+.customer-create-booking .create-booking-header h1 {
+  font-size: 35px;
+}
+
+.customer-create-booking .create-booking-header > p:last-child {
+  font-size: 15px;
+}
+
+.customer-create-booking .booking-form-section-header h2 {
+  font-size: 18px;
+}
+
+.customer-create-booking .booking-form-section-header p {
+  font-size: 12px;
+}
+
+.customer-create-booking .booking-form-section > label,
+.customer-create-booking .booking-date-time-grid label {
+  font-size: 11px;
+}
+
+.customer-create-booking .booking-form-section select,
+.customer-create-booking .booking-input-icon input,
+.customer-create-booking .booking-form-section textarea {
+  font-size: 13px;
+}
+
+.customer-create-booking .primary-action,
+.customer-create-booking .secondary-action {
+  font-size: 14px;
+}
+
+
+/* ================================================
    INVOICES PAGE — WHITE TEXT + LARGER FONTS
    Scoped to .customer-invoices (Invoices page only).
    Dark glass boxes with white text; font sizes

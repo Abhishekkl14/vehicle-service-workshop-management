@@ -323,7 +323,7 @@ export default function CreateBooking() {
 
       <AppLayout>
 
-        <div className="create-booking-page">
+        <div className="create-booking-page customer-create-booking">
 
           <div className="booking-form-loading">
 
@@ -357,7 +357,7 @@ export default function CreateBooking() {
 
       <AppLayout>
 
-        <div className="booking-success">
+        <div className="booking-success customer-create-booking">
 
           <div className="booking-success-icon">
 
@@ -396,7 +396,7 @@ export default function CreateBooking() {
 
     <AppLayout>
 
-      <div className="create-booking-page">
+      <div className="create-booking-page customer-create-booking">
 
 
         {/* =================================================
